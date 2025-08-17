@@ -22,18 +22,22 @@ public class ColorButtonView : View
             this.active = active;
         }
     }
-    [SerializeField] Data _data;
+    private Data _data;
     public override void Init<T>(T data)
     {
         if (data is Data d) 
         {
             _data= d;
-            UIContainer.SubscribeToView<ButtonView, object>(action, _ => TriggerAction(_data.color));
         }
 
         base.Init(data);
     }
+    public override void Subscriptions()
+    {
+        base.Subscriptions();
+        UIContainer.SubscribeToView<ButtonView, object>(action, _ => TriggerAction(_data.color));
 
+    }
     public override void UpdateUI()
     {
         base.UpdateUI();

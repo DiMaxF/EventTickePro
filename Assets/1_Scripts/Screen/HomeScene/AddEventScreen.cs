@@ -28,7 +28,7 @@ public class AddEventScreen : AppScreen
 
     protected override void OnStart()
     {
-        model = new EventModel(DateTime.Now.ToString(DateFormatter.Format), DateTime.Now.ToString(DateFormatter.TimeFormat), "");
+        model = new EventModel(DateTime.Now.ToString(DateTimeUtils.Format), DateTime.Now.ToString(DateTimeUtils.TimeFormat), "");
         base.OnStart();
         UIContainer.RegisterView(datePicker);
         UIContainer.RegisterView(timePicker);

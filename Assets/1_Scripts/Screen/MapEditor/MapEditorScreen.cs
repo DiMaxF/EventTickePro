@@ -65,6 +65,7 @@ public class MapEditorScreen : AppScreen
         {
             _dataManager.LoadMap(map, _objectManager, textPrefab, figurePrefab, seatPrefab, forms);
         }
+        _uiManager.HideAllPanels();
     }
 
     protected override void UpdateViews()

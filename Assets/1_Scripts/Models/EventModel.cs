@@ -33,7 +33,7 @@ public class EventModel
     }
     private bool TryParseDate(string dateString, out DateTime result)
     {
-        if (DateTime.TryParseExact(dateString, DateFormatter.Format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out result))
+        if (DateTime.TryParseExact(dateString, DateTimeUtils.Format, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out result))
         {
             return true;
         }
@@ -51,7 +51,7 @@ public class EventModel
         }
         set
         {
-            time = value.ToString(DateFormatter.TimeFormat); 
+            time = value.ToString(DateTimeUtils.TimeFormat); 
         }
     }
     public DateTime Date
@@ -66,7 +66,7 @@ public class EventModel
         }
         set
         {
-            date = value.ToString(DateFormatter.Format);
+            date = value.ToString(DateTimeUtils.Format);
         }
     }
 

@@ -51,12 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c9d6de294a027449b4ced9bae9e2b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   controllerView: {fileID: 4266519928185438250}
-  selectButton: {fileID: 1519075414429671406}
+  selectButton: {fileID: 7226226193214367545}
   scaleSensitivity: 0.015
   dragSensitivity: 3
-  name: {fileID: 8676070396459304002}
+  value: {fileID: 8676070396459304002}
 --- !u!1 &6733685578993105256
 GameObject:
   m_ObjectHideFlags: 0
@@ -69,6 +68,7 @@ GameObject:
   - component: {fileID: 2399402842887557076}
   - component: {fileID: 5229455578760789837}
   - component: {fileID: 1519075414429671406}
+  - component: {fileID: 7226226193214367545}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -177,6 +177,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7226226193214367545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6733685578993105256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 0}
 --- !u!1001 &4823259908303726511
 PrefabInstance:
   m_ObjectHideFlags: 0

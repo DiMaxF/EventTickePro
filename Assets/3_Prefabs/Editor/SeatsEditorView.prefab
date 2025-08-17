@@ -576,6 +576,7 @@ GameObject:
   - component: {fileID: 3269984164343944857}
   - component: {fileID: 3532126274938766680}
   - component: {fileID: 2900342991051761242}
+  - component: {fileID: 1141322643951577515}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -684,6 +685,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1141322643951577515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2728676138596901273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 0}
 --- !u!1 &2842771538722481441
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,9 +1178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d442086247a339a4688b5756e4154444, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   controllerView: {fileID: 7302693658247206773}
-  selectButton: {fileID: 2900342991051761242}
+  selectButton: {fileID: 1141322643951577515}
   scaleSensitivity: 0.015
   dragSensitivity: 3
   seats: {fileID: 6296646684196834463}
@@ -1445,13 +1458,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a57a25f94519547b41df38dbba832f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
+  persistent: 0
   _contentParent: {fileID: 2165514924825594708}
   _itemPrefab: {fileID: 8840562046435825320, guid: 57cd24847e5e21f4b90bf9790826a839, type: 3}
   noItemPrefab: {fileID: 3089902975823322973, guid: 0495a34be8092654d89ed9a2c787d596, type: 3}
-  spawnAnimationDuration: 0.3
-  spawnStartScale: 0.8
-  spawnDelayPerItem: 0.1
+  spawnDelayPerItem: 0
 --- !u!1001 &469167892345703901
 PrefabInstance:
   m_ObjectHideFlags: 0

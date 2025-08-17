@@ -8,28 +8,19 @@ using UnityEngine.UI;
 public class LineChartView : View
 {
     [SerializeField] private E2Chart chart;
-    private ChartData _data;
-    [SerializeField] private Color labelTextColor = Color.black; // Цвет текста меток
-    [SerializeField] private Color[] lineColors = { Color.blue, Color.green }; // Цвета линий для нескольких серий
+    [SerializeField] private Color labelTextColor = Color.black;
+    [SerializeField] private Color[] lineColors = { Color.blue, Color.green };
     [SerializeField] private Color pointColor = Color.red;
+    private E2ChartOptions chartOptions;
+    private E2ChartData chartData;
+    private ChartData _data;
 
-    public override void UpdateUI()
+    private void Awake()
     {
-        if (_data == null)
-        {
-            Debug.LogWarning("[LineChartView] No valid data to display in chart");
-            return;
-        }
+        chartOptions = chart.GetComponent<E2ChartOptions>();
+        chartData = chart.GetComponent<E2ChartData>();
 
-        chart.gameObject.SetActive(true);
         chart.chartType = E2Chart.ChartType.LineChart;
-
-        E2ChartOptions chartOptions = chart.GetComponent<E2ChartOptions>();
-        if (chartOptions == null)
-        {
-            Debug.Log("[LineChartView] Adding E2ChartOptions...");
-            chartOptions = chart.gameObject.AddComponent<E2ChartOptions>();
-        }
 
         chartOptions.title.enableTitle = false;
         chartOptions.title.enableSubTitle = false;
@@ -63,57 +54,74 @@ public class LineChartView : View
         chartOptions.chartStyles.lineChart.lineWidth = 15.0f;
         chartOptions.chartStyles.lineChart.pointSize = 30.0f;
 
-        E2ChartData chartData = chart.GetComponent<E2ChartData>();
-        if (chartData == null)
-        {
-            chartData = chart.gameObject.AddComponent<E2ChartData>();
-        }
         chartOptions.label.textOption = new E2ChartOptions.TextOptions
         {
             fontSize = 46,
             color = labelTextColor
         };
-        
-        chartData.title = _data.title;
-        chartData.xAxisTitle = "";
-        chartData.yAxisTitle = _data.title.Contains("Конверсия") ? "%" : ""; // Указываем % для конверсии
-        chartData.categoriesX = new List<string>();
-        chartData.series = new List<E2ChartData.Series>();
+    }
 
-        // Если есть series (для conversationSentvsUsed)
-        if (_data.series != null && _data.series.Count > 0)
+    public override void UpdateUI()
+    {
+        if (_data == null)
         {
-            foreach (var series in _data.series)
-            {
-                chartData.categoriesX = series.values.Keys.ToList();
-                chartData.series.Add(new E2ChartData.Series
-                {
-                    name = series.name,
-                    dataY = series.values.Values.ToList()
-                });
-            }
-            // Устанавливаем цвета для нескольких серий
-            chartOptions.plotOptions.seriesColors = lineColors;
-        }
-        else // Для одиночных графиков (visitsChart, conversationRate)
-        {
-            chartData.categoriesX = _data.values.Keys.ToList();
-            chartData.series.Add(new E2ChartData.Series
-            {
-                name = _data.title,
-                dataY = _data.values.Values.ToList()
-            });
-            chartOptions.plotOptions.seriesColors = new Color[] { lineColors[0] };
+            Loger.LogWarning("Adding E2ChartOptions...", "LineChartView");
+            return;
         }
 
-        // Принудительный пересчет layout
+        if (chartOptions == null)
+        {
+            Loger.LogWarning("Adding E2ChartOptions...", "LineChartView");
+            chartOptions = chart.gameObject.AddComponent<E2ChartOptions>();
+        }
+
+
         LayoutRebuilder.ForceRebuildLayoutImmediate(chart.GetComponent<RectTransform>());
         chart.UpdateChart();
     }
 
     public override void Init<T>(T data)
     {
-        if (data is ChartData d) _data = d;
+        if (data is ChartData d) 
+        {
+            _data = d;
+
+            if (chartData == null)
+            {
+                chartData = chart.gameObject.AddComponent<E2ChartData>();
+            }
+
+
+            chartData.title = _data.title;
+            chartData.xAxisTitle = "";
+            chartData.yAxisTitle = _data.title.Contains("Conversion") ? "%" : "";
+            chartData.categoriesX = new List<string>();
+            chartData.series = new List<E2ChartData.Series>();
+
+            if (_data.series != null && _data.series.Count > 0)
+            {
+                foreach (var series in _data.series)
+                {
+                    chartData.categoriesX = series.values.Keys.ToList();
+                    chartData.series.Add(new E2ChartData.Series
+                    {
+                        name = series.name,
+                        dataY = series.values.Values.ToList()
+                    });
+                }
+                chartOptions.plotOptions.seriesColors = lineColors;
+            }
+            else
+            {
+                chartData.categoriesX = _data.values.Keys.ToList();
+                chartData.series.Add(new E2ChartData.Series
+                {
+                    name = _data.title,
+                    dataY = _data.values.Values.ToList()
+                });
+                chartOptions.plotOptions.seriesColors = new Color[] { lineColors[0] };
+            }
+        }
         base.Init(data);
     }
 

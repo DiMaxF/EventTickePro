@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 105ef0e467afa2e46a7f0a57ba0eeb43, type: 3}
   m_Name: SmoothScale
   m_EditorClassIdentifier: 
-  Duration: 0.25
+  Duration: 0.4
   Delay: 0.1
   Ease: 27

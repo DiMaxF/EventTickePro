@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DateFormatter 
+public struct DateTimeUtils 
 {
     public static string Format = "dd.MM.yyyy";
     public static string TimeFormat = @"hh\:mm";

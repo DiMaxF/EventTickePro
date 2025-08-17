@@ -123,9 +123,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc1e2a9300b762d42b685f701d9b2117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
-  animationDuration: 0.3
-  offsetY: -50
+  fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
+  scaleAnim: {fileID: 11400000, guid: 5debe229796e1e74c9dfb2a473eeccca, type: 2}
 --- !u!114 &4562781614000744920
 MonoBehaviour:
   m_ObjectHideFlags: 0

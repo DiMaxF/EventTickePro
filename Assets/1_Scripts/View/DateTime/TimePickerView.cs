@@ -22,16 +22,9 @@ public class TimePickerView : View
         
         if (data is string time)
         {
-            
             if(TimeSpan.TryParse(time, out var val)) _time = val;
-            Loger.Log("Data get " + val, "TimePickerView");
             _hours = _time.Hours;
             _minutes = _time.Minutes;
-            UIContainer.SubscribeToView<ButtonView, object>(save, _ => SaveTime());
-            UIContainer.SubscribeToView<ButtonView, object>(cancel, _ => TriggerAction(""));
-            UIContainer.SubscribeToView<ButtonView, object>(pm, _ => { _isAm = false; UpdateUI(); });
-            UIContainer.SubscribeToView<ButtonView, object>(am, _ => { _isAm = true; UpdateUI(); });
-
         }
         base.Init(data);
     }
@@ -47,6 +40,16 @@ public class TimePickerView : View
         UIContainer.SubscribeToView<InputTextView, string>(minutes, OnMinutesEdit);
         SetButtonFormat(pm, !_isAm);
         SetButtonFormat(am, _isAm);
+    }
+
+    public override void Subscriptions()
+    {
+        base.Subscriptions();
+        UIContainer.SubscribeToView<ButtonView, object>(save, _ => SaveTime());
+        UIContainer.SubscribeToView<ButtonView, object>(cancel, _ => TriggerAction(""));
+        UIContainer.SubscribeToView<ButtonView, object>(pm, _ => { _isAm = false; UpdateUI(); });
+        UIContainer.SubscribeToView<ButtonView, object>(am, _ => { _isAm = true; UpdateUI(); });
+
     }
 
     private void OnHoursEdit(string val) 
@@ -73,7 +76,7 @@ public class TimePickerView : View
 
         if (save != null)
         {
-            save.interactable = isValid; // Блокируем кнопку Save при невалидных данных
+            save.interactable = isValid; 
         }
     }
 
@@ -82,9 +85,8 @@ public class TimePickerView : View
         if (ValidateHours(_hours.ToString()) && ValidateMinutes(_minutes.ToString()))
         {
             Loger.Log($"{_hours} {_minutes}", "TimeValue");
-            // Конвертируем в 24-часовой формат
             int hours24 = _isAm ? (_hours % 12) : (_hours % 12 + 12);
-            TriggerAction(new TimeSpan(hours24, _minutes, 0).ToString(DateFormatter.TimeFormat));
+            TriggerAction(new TimeSpan(hours24, _minutes, 0).ToString(DateTimeUtils.TimeFormat));
         }
     }
 
@@ -92,7 +94,7 @@ public class TimePickerView : View
     {
         if (int.TryParse(text, out var h))
         {
-            return h >= 1 && h <= 12; // Часы в диапазоне 1–12
+            return h >= 1 && h <= 12;
         }
         return false;
     }

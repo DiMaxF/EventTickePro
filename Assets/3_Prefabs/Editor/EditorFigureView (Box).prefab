@@ -734,7 +734,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f02ff6350eda6c4e9161542e62234a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   seletedColor: {r: 0, g: 0.74509805, b: 0.22352941, a: 1}
   unseletedColor: {r: 0.3254902, g: 0.38823533, b: 1, a: 1}
   moveButton: {fileID: 6925996722703876182}
@@ -1129,9 +1128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c5569848b9f584ca4226fae81dbe45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   controllerView: {fileID: 1273106757320083114}
-  selectButton: {fileID: 8106737362201616338}
+  selectButton: {fileID: 5113400477250761637}
   scaleSensitivity: 0.015
   dragSensitivity: 3
   color: {fileID: 2182196473917514765}
@@ -1267,6 +1265,7 @@ GameObject:
   - component: {fileID: 8935128239070785639}
   - component: {fileID: 3577394555481570897}
   - component: {fileID: 8106737362201616338}
+  - component: {fileID: 5113400477250761637}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -1375,6 +1374,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5113400477250761637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578411280056428643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 0}
 --- !u!1 &6997377513203437726
 GameObject:
   m_ObjectHideFlags: 0

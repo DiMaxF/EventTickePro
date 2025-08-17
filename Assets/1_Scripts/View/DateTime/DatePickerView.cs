@@ -15,11 +15,16 @@ public class DatePickerView : View
         if (data is string date)
         {
             _date = date;
-            UIContainer.SubscribeToView<ButtonView, object>(cancel, _ => TriggerAction(""));
-            UIContainer.SubscribeToView<ButtonView, object>(save, _ => TriggerAction(_date));
-            calendar.OnSelect +=(d) => _date = d.ToString(DateFormatter.Format);
         }
         base.Init(data);
+    }
+
+    public override void Subscriptions()
+    {
+        base.Subscriptions();
+        UIContainer.SubscribeToView<ButtonView, object>(cancel, _ => TriggerAction(""));
+        UIContainer.SubscribeToView<ButtonView, object>(save, _ => TriggerAction(_date));
+        calendar.OnSelect += (d) => _date = d.ToString(DateTimeUtils.Format);
     }
     public override void UpdateUI()
     {

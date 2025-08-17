@@ -28,10 +28,15 @@ public class FormButtonView : View
         if (data is Data d)
         {
             _data = d;
-            UIContainer.SubscribeToView<ButtonView, object>(action, _ => TriggerAction(_data.sprite));
         }
 
         base.Init(data);
+    }
+
+    public override void Subscriptions()
+    {
+        base.Subscriptions();
+        UIContainer.SubscribeToView<ButtonView, object>(action, _ => TriggerAction(_data.sprite));
     }
 
     public override void UpdateUI()

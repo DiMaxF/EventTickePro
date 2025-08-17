@@ -26,10 +26,16 @@ public class EmailSenderView : View
     public override void UpdateUI()
     {
         base.UpdateUI();
+
+        UIContainer.InitView(list, emails);
+    }
+
+    public override void Subscriptions()
+    {
+        base.Subscriptions();
         UIContainer.SubscribeToView<ButtonView, object>(add, _ => OnButtonAdd());
         UIContainer.SubscribeToView<ButtonView, object>(send, _ => OnButtonSend());
         UIContainer.SubscribeToView<ButtonView, object>(cancel, _ => OnButtonCancel());
-        UIContainer.InitView(list, emails);
     }
 
     private void OnButtonAdd() 
@@ -37,8 +43,6 @@ public class EmailSenderView : View
         FetchEmails();
         emails.Add(new EmailModel("", ""));
         UpdateUI();
-       
-        //UIContainer.SubscribeToComponent<ListView, EmailModel>(list, emails);
     }
 
     private void FetchEmails()
