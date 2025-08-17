@@ -26,6 +26,7 @@ public class ProfileScreen : AppScreen
         UIContainer.InitView(name, data.Personal.GetName());
         UIContainer.InitView(phone, data.Personal.GetPhone());
         UIContainer.InitView(email, data.Personal.GetEmail());
+
         UIContainer.InitView(sales, data.Personal.GetNotificationsSales());
         UIContainer.InitView(eventsUpdates, data.Personal.GetNotificationsEvents());
     }
@@ -35,6 +36,7 @@ public class ProfileScreen : AppScreen
         base.Subscriptions();
         UIContainer.SubscribeToView<ToggleView, bool>(sales, OnToggleSales);
         UIContainer.SubscribeToView<ToggleView, bool>(eventsUpdates, OnToggleEvents);
+
         UIContainer.SubscribeToView<ButtonView, object>(button, _ => OnButton());
 
         UIContainer.SubscribeToView<InputTextView, string>(name, val => ValidateName(val));

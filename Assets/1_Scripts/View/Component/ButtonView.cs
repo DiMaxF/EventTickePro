@@ -9,7 +9,7 @@ public class ButtonView : View
     [SerializeField] Text _text;
     private Button _button;
     private string _textButton;
-
+    public RectTransform rect { private set; get; }
     public Image image => _button.image;
     public string Text => _text.text;
     public bool interactable
@@ -20,7 +20,8 @@ public class ButtonView : View
 
     private void Awake()
     {
-        _button = GetComponent<Button>();   
+        _button = GetComponent<Button>();
+        rect = GetComponent<RectTransform>();   
         _button.onClick.AddListener(() => TriggerAction(_textButton)); 
     }
 

@@ -15,10 +15,9 @@ public class NavigationButton : View
     [Header("Animation Configs")]
     [SerializeField] AnimationConfig colorAnim;
     [SerializeField] AnimationConfig scaleAnim;
-    int count;
-    private bool val;
     private AppContainer.NavigationButtonData screenData;
     private LayoutElement layoutElement;
+    private bool val;
 
     private void Awake()
     {
@@ -29,8 +28,6 @@ public class NavigationButton : View
     {
         if (data is AppContainer.NavigationButtonData screen)
         {
-            count++;
-            Loger.Log($"Count init {count}", "NavigationButton");
             screenData = screen;
         }
         base.Init(data);    
@@ -54,10 +51,7 @@ public class NavigationButton : View
         
             icon.color = screenData.selected ?  selectedColor : inactiveColor;
             AnimateSelected(screenData.selected);
-
             val = screenData.selected;
-            Loger.Log($"AnimateSelected {screenData.selected}", "NavigationButton");
-
         }
     }
 
@@ -85,14 +79,10 @@ public class NavigationButton : View
             targetS = Vector3.zero;
             targetFlexibleWidth = 1;
         }
-        bool isAlreadyInTargetState =
-            this.selected.color == targetC &&
-            this.selected.transform.localScale == targetS &&
-            Mathf.Approximately(layoutElement.flexibleWidth, targetFlexibleWidth);
+
         if (selected == val)
         {
             this.selected.color = targetC;
-            Loger.Log("VAL == SELECTED", "NavigationButton");
             return;
         }
         this.selected.transform.localScale = startS;

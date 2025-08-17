@@ -1,15 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Cysharp.Threading.Tasks; // Äëÿ UniTask
+using Cysharp.Threading.Tasks;
 
 public class BaseView : View
 {
-    [SerializeField] private float animationDuration = 0.3f;
-    [SerializeField] private float offsetY = -50f;
+    [SerializeField] AnimationConfig fadeIn;
+    [SerializeField] AnimationConfig fadeOut;
+    [SerializeField] AnimationConfig scaleAnim;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
-    private Vector2 originalPosition;
+    private Vector3 _initialScale;
 
     private void Awake()
     {
@@ -19,27 +20,28 @@ public class BaseView : View
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
         rectTransform = GetComponent<RectTransform>();
-        originalPosition = rectTransform.anchoredPosition;
+        _initialScale = transform.localScale;
     }
 
-    public override async void Show()
+    public override void Show()
     {
         base.Show();
+        transform.localScale = _initialScale * 0.8f;
         canvasGroup.alpha = 0f;
-        rectTransform.anchoredPosition = originalPosition + new Vector2(0, offsetY);
-        canvasGroup.DOFade(1f, animationDuration);
-        rectTransform.DOAnchorPosY(originalPosition.y, animationDuration).SetEase(Ease.OutQuad);
+
+        Tween fade = canvasGroup.DOFade(1f, fadeIn.Duration).SetEase(fadeIn.Ease);
+        Tween scaleTween = transform.DOScale(_initialScale, scaleAnim.Duration).SetEase(scaleAnim.Ease);
+        StartAnimation().Append(fade).Join(scaleTween);
     }
 
     public override void Hide()
     {
-        canvasGroup.DOFade(0f, animationDuration).OnComplete(() =>
-        {
-            base.Hide();
-            rectTransform.anchoredPosition = originalPosition;
-            canvasGroup.alpha = 1f;
-        });
-        rectTransform.DOAnchorPosY(originalPosition.y + offsetY, animationDuration).SetEase(Ease.InQuad);
+        StartAnimation().Append(
+            canvasGroup.DOFade(0f, fadeOut.Duration).OnComplete(() =>
+            {
+                base.Hide();
+                canvasGroup.alpha = 1f;
+            }).SetEase(fadeOut.Ease));
     }
 
     private void OnDestroy()

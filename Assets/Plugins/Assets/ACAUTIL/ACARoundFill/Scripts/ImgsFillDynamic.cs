@@ -34,10 +34,8 @@ public class ImgsFillDynamic : MonoBehaviour
     /// <param name="_duringSpeed">Fill Speed 0.5(2sec), 2(0.5sec)</param>
     public void SetValue(float _value, bool _isDirectly = false, float _duringSpeed = 1F)
     {
-        Debug.Log("[value]start" + _value);
         Mathf.Clamp01(_value);
         this.TargetValue = _value;
-        Debug.Log("[value]Clamp01" + _value);
 
         if (_isDirectly)
         {
