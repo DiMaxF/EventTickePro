@@ -7,82 +7,69 @@ using UnityEngine.UI;
 
 public class NavigationBarView : View
 {
-    [Serializable]
-    public class Data
-    {
-        public AppScreen screen;
-        public Sprite icon;
-        [HideInInspector] public bool selected;
-    }
-    private RectTransform rectTransform;
-    [SerializeField] private Transform content;
-    [SerializeField] private NavigationButton buttonPrefab;
-    [SerializeField] private List<Data> screens;
+    [SerializeField] private ListView buttons;
+    [Header("Animations")]
+    [SerializeField] AnimationConfig show;
+    [SerializeField] AnimationConfig hide;
 
-    private AppContainer container;
-    private Vector3 initialPosition;
+    private Vector3 _initialPosition;
+    private RectTransform _rectTransform;
+    List<AppContainer.NavigationButtonData> _data;
 
     private void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
-        initialPosition = rectTransform.localPosition;
+        _rectTransform = GetComponent<RectTransform>();
+        _initialPosition = _rectTransform.localPosition;
     }
 
     public override void Init<T>(T data)
     {
-        if (data is AppContainer app) 
+        if (data is List<AppContainer.NavigationButtonData> updateData) 
         {
-            container = app;
+            Loger.Log($"Init: {updateData.Count}", "NavigationBarView");
+
+            _data = updateData;
         }
         base.Init(data);
     }
 
     public override void UpdateUI()
     {
-        foreach (Transform t in content) Destroy(t.gameObject);
-
-        foreach (var screen in screens)
-        {
-            var view = Instantiate(buttonPrefab, content);
-            view.name = $"AppScreen{screen.screen.name}";
-            UIContainer.RegisterView(view);
-            var selected = container.OpenedScreen == null ? false : screen.screen == container.OpenedScreen;
-            screen.selected = selected;
-            UIContainer.InitView(view, screen);
-            UIContainer.SubscribeToView<View, object>(view, _ => OnButtonClicked(screen.screen));
-        }
+        UIContainer.InitView(buttons, _data);
+        if(_data != null) Loger.Log($"screens: {_data.Count}", "NavigationBarView");
     }
 
-    private void OnButtonClicked(AppScreen screen)
+    public override void Subscriptions()
     {
-        container.Show(screen);
-        //UpdateUI();
-    }
+        base.Subscriptions();
+        UIContainer.SubscribeToView<ListView, AppContainer.NavigationButtonData>(buttons, selected => TriggerAction(selected), true);
 
+    }
 
     public override void Show()
     {
         base.Show();
-        if (initialPosition != rectTransform.localPosition) 
+        if (_initialPosition != _rectTransform.localPosition) 
         {
-            float height = rectTransform.rect.height;
+            float height = _rectTransform.rect.height;
 
-            rectTransform.localPosition = initialPosition - new Vector3(0, height, 0);
-            rectTransform.DOLocalMove(initialPosition, 0.5f).SetEase(Ease.OutCirc);
+            _rectTransform.localPosition = _initialPosition - new Vector3(0, height, 0);
+            StartAnimation().Append(_rectTransform.DOLocalMove(_initialPosition, show.Duration).SetEase(show.Ease));
         }
 
     }
 
     public override void Hide()
     {
-        if (initialPosition == rectTransform.localPosition)
+        if (_initialPosition == _rectTransform.localPosition)
         {
-            float height = rectTransform.rect.height;
-
-            rectTransform.DOLocalMove(initialPosition - new Vector3(0, height, 0), 0.4f).SetEase(Ease.InQuint)
-                .OnComplete(() => gameObject.SetActive(false));
+            float height = _rectTransform.rect.height;
+            var target = _initialPosition - new Vector3(0, height, 0);
+            StartAnimation()
+                .Append(_rectTransform.DOLocalMove(target, hide.Duration).SetEase(hide.Ease))
+                .OnComplete(() => base.Hide());
         }
-        base.Hide();
     }
+
 
 }

@@ -1,100 +1,55 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class InputTextView : View
 {
-    [SerializeField] private InputField inputField;
-    [SerializeField] private string format;
-    [SerializeField] private Image backgroundImage;
-    [SerializeField] private Color normalColor = Color.white;
-    [SerializeField] private Color errorColor = Color.red;
-    [SerializeField] private string errorMessage = "Field cannot be empty";
+    [SerializeField] InputField inputField;
+    [SerializeField] Outline outline;
+    [SerializeField] Color normalColor;
+    [SerializeField] Color errorColor;
 
-    public void Lock()
+    public string text => inputField != null ? inputField.text : "";
+    public bool interactable
     {
-        inputField.interactable = false;
-
+        get => inputField.interactable;
+        set => inputField.interactable = value;
     }
-
-    public void Unlock()
-    {
-        inputField.interactable = true;
-    }
-
-    private Func<string, bool> _validationRule;
-
-    public string Text => inputField != null ? inputField.text : "";
-
-
-    public void Init(string initialText, Func<string, bool> validationRule = null)
-    {
-        _validationRule = validationRule ?? DefaultValidationRule;
-        if (inputField != null)
-        {
-            inputField.onValueChanged.AddListener((val) => 
-            {
-                ValidateInput(val);
-                TriggerAction(val);
-            });
-
-            inputField.text = FormatText(initialText) ?? "";
-            ValidateInput(initialText);
-        }
-        UpdateUI();
-    }
+    public bool isValid => outline.effectColor != errorColor;
 
     public override void Init<T>(T data)
     {
-        if (data is string text)
-        {
-            Init(text);
-        }
+        if (data != null) inputField.text = data.ToString();
+        base.Init<T>(data);
     }
 
-    public override void UpdateUI()
+    public override void Subscriptions()
     {
-        ValidateInput(inputField != null ? inputField.text : "");
-        if(format != "") 
+        base.Subscriptions();
+        inputField.onValueChanged.AddListener((string text) =>
         {
-            inputField.text = FormatText(inputField.text);
-        }
+            TriggerAction(text);
+            UpdateUI();
+
+        });
     }
 
 
-    private void ValidateInput(string text)
+    public void Lock(bool value)
     {
-        backgroundImage.color = _validationRule(text) ? normalColor : errorColor;
+        inputField.interactable = value;
     }
-    public void HighLightError() 
+    public void HighlightError()
     {
-        backgroundImage.color = errorColor;
-    }
-    private bool DefaultValidationRule(string text) => !string.IsNullOrEmpty(text);
-    private string FormatText(string input)
-    {
-        if (string.IsNullOrEmpty(format) || string.IsNullOrEmpty(input))
-            return input;
-
-        try
-        {
-            if (int.TryParse(input, out int number))
-            {
-                return number.ToString(format);
-            }
-            else if (float.TryParse(input, out float floatNumber))
-            {
-                return floatNumber.ToString(format);
-            }
-        }
-        catch (FormatException)
-        {
-            Loger.Log($"Invalid format '{format}' for input '{input}'", "InputTextView");
-        }
-        return input;
+        outline.effectColor = errorColor;
     }
 
-    public void UpdateColor(Color color) 
+    public void DefaultColor()
+    {
+        outline.effectColor = normalColor;
+    }
+    public void UpdateColor(Color color)
     {
         inputField.colors = new ColorBlock
         {

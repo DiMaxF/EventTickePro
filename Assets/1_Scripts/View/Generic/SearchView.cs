@@ -59,7 +59,7 @@ public class SearchView : View
         try
         {
             Debug.Log("Search VIEW ACTION");
-            string query = inputTextView?.Text?.ToLowerInvariant() ?? "";
+            string query = inputTextView?.text?.ToLowerInvariant() ?? "";
             _lastSearchResults.Clear();
 
             if (string.IsNullOrEmpty(query))

@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 699553928300483333}
   - component: {fileID: 693128708085499436}
   - component: {fileID: 2205946821641403487}
+  - component: {fileID: 169501576389381555}
   - component: {fileID: 2582087552750642690}
   m_Layer: 5
   m_Name: NavigationButton
@@ -309,6 +310,20 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &169501576389381555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6784399864193229328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clearable: 1
+  _text: {fileID: 0}
 --- !u!114 &2582087552750642690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,8 +338,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Clearable: 0
   icon: {fileID: 8501294455282157998}
-  button: {fileID: 693128708085499436}
+  button: {fileID: 169501576389381555}
   selected: {fileID: 4571800356150480147}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   inactiveColor: {r: 0.7372549, g: 0.7372549, b: 0.7372549, a: 1}
-  animationDuration: 0.35
+  colorAnim: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  scaleAnim: {fileID: 11400000, guid: 5debe229796e1e74c9dfb2a473eeccca, type: 2}

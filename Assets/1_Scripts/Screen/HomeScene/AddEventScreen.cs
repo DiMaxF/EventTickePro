@@ -15,11 +15,9 @@ public class AddEventScreen : AppScreen
     [Header("Date")]
     [SerializeField] DatePickerView datePicker;
     [SerializeField] ButtonView dateOpen;
-    [SerializeField] Text selectedDate;
     [Header("Time")]
     [SerializeField] TimePickerView timePicker;
     [SerializeField] ButtonView timeOpen;
-    [SerializeField] Text selectedTime;
     [Header("Inputs")]
     [SerializeField] InputTextView name;
     [SerializeField] InputTextView venue;
@@ -64,20 +62,21 @@ public class AddEventScreen : AppScreen
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        selectedTime.text = model.time;
-        selectedDate.text = model.date;
+        UIContainer.InitView(dateOpen, model.date);
+        UIContainer.InitView(timeOpen, model.time);
+
         ValidateModel();
     }
 
     private void OnNameEdit(string val) 
     {
-        model.name = name.Text;
+        model.name = name.text;
         ValidateModel();
     }
 
     private void OnVenueEdit(string val)
     {
-        model.venue = venue.Text;
+        model.venue = venue.text;
         ValidateModel();
     }
 
@@ -97,9 +96,9 @@ public class AddEventScreen : AppScreen
 
     private void OnButtonCreate()
     {
-        model.name = name.Text;
-        model.venue = venue.Text;
-        model.description = description.Text;
+        model.name = name.text;
+        model.venue = venue.text;
+        model.description = description.text;
 
         data.events.Add(model);
         core.SaveData();
@@ -146,12 +145,12 @@ public class AddEventScreen : AppScreen
         
         if(model.name == "")
         {
-            name.HighLightError();
+            name.HighlightError();
             create.interactable = false;
         }
         else if(model.venue == "") 
         {
-            venue.HighLightError();
+            venue.HighlightError();
             create.interactable = false;
         }
         else

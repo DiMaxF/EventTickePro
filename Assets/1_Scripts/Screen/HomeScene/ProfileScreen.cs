@@ -57,9 +57,9 @@ public class ProfileScreen : AppScreen
         if (editable) 
         {
             SetEditable(false);
-            data.name = name.Text;
-            data.phone = phone.Text;
-            data.email = email.Text;
+            data.name = name.text;
+            data.phone = phone.text;
+            data.email = email.text;
             buttonText.text = "UPDATE PROFILE";
             core.SaveData();
         }
@@ -73,18 +73,10 @@ public class ProfileScreen : AppScreen
 
     public void SetEditable(bool val) 
     {
-        if (val) 
-        {
-            name.Unlock();
-            phone.Unlock();
-            email.Unlock();
-        }
-        else
-        {
-            name.Lock();
-            phone.Lock();
-            email.Lock();
-        }
+        name.interactable = val;
+        phone.interactable = val;
+        phone.interactable = val;
+
         editable = val;
     }
 }

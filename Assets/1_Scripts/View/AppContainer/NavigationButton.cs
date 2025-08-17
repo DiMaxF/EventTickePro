@@ -12,37 +12,55 @@ public class NavigationButton : View
     [SerializeField] private Image selected;
     [SerializeField] private Color selectedColor = Color.white;
     [SerializeField] private Color inactiveColor = Color.white;
-    [SerializeField] private float animationDuration = 0.25f;
-    private NavigationBarView.Data screenData;
+    [Header("Animation Configs")]
+    [SerializeField] AnimationConfig colorAnim;
+    [SerializeField] AnimationConfig scaleAnim;
+
+    private bool val;
+    private AppContainer.NavigationButtonData screenData;
     private LayoutElement layoutElement;
 
-    bool val;
     private void Awake()
     {
         layoutElement = GetComponent<LayoutElement>();
     }
+
     public override void Init<T>(T data)
     {
+        Loger.Log($"Init object {data}", "NavigationButton");
 
-        if (data is NavigationBarView.Data screen)
+        if (data is AppContainer.NavigationButtonData screen)
         {
+            Loger.Log($"Init {screen.screen.name}", "NavigationButton");
             screenData = screen;
-            UIContainer.SubscribeToView<ButtonView, object>(button, _ => TriggerAction(screenData));
         }
-        UpdateUI();
+        base.Init(data);    
+    }
+
+    public override void Subscriptions()
+    {
+        base.Subscriptions();
+        Loger.Log($"UpdateUI", "NavigationButton");
+
+        UIContainer.SubscribeToView<ButtonView, object>(button, _ => TriggerAction(screenData), true);
     }
 
     public override void UpdateUI()
     {
-        if(screenData != null)
+        Loger.Log($"UpdateUI", "NavigationButton");
+
+        if (screenData != null)
         {
+            Loger.Log($"{screenData.screen.name}" , "NavigationButton");
             icon.sprite = screenData.icon;
-        }
         
-        icon.color = screenData.selected ?  selectedColor : inactiveColor;
-        AnimateSelected(screenData.selected);
-        val = screenData.selected;
+            icon.color = screenData.selected ?  selectedColor : inactiveColor;
+            val = screenData.selected;
+
+            AnimateSelected(screenData.selected);
+        }
     }
+
     private void AnimateSelected(bool selected) 
     {
         Color startC;
@@ -75,9 +93,12 @@ public class NavigationButton : View
         }
         this.selected.transform.localScale = startS;
         this.selected.color = startC;
-        this.selected.DOColor(targetC, animationDuration).SetEase(Ease.OutQuad);
-        this.selected.transform.DOScale(targetS, animationDuration).SetEase(Ease.OutBack);
-        DOTween.To(() => layoutElement.flexibleWidth, x => layoutElement.flexibleWidth = x, targetFlexibleWidth, animationDuration)
-            .SetEase(Ease.OutBack);
+
+        StartAnimation().Append(this.selected.DOColor(targetC, colorAnim.Duration).SetEase(colorAnim.Ease))
+            .Append(this.selected.transform.DOScale(targetS, scaleAnim.Duration).SetEase(scaleAnim.Ease))
+            .Append(DOTween.To(() => layoutElement.flexibleWidth, x => layoutElement.flexibleWidth = x, targetFlexibleWidth, scaleAnim.Duration)
+            .SetEase(scaleAnim.Ease));
+        ;
+        
     }
 }

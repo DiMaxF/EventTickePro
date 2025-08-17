@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 public class EditorTextView : EditorView
 {
-    [SerializeField] InputTextView name;
+    [SerializeField] InputTextView value;
 
     string _val;
 
     public override void Show()
     {
         base.Show();
-        UIContainer.RegisterView(name);
-        UIContainer.SubscribeToView<InputTextView, string>(name, val => _val = val);
+        UIContainer.RegisterView(value);
+        UIContainer.SubscribeToView<InputTextView, string>(value, val => _val = val);
     }
 
-    public string Text => name.Text;
+    public string Text => value.text;
     public override void UpdateUI()
     {
         base.UpdateUI();
@@ -26,8 +26,8 @@ public class EditorTextView : EditorView
     {
         if (data is string s) 
         {
-            UIContainer.RegisterView(name);
-            UIContainer.InitView(name, s);
+            UIContainer.RegisterView(value);
+            UIContainer.InitView(value, s);
         }
         base.Init(data);
     }
@@ -35,17 +35,17 @@ public class EditorTextView : EditorView
     public override void Select()
     {
         base.Select();
-        name.Unlock();
+        value.interactable = true;
     }
     public override void Deselect()
     {
         base.Deselect();
-        name.Lock();
+        value.interactable = false;
     }
 
     public override void UpdateColor(Color newColor)
     {
         base.UpdateColor(newColor);
-        name.UpdateColor(newColor);
+        value.UpdateColor(newColor);
     }
 }

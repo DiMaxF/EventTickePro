@@ -7,6 +7,7 @@ public abstract class View : MonoBehaviour
     public bool IsActive => gameObject.activeSelf;
     public bool Clearable = true;
     private bool _subscribed;
+
     public virtual void Init<T>(T data) 
     {
         if(!_subscribed) Subscriptions();

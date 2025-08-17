@@ -6,9 +6,8 @@ using UnityEngine.UI;
 
 public class HomeScreen : AppScreen
 {
-    [SerializeField] ListView events;
+    [SerializeField, Space(20)] ListView events;
     [SerializeField] ButtonView addEvent;
-
 
     protected override void OnStart()
     {

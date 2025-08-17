@@ -13,7 +13,7 @@ public abstract class AppScreen : MonoBehaviour
     private CanvasGroup canvasGroup;
     private readonly IAnimationController _animationController = new DOTweenAnimationController();
     [SerializeField] AnimationConfig fadeIn;
-
+    
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
@@ -63,7 +63,7 @@ public abstract class AppScreen : MonoBehaviour
             await sequence.AsyncWaitForCompletion();
         }
         else Loger.LogError("Animation Config not found", "AppScreen");
-            Loading(false);
+        Loading(false);
     }
 
 

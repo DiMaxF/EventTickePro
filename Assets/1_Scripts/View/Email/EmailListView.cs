@@ -11,7 +11,7 @@ public class EmailListView : View
 
     public EmailModel GetModel() 
     {         
-        return new EmailModel(name.Text, email.Text);
+        return new EmailModel(name.text, email.text);
     }   
     public override void Init<T>(T data)
     {

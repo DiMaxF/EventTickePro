@@ -6,46 +6,37 @@ using UnityEngine;
 
 public class AppContainer : MonoBehaviour
 {
-    [SerializeField] private NavigationBarView navigationBar;
-    [SerializeField] private List<AppScreen> hideNavigationBar = new List<AppScreen>();
-
-    [SerializeField] private AppScreen firstScreen;
-    [SerializeField] private List<AppScreen> screens = new List<AppScreen>();
+    [Header("Base")]
+    [SerializeField] AppScreen firstScreen;
+    [SerializeField] List<AppScreen> screens = new List<AppScreen>();
+    [Header("Navbar")]
+    [SerializeField] NavigationBarView navigationBar;
+    [SerializeField] List<NavigationButtonData> _data;
+    [SerializeField] List<AppScreen> hideNavigationBar = new List<AppScreen>();
 
     private DataCore core => DataCore.Instance;
 
-
-
-    public event Action<AppScreen> OnScreenChanged;
-
-    AppScreen _openedScreen;
+    private AppScreen _openedScreen;
     public AppScreen OpenedScreen => _openedScreen;
 
     public async void UpdateViews(bool delay = false)
     {
-
-
         UIContainer.RegisterView(navigationBar);
-        UIContainer.InitView(navigationBar, this);
+        UIContainer.InitView(navigationBar, _data);
         count++;
     }
     int count;
 
     private void Start()
     {
-
-        foreach (var screen in screens)
-        {
-            screen.Init(core, this);
-        }
-
+        foreach (var screen in screens) screen.Init(core, this);
 
         if (firstScreen != null) Show(firstScreen);
         else if (screens.Count > 0) Show(screens[0]);
         else UpdateViews();
+
+        UIContainer.SubscribeToView(navigationBar, (NavigationButtonData data) => Show(data.screen), true);
     }
-
-
 
     public void Show(AppScreen target)
     {
@@ -72,12 +63,12 @@ public class AppContainer : MonoBehaviour
 
         _openedScreen = targetScreen;
         _openedScreen.OnShow();
-        OnScreenChanged?.Invoke(_openedScreen);
         if (navigationBar == null) return;
         if (hideNavigationBar.Contains(targetScreen)) 
         {
             navigationBar.Hide();
-        }else navigationBar.Show();
+        }
+        else navigationBar.Show();
         UpdateViews(count == 0);
     }
 
@@ -89,5 +80,13 @@ public class AppContainer : MonoBehaviour
     {
         var view = screens.OfType<AScreen>().FirstOrDefault();
         return view;
+    }
+
+    [Serializable]
+    public class NavigationButtonData
+    {
+        public AppScreen screen;
+        public Sprite icon;
+        [HideInInspector] public bool selected;
     }
 }

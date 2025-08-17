@@ -67,12 +67,12 @@ public class SeatsSettingsView : View
     {
         if(val == "Numbers" || val == "Alphabet") 
         {
-            numer.Lock();
+            numer.interactable = false;
             numerAction.gameObject.SetActive(true);
         }
         else 
         {
-            numer.Unlock();
+            numer.interactable = true;
             numerAction.gameObject.SetActive(false);
         }
         _data.numer = val;  

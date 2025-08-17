@@ -8,6 +8,7 @@ public static class UIContainer
 {
     private static readonly List<View> _currentViews = new();
     private static readonly Dictionary<View, List<Action<object>>> _currentViewSubscriptions = new();
+    private static readonly Dictionary<View, List<Action<object>>> _persistentViewSubscriptions = new();
     private static readonly Dictionary<View, object> _currentViewUpdateSources = new();
 
     public static void RegisterView<TView>(TView view) where TView : View
@@ -18,27 +19,39 @@ public static class UIContainer
         }
     }
 
-    public static void SubscribeToView<TView, TData>(TView view, Action<TData> handler) where TView : View
+    public static void SubscribeToView<TView, TData>(TView view, Action<TData> handler, bool isPersistent = false) where TView : View
     {
-        if (!_currentViewSubscriptions.ContainsKey(view))
+        var targetSubscriptions = isPersistent ? _persistentViewSubscriptions : _currentViewSubscriptions;
+
+        if (!targetSubscriptions.ContainsKey(view))
         {
-            _currentViewSubscriptions[view] = new List<Action<object>>();
+            targetSubscriptions[view] = new List<Action<object>>();
         }
-        _currentViewSubscriptions[view].Add(obj => handler(obj is TData data ? data : default));
-        Loger.Log($"Subscribed to view {view.name} for type {typeof(TData).Name}", "UIContainer");
+        targetSubscriptions[view].Add(obj => handler(obj is TData data ? data : default));
+        Loger.Log($"Subscribed to view {view.name} for type {typeof(TData).Name} (Persistent: {isPersistent})", "UIContainer");
     }
 
     public static void TriggerAction<T>(View view, T data)
     {
-        if (_currentViewSubscriptions.TryGetValue(view, out var handlers))
+        if (_currentViewSubscriptions.TryGetValue(view, out var currentHandlers))
         {
-            var handlersCopy = handlers.ToList();
-            foreach (var handler in handlersCopy)
+            var currentHandlersCopy = currentHandlers.ToList();
+            foreach (var handler in currentHandlersCopy)
             {
                 handler(data);
             }
-            Loger.Log($"[TriggerAction] Triggered action for view {view.name} with data: {data}", "UIContainer");
         }
+
+        if (_persistentViewSubscriptions.TryGetValue(view, out var persistentHandlers))
+        {
+            var persistentHandlersCopy = persistentHandlers.ToList();
+            foreach (var handler in persistentHandlersCopy)
+            {
+                handler(data);
+            }
+        }
+
+        Loger.Log($"[TriggerAction] Triggered action for view {view.name} with data: {data}", "UIContainer");
     }
 
     public static TView GetView<TView>() where TView : View
@@ -48,11 +61,14 @@ public static class UIContainer
 
     public static void InitView<TView, TData>(TView view, TData data) where TView : View
     {
+        Loger.Log($"View null: {view == null}", "UIContainer");
+
         if (view != null)
         {
             view.Init(data);
             _currentViewUpdateSources[view] = data;
         }
+        Loger.Log($"InitView: {view}, {data}", "UIContainer");
     }
 
     public static TView FindView<TView>(string viewName) where TView : View
@@ -64,6 +80,7 @@ public static class UIContainer
     {
         _currentViews.Remove(view);
         _currentViewSubscriptions.Remove(view);
+        _persistentViewSubscriptions.Remove(view);
         _currentViewUpdateSources.Remove(view);
     }
 
