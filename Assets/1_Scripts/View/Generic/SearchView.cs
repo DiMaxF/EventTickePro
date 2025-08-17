@@ -84,12 +84,12 @@ public class SearchView : View
             TriggerAction(_dataSource);
         }
     }
-    private AppData appData => DataCore.Instance.AppData;
+    private DataCore data => DataCore.Instance;
     private bool DefaultMatchCriteria(TicketModel ticket, string query)
     {
         if (ticket == null || ticket.contacts == null) return false;
 
-        var eventModel = appData?.GetEventByTicket(ticket);
+        var eventModel = data.Events.GetEventByTicket(ticket);
         if (eventModel == null) return false;
 
         // Проверяем дату, время, имя и email
@@ -103,7 +103,7 @@ public class SearchView : View
 
     private string DefaultDisplayFormatter(TicketModel ticket)
     {
-        var eventModel = appData?.GetEventByTicket(ticket);
+        var eventModel = data.Events.GetEventByTicket(ticket);
         if (eventModel == null) return ticket.contacts?.name ?? "Unknown Ticket";
 
         return $"{eventModel.name} - {eventModel.date} {eventModel.time} - {ticket.contacts?.name}";

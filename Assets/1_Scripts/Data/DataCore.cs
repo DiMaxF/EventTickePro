@@ -1,31 +1,36 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DataCore : MonoBehaviour
 {
     public static DataCore Instance { get; private set; }
 
-    public bool NeedSettings
-    {
-        get => PlayerPrefs.GetInt(nameof(NeedSettings), 1) == 1;
-        set => PlayerPrefs.SetInt(nameof(NeedSettings), value ? 1 : 0);
-    }
-    [SerializeField] AppData appData = new AppData();
+    [SerializeField]
+    private AppData _appData = new AppData();
+    private EventManager _eventManager;
+    private TicketManager _ticketManager;
+    private MapManager _mapManager;
+    private AnalyticsManager _analyticsManager;
+    private PersonalManager _personalManager;
 
-    public AppData AppData => appData;
+   
+    public EventManager Events => _eventManager;
+    public TicketManager Tickets => _ticketManager;
+    public MapManager Maps => _mapManager;
+    public AnalyticsManager Analytics => _analyticsManager;
+    public PersonalManager Personal => _personalManager;
 
-    const string AppDataFileName = "appData.json";
+    private const string AppDataFileName = "appData.json";
 
     private void Awake()
     {
-
         if (Instance == null)
         {
             Application.targetFrameRate = 60;
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            InitializeManagers();
             LoadData();
             UpdateNotificationsAsync().Forget();
         }
@@ -33,15 +38,22 @@ public class DataCore : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
 
-   
+    private void InitializeManagers()
+    {
+        _eventManager = new EventManager(_appData);
+        _ticketManager = new TicketManager(_appData);
+        _mapManager = new MapManager(_appData);
+        _analyticsManager = new AnalyticsManager(_eventManager, _ticketManager);
+        _personalManager = new PersonalManager(_appData);
+    }
+
     public void DiscardChanges()
     {
         LoadData();
-
     }
+
     private void LoadData()
     {
         if (!FileManager.FileExist(AppDataFileName))
@@ -51,13 +63,13 @@ public class DataCore : MonoBehaviour
         }
 
         string json = FileManager.ReadFile(AppDataFileName);
-
         try
         {
             AppData loadedData = JsonUtility.FromJson<AppData>(json);
             if (loadedData != null)
             {
-                appData = loadedData;
+                _appData = loadedData;
+                InitializeManagers(); 
             }
         }
         catch (Exception ex)
@@ -68,9 +80,9 @@ public class DataCore : MonoBehaviour
 
     public void SaveData()
     {
-        Loger.TryCatch(() => 
+        Loger.TryCatch(() =>
         {
-            string json = JsonUtility.ToJson(appData, true);
+            string json = JsonUtility.ToJson(_appData, true);
             FileManager.WriteToFile(AppDataFileName, json);
             Loger.Log("GlobalData saved successfully");
         });
@@ -80,6 +92,7 @@ public class DataCore : MonoBehaviour
     {
         SaveData();
     }
+
     private async UniTask UpdateNotificationsAsync()
     {
         if (NotificationManager.Instance == null)
@@ -88,7 +101,6 @@ public class DataCore : MonoBehaviour
             return;
         }
 
-        // Запрашиваем разрешение на уведомления
         bool hasPermission = await NotificationManager.Instance.RequestNotificationPermissionAsync();
         if (!hasPermission)
         {
@@ -96,25 +108,22 @@ public class DataCore : MonoBehaviour
             return;
         }
 
-        // Планируем уведомления на основе данных
         await ScheduleNotifications();
     }
 
     private async UniTask ScheduleNotifications()
     {
-        if (appData == null || appData.events == null)
+        if (_appData == null || _appData.events == null)
         {
             Debug.LogWarning("AppData or events list is null, cannot schedule notifications");
             return;
         }
 
-        // Очищаем все существующие уведомления
         NotificationManager.Instance.ClearAllNotifications();
-
-        int notificationId = 1000; // BaseNotificationId из NotificationManager
+        int notificationId = 1000;
         DateTime now = DateTime.Now;
 
-        foreach (var eventModel in appData.events)
+        foreach (var eventModel in _appData.events)
         {
             if (!eventModel.DateCorrect())
             {
@@ -124,10 +133,8 @@ public class DataCore : MonoBehaviour
 
             DateTime eventDateTime = eventModel.Date.Date + eventModel.Time;
 
-            // 1. Уведомления о продаже билетов (если notificationsSales включено)
-            if (appData.notificationsSales && eventDateTime > now.AddDays(1))
+            if (_appData.notificationsSales && eventDateTime > now.AddDays(1))
             {
-                // Планируем уведомление за день до события
                 string title = $"Продажа билетов: {eventModel.name}";
                 string message = $"Не забудьте приобрести билеты на {eventModel.name}! Мероприятие состоится {eventModel.date} в {eventModel.time}.";
                 await NotificationManager.Instance.ScheduleSingleNotificationAsync(
@@ -135,21 +142,19 @@ public class DataCore : MonoBehaviour
                     title,
                     message,
                     eventDateTime.AddDays(-1),
-                    eventModel.notification // Используем флаг notification для управления звуком
+                    eventModel.notification
                 );
             }
 
-            // 2. Уведомления о прошедших мероприятиях (если notificationsEvents включено)
-            if (appData.notificationsEvents && eventDateTime < now)
+            if (_appData.notificationsEvents && eventDateTime < now)
             {
-                // Отправляем уведомление о прошедшем событии
                 string title = $"Мероприятие завершено: {eventModel.name}";
                 string message = $"Мероприятие {eventModel.name} ({eventModel.date} {eventModel.time}) завершилось.";
                 await NotificationManager.Instance.ScheduleSingleNotificationAsync(
                     notificationId++,
                     title,
                     message,
-                    now.AddSeconds(5), // Уведомление о прошедшем событии отправляется сразу (через 5 секунд)
+                    now.AddSeconds(5),
                     eventModel.notification
                 );
             }

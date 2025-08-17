@@ -98,8 +98,8 @@ public class AddEventScreen : AppScreen
         model.venue = venue.text;
         model.description = description.text;
 
-        data.events.Add(model);
-        core.SaveData();
+        data.Events.Add(model);
+        data.SaveData();
         container.Show<HomeScreen>();
     }
 

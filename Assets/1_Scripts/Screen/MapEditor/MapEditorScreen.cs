@@ -53,14 +53,14 @@ public class MapEditorScreen : AppScreen
     {
         _objectManager = new MapObjectManager(area, this);
         _uiManager = new MapEditorUIManager(settingsPanel, colorsPicker, seatsPicker, formsPicker, forms);
-        _dataManager = new MapDataManager(data, core);
+        _dataManager = new MapDataManager(data);
         _previewGenerator = new MapPreviewGenerator(area, cam);
 
         _uiManager.InitializeColors();
         base.OnStart();
         UIContainer.RegisterView(seatsPicker);
 
-        var map = data.GetByEvent(data.selectedEvent);
+        var map = data.Maps.GetByEvent(data.Personal.GetSelectedEvent());
         if (map != null)
         {
             _dataManager.LoadMap(map, _objectManager, textPrefab, figurePrefab, seatPrefab, forms);
@@ -114,7 +114,7 @@ public class MapEditorScreen : AppScreen
     {
         var mapData = _dataManager.CreateMapData(_objectManager.EditorViews, _uiManager);
         mapData.pathPreview = _previewGenerator.GeneratePreview(_objectManager.EditorViews, _uiManager);
-        _dataManager.SaveMap(mapData, data.selectedEvent);
+        _dataManager.SaveMap(mapData, data.Personal.GetSelectedEvent());
         NativeMobilePlugin.Instance.ShowToast("Map saved successfully!");
     }
 }

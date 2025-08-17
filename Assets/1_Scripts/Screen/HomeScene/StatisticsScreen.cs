@@ -35,7 +35,7 @@ public class StatisticsScreen : AppScreen
 
     private ChartData GetSentVsUsedData(TimePeriod period)
     {
-        var filteredEvents = data.FilterEventsByPeriod(period);
+        var filteredEvents = data.Events.FilterEventsByPeriod(period);
         var sentValues = new Dictionary<string, int>();
         var usedValues = new Dictionary<string, int>();
 
@@ -86,11 +86,11 @@ public class StatisticsScreen : AppScreen
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        UIContainer.InitView(visitsChart, data.GetKPIs(_currentPeriod));
-        UIContainer.InitView(salesChart, data.GetTicketSalesByPeriod(_currentPeriod));
+        UIContainer.InitView(visitsChart, data.Analytics.GetKPIs(_currentPeriod));
+        UIContainer.InitView(salesChart, data.Analytics.GetTicketSalesByPeriod(_currentPeriod));
         UIContainer.InitView(conversationSentvsUsed, GetSentVsUsedData(_currentPeriod));
-        UIContainer.InitView(conversationRate, data.GetConversionRates(_currentPeriod));
-        occupancy.SetValue(data.GetPersentOccupancy(_currentPeriod));
+        UIContainer.InitView(conversationRate, data.Analytics.GetConversionRates(_currentPeriod));
+        occupancy.SetValue(data.Analytics.GetPersentOccupancy(_currentPeriod));
     }
 
     protected override void Subscriptions()
@@ -103,10 +103,10 @@ public class StatisticsScreen : AppScreen
     }
     public void ExportCsv()
     {
-        var kpiData = data.GetKPIs(_currentPeriod);
-        var salesData = data.GetTicketSalesByPeriod(_currentPeriod);
-        var conversionData = data.GetConversionRates(_currentPeriod);
-        var occupancyPercent = data.GetPersentOccupancy(_currentPeriod);
+        var kpiData = data.Analytics.GetKPIs(_currentPeriod);
+        var salesData = data.Analytics.GetTicketSalesByPeriod(_currentPeriod);
+        var conversionData = data.Analytics.GetConversionRates(_currentPeriod);
+        var occupancyPercent = data.Analytics.GetPersentOccupancy(_currentPeriod);
 
         string csvContent = "";
 

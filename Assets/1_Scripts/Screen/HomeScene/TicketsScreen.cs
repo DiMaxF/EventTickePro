@@ -18,14 +18,14 @@ public class TicketsScreen : AppScreen
     private TicketModel ticket;
     protected override void OnStart()
     {
-        if (data.selectedEvent != null)
+        var selected = data.Personal.GetSelectedEvent();
+        if (selected != null)
         {
-            d = data.selectedEvent.tickets;
-
+            d = selected.tickets;
         }
         else
         {
-            d = data.AllTickets();
+            d = data.Tickets.AllTickets();
         }
         UIContainer.InitView(search, d);
         base.OnStart();

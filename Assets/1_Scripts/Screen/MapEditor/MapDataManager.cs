@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class MapDataManager
 {
-    private readonly AppData _data;
-    private readonly DataCore _core;
+    private readonly DataCore _data;
 
-    public MapDataManager(AppData data, DataCore core)
+    public MapDataManager(DataCore data)
     {
         _data = data;
-        _core = core;
     }
 
     public MapData CreateMapData(IReadOnlyList<EditorView> editorViews, MapEditorUIManager uiManager)
@@ -64,19 +62,19 @@ public class MapDataManager
             .Distinct()
             .ToList();
 
-        mapData.Event = _data.selectedEvent;
-        _data.selectedEvent.seats = allSeats;
+        mapData.Event = _data.Personal.GetSelectedEvent();
+        _data.Personal.GetSelectedEvent().seats = allSeats;
         return mapData;
     }
 
     public void SaveMap(MapData mapData, EventModel selectedEvent)
     {
-        var existingMap = _data.GetByEvent(selectedEvent);
+        var existingMap = _data.Maps.GetByEvent(selectedEvent);
         if (existingMap != null)
-            _data.maps.Remove(existingMap);
+            _data.Maps.Remove(existingMap);
 
-        _data.maps.Add(mapData);
-        _core.SaveData();
+        _data.Maps.Add(mapData);
+        _data.SaveData();
     }
 
     public void LoadMap(MapData mapData, MapObjectManager objectManager, GameObject textPrefab, GameObject figurePrefab, GameObject seatPrefab, Sprite[] forms)

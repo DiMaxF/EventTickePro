@@ -45,14 +45,15 @@ public class ListView : View
     private void SpawnView(object item) 
     {
         var view = Instantiate(_itemPrefab, _contentParent, false);
-        if (view is View truelyView)
+        UIContainer.RegisterView(view);
+        if (item is AppContainer.NavigationButtonData data) 
         {
-            UIContainer.RegisterView(truelyView);
-            UIContainer.InitView(truelyView, item);
-            Loger.Log($"({name}): Init View {truelyView.name} by {item}", "ListView");
-            _items.Add(truelyView);
-            UIContainer.SubscribeToView(truelyView, (object data) => TriggerAction(data));
+            
+            Loger.Log($"({name}): INIT VIEW {view.name} by {data.screen}", "ListView");
         }
+        UIContainer.InitView(view, item);
+        _items.Add(view);
+        UIContainer.SubscribeToView(view, (object data) => TriggerAction(data));
     }
 
     private void ClearItems()

@@ -7,8 +7,7 @@ using Cysharp.Threading.Tasks;
 public abstract class AppScreen : MonoBehaviour
 {
     protected AppContainer container;
-    protected DataCore core;
-    protected AppData data => core.AppData;
+    protected DataCore data;
     
     private CanvasGroup canvasGroup;
     private readonly IAnimationController _animationController = new DOTweenAnimationController();
@@ -21,9 +20,9 @@ public abstract class AppScreen : MonoBehaviour
         canvasGroup.alpha = 0;
     }
 
-    public void Init(DataCore core, AppContainer container)
+    public void Init(DataCore data, AppContainer container)
     {
-        this.core = core;
+        this.data = data;
         this.container = container;
     }
 
@@ -81,10 +80,10 @@ public abstract class AppScreen : MonoBehaviour
 
     protected virtual void OnStart()
     {
-        if (core == null || data == null || container == null)
+        if (data == null || data == null || container == null)
         {
             Loger.LogError($"{gameObject.name} not initialize", "AppScreen");
-            Loger.LogError($"core {core == null}", "AppScreen");
+            Loger.LogError($"core {data == null}", "AppScreen");
             Loger.LogError($"data {data == null}", "AppScreen");
             Loger.LogError($"container {container == null}", "AppScreen");
             return;

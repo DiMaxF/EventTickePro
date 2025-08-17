@@ -22,7 +22,7 @@ public class NotificationsScreen : AppScreen
     }
     private void Back()
     {
-        core.DiscardChanges();
+        data.DiscardChanges();
         //container.Show<HomeScreen>();
     }
     protected override void UpdateViews()
@@ -43,7 +43,7 @@ public class NotificationsScreen : AppScreen
 
     private void Save()
     {
-        core.SaveData();
+        data.SaveData();
         
     }
 

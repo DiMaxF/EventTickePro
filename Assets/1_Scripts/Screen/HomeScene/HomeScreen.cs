@@ -12,8 +12,9 @@ public class HomeScreen : AppScreen
     protected override void OnStart()
     {
         base.OnStart();
-        data.selectedEvent = null;
+        data.Personal.SetSelectedEvent(null);
     }
+
     protected override void Subscriptions()
     {
         base.Subscriptions();
@@ -24,7 +25,7 @@ public class HomeScreen : AppScreen
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        UIContainer.InitView(events, data.events);
+        UIContainer.InitView(events, data.Events.GetAll());
     }
 
     private void OnButtonAddEvent() 
@@ -34,8 +35,8 @@ public class HomeScreen : AppScreen
 
     private void OnEventsAction(EventModel model)
     {
-        data.selectedEvent = model;
-        core.SaveData();
+        data.Personal.SetSelectedEvent(model);
+        data.SaveData();
         container.Show<EventScreen>();
     }
 }

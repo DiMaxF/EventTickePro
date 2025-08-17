@@ -43,13 +43,13 @@ public class QRScanScreen : AppScreen
             var contacts = new EmailModel(ParseTicketString(dataText).name, ParseTicketString(dataText).email);
             NativeMobilePlugin.Instance.ShowToast($"Data okay: {contacts.email} {contacts.name}");
 
-            var t = data.FindTicket(contacts);
+            var t = data.Tickets.FindTicket(contacts);
             if (t != null && t.valid != false)
             {
                 t.valid = false;
                 UIContainer.InitView(status, StatusScanning.Success);
                 statusText.text = "Scanned";
-                core.SaveData();
+                data.SaveData();
                 NativeMobilePlugin.Instance.ShowToast("Tickets is scanned");
             }else if (t.valid == false)
             {

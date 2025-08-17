@@ -1,0 +1,110 @@
+using System;
+
+public class PersonalManager : IDataManager
+{
+    private readonly AppData _appData;
+
+    public PersonalManager(AppData appData)
+    {
+        _appData = appData ?? throw new ArgumentNullException(nameof(appData));
+    }
+
+    public EventModel GetSelectedEvent()
+    {
+        return _appData.selectedEvent;
+    }
+
+    public void SetSelectedEvent(EventModel eventModel)
+    {
+        _appData.selectedEvent = eventModel;
+        Loger.Log($"Selected event changed to: {eventModel?.name ?? "null"}", "PersonalManager");
+    }
+
+    public string GetName()
+    {
+        return _appData.name;
+    }
+
+    public void SetName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            Loger.LogWarning("Attempted to set empty or null name", "PersonalManager");
+            return;
+        }
+        _appData.name = name;
+        Loger.Log($"Name changed to: {name}", "PersonalManager");
+    }
+
+    public string GetPhone()
+    {
+        return _appData.phone;
+    }
+
+    public void SetPhone(string phone)
+    {
+        if (string.IsNullOrEmpty(phone))
+        {
+            Loger.LogWarning("Attempted to set empty or null phone", "PersonalManager");
+            return;
+        }
+        _appData.phone = phone;
+        Loger.Log($"Phone changed to: {phone}", "PersonalManager");
+    }
+
+    public string GetEmail()
+    {
+        return _appData.email;
+    }
+
+    public void SetEmail(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            Loger.LogWarning("Attempted to set empty or null email", "PersonalManager");
+            return;
+        }
+        _appData.email = email;
+        Loger.Log($"Email changed to: {email}", "PersonalManager");
+    }
+
+    public bool GetNotificationsSales()
+    {
+        return _appData.notificationsSales;
+    }
+
+    public void SetNotificationsSales(bool enabled)
+    {
+        _appData.notificationsSales = enabled;
+        Loger.Log($"NotificationsSales set to: {enabled}", "PersonalManager");
+    }
+
+    public bool GetNotificationsEvents()
+    {
+        return _appData.notificationsEvents;
+    }
+
+    public void SetNotificationsEvents(bool enabled)
+    {
+        _appData.notificationsEvents = enabled;
+        Loger.Log($"NotificationsEvents set to: {enabled}", "PersonalManager");
+    }
+
+    public void UpdatePersonalData(string name, string phone, string email)
+    {
+        SetName(name);
+        SetPhone(phone);
+        SetEmail(email);
+        Loger.Log("Personal data updated", "PersonalManager");
+    }
+
+    public void ClearPersonalData()
+    {
+        _appData.selectedEvent = null;
+        _appData.name = null;
+        _appData.phone = null;
+        _appData.email = null;
+        _appData.notificationsSales = true; 
+        _appData.notificationsEvents = true;
+    }
+}

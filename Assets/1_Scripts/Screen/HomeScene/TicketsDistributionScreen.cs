@@ -127,7 +127,7 @@ public class TicketsDistributionScreen : AppScreen
     {
         foreach (var email in emails)
         {
-            var ev = data.selectedEvent;
+            var ev = data.Personal.GetSelectedEvent();
             var hash = $"Name: {email.name}\nEmail: {email.email}\nEvent: {ev.name}\nDate: {ev.date}";
             int errorlog = qrCode.Encode(hash);
             var seat = ev.GetFreeSeat();
@@ -147,9 +147,9 @@ public class TicketsDistributionScreen : AppScreen
                     valid = true,
                     seat = seat
                 };
-                data.AddTicket(ev, ticket);
+                data.Tickets.AddTicket(ev, ticket);
                 seat.isTaken = true;
-                core.SaveData();
+                data.SaveData();
                 OnButtonBack();
             }
         }

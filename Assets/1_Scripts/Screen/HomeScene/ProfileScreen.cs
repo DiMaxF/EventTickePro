@@ -23,11 +23,11 @@ public class ProfileScreen : AppScreen
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        UIContainer.InitView(name, data.name);
-        UIContainer.InitView(phone, data.phone.ToString());
-        UIContainer.InitView(email, data.email);
-        UIContainer.InitView(sales, data.notificationsSales);
-        UIContainer.InitView(eventsUpdates, data.notificationsEvents);
+        UIContainer.InitView(name, data.Personal.GetName());
+        UIContainer.InitView(phone, data.Personal.GetPhone());
+        UIContainer.InitView(email, data.Personal.GetEmail());
+        UIContainer.InitView(sales, data.Personal.GetNotificationsSales());
+        UIContainer.InitView(eventsUpdates, data.Personal.GetNotificationsEvents());
     }
 
     protected override void Subscriptions()
@@ -64,14 +64,14 @@ public class ProfileScreen : AppScreen
 
     private void OnToggleSales(bool val)
     {
-        data.notificationsSales = val;
-        core.SaveData();
+        data.Personal.SetNotificationsSales(val);
+        data.SaveData();
     }
 
     private void OnToggleEvents(bool val)
     {
-        data.notificationsEvents = val;
-        core.SaveData();
+        data.Personal.SetNotificationsEvents(val);
+        data.SaveData();
     }
 
 
@@ -82,11 +82,11 @@ public class ProfileScreen : AppScreen
             if (name.isValid && phone.isValid && email.isValid) 
             {
                 SetEditable(false);
-                data.name = name.text;
-                data.phone = phone.text;
-                data.email = email.text;
+                data.Personal.SetName(name.text);
+                data.Personal.SetPhone(phone.text);
+                data.Personal.SetEmail(email.text);
                 UIContainer.InitView(button, "UPDATE PROFILE");
-                core.SaveData();
+                data.SaveData();
             }
 
         }

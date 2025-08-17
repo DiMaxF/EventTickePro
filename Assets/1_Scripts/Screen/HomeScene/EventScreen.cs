@@ -24,14 +24,15 @@ public class EventScreen : AppScreen
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        name.text = data.selectedEvent.name;
-        date.text = data.selectedEvent.date;
-        time.text = data.selectedEvent.time;
-        venue.text = data.selectedEvent.venue;
+        var selected = data.Personal.GetSelectedEvent();
+        name.text = selected.name;
+        date.text = selected.date;
+        time.text = selected.time;
+        venue.text = selected.venue;
         previewBg.color = Color.clear;
-        desciption.text = data.selectedEvent.description;
-        UIContainer.InitView(image, data.selectedEvent.imgPath);
-        var map = data.GetByEvent(data.selectedEvent);
+        desciption.text = selected.description;
+        UIContainer.InitView(image, selected.imgPath);
+        var map = data.Maps.GetByEvent(selected);
         if (map != null) 
         {
             previewBg.color = Color.white;
@@ -57,7 +58,7 @@ public class EventScreen : AppScreen
     }
     private void OnButtonTicketsDistribution()
     {
-        var mapTickets = data.GetByEvent(data.selectedEvent);
+        var mapTickets = data.Maps.GetByEvent(data.Personal.GetSelectedEvent());
         if (mapTickets != null) 
         {
             container.Show<TicketsDistributionScreen>();
@@ -71,7 +72,7 @@ public class EventScreen : AppScreen
     private void OnButtonBack()
     {
         container.Show<HomeScreen>();
-        data.selectedEvent = null;
+        data.Personal.SetSelectedEvent(null);
     }
 
     private void OnButtonMapEditor()

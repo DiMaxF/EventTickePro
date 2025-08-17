@@ -27,7 +27,7 @@ public class TicketListView : View
         {
             _ticket = model;
             UIContainer.SubscribeToView<ButtonView, object>(action, _ => TriggerAction(_ticket));
-            _event = DataCore.Instance.AppData.GetEventByTicket(_ticket);
+            _event = DataCore.Instance.Events.GetEventByTicket(_ticket);
         } 
         base.Init(data);
     }
