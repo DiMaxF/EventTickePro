@@ -11,6 +11,7 @@ public class ToggleView : View
     [SerializeField] private Color activeHandle;
     [SerializeField] private Color inactiveHandle;
     [SerializeField] private ButtonView button;
+    [SerializeField] AnimationConfig moveAnim;
     private bool _isOn = true;
 
     private void OnToggle()
@@ -22,12 +23,12 @@ public class ToggleView : View
 
     private void AnimateHandle()
     {
-        var sequence = StartAnimation();
         var handleRectTransform = handle.rectTransform;
-        float targetX = _isOn ? handleRectTransform.sizeDelta.x / 2 : -handleRectTransform.sizeDelta.x / 2;
+        float targetX = handleRectTransform.sizeDelta.x / 2;
+        targetX *= _isOn ? 0.8f: -0.8f;
         Vector3 targetPosition = new Vector3(targetX, handleRectTransform.anchoredPosition.y);
-        sequence.Append(handleRectTransform.DOAnchorPos(targetPosition, 0.3f))
-               .SetEase(Ease.OutQuad);
+        StartAnimation().Append(handleRectTransform.DOAnchorPos(targetPosition, moveAnim.Duration))
+               .SetEase(moveAnim.Ease);
     }
 
     public override void UpdateUI()
@@ -39,11 +40,14 @@ public class ToggleView : View
 
     public override void Init<T>(T data)
     {
-        if (data is bool initialState)
-        {
-            _isOn = initialState;
-        }
+        if (data is bool initialState) _isOn = initialState;
         base.Init(data);
+    }
+
+    public override void Subscriptions()
+    {
+        base.Subscriptions();
         UIContainer.SubscribeToView<ButtonView, object>(button, _ => OnToggle());
+
     }
 }
