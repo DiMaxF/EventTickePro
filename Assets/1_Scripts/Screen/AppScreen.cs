@@ -11,6 +11,8 @@ public abstract class AppScreen : MonoBehaviour
     protected AppData data => core.AppData;
     
     private CanvasGroup canvasGroup;
+    private readonly IAnimationController _animationController = new DOTweenAnimationController();
+    [SerializeField] AnimationConfig fadeIn;
 
     private void Awake()
     {
@@ -47,15 +49,23 @@ public abstract class AppScreen : MonoBehaviour
     public async void OnShow()
     {
         Loading(true);
-
-        canvasGroup.DOKill();
+        StopAnimation();
         canvasGroup.alpha = 0f;
         await PreloadViewsAsync();
         OnStart();
-        canvasGroup.DOFade(1f, 0.25f).SetDelay(0.1f);
-        Loading(false);
-        
+        if (fadeIn != null)
+        {
+            var sequence = StartAnimation();
+            sequence.Append(canvasGroup
+                                .DOFade(1f, fadeIn.Duration)
+                                .SetDelay(fadeIn.Delay)
+                                .SetEase(fadeIn.Ease));
+            await sequence.AsyncWaitForCompletion();
+        }
+        else Loger.LogError("Animation Config not found", "AppScreen");
+            Loading(false);
     }
+
 
     protected virtual void OnStart()
     {
@@ -82,4 +92,16 @@ public abstract class AppScreen : MonoBehaviour
     {
 
     }
+
+    protected Sequence StartAnimation()
+    {
+        _animationController.StartAnimation();
+        return ((DOTweenAnimationController)_animationController).GetSequence();
+    }
+
+    protected void StopAnimation()
+    {
+        _animationController.StopAnimation();
+    }
+    protected bool HasActiveAnimation => _animationController.HasActiveAnimation;
 }

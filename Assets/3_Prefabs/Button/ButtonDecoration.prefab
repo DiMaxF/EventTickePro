@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 1782620679697843778}
   - component: {fileID: 7335970237539047065}
   - component: {fileID: 5383605055668822660}
+  - component: {fileID: 6997517649876300272}
   m_Layer: 5
   m_Name: ButtonDecoration
   m_TagString: Untagged
@@ -273,6 +274,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6997517649876300272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8394032926061497608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clearable: 1
+  _text: {fileID: 8812312822884864306}
 --- !u!1001 &3031415043074113088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -441,3 +456,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5227066010207092302, guid: c64237d8445444a4e940a36d6e564f50, type: 3}
   m_PrefabInstance: {fileID: 3031415043074113088}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8812312822884864306 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5789975700267675506, guid: c64237d8445444a4e940a36d6e564f50, type: 3}
+  m_PrefabInstance: {fileID: 3031415043074113088}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5635096390152990327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

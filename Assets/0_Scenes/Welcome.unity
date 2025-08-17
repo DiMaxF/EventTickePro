@@ -439,6 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 539368166a09b01459485a95206c85bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeIn: {fileID: 0}
   animationDuration: 2
 --- !u!225 &357530632
 CanvasGroup:
@@ -551,6 +552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274d3aae976361843aedbe86380324d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
   buttonStart: {fileID: 1530144346}
 --- !u!225 &382210826
 CanvasGroup:
@@ -1270,13 +1272,13 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1530144346 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5383605055668822660, guid: 8a5ab83dbd5cc364eb6e8b8df220270e, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6997517649876300272, guid: 8a5ab83dbd5cc364eb6e8b8df220270e, type: 3}
   m_PrefabInstance: {fileID: 1530144344}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1654678098

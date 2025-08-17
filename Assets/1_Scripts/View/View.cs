@@ -1,7 +1,9 @@
+using DG.Tweening;
 using UnityEngine;
 
 public abstract class View : MonoBehaviour
 {
+    private readonly IAnimationController _animationController = new DOTweenAnimationController();
     public bool IsActive => gameObject.activeSelf;
     public bool Clearable = true;
     private bool _subscribed;
@@ -34,4 +36,16 @@ public abstract class View : MonoBehaviour
     {
         UIContainer.TriggerAction(this, data);
     }
+
+    protected Sequence StartAnimation()
+    {
+        _animationController.StartAnimation();
+        return ((DOTweenAnimationController)_animationController).GetSequence();
+    }
+
+    protected void StopAnimation()
+    {
+        _animationController.StopAnimation();
+    }
+    protected bool HasActiveAnimation => _animationController.HasActiveAnimation;
 }
