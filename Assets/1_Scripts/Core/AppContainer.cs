@@ -28,11 +28,12 @@ public class AppContainer : MonoBehaviour
         if (firstScreen != null) Show(firstScreen);
         else if (screens.Count > 0) Show(screens[0]);
         else UpdateData();
-        UIContainer.SubscribeToView(navigationBar, (NavigationButtonData data) => {
-            if (data?.screen != null) Show(data.screen);
-            else Debug.LogError("NavigationButtonData.screen is null!");
+
+        if (navigationBar != null) UIContainer.SubscribeToView(navigationBar, (NavigationButtonData data) => 
+        {
+            Show(data.screen);
+            Loger.Log("SHOW", "AppContainer");
         }, true);
-        //if (navigationBar != null) UIContainer.SubscribeToView(navigationBar, (NavigationButtonData data) => Show(data.screen), true);
     }
 
     public void Show(AppScreen target)
@@ -58,17 +59,18 @@ public class AppContainer : MonoBehaviour
             else screen.gameObject.SetActive(screen.name.Equals(name));
         }
 
-        if (navigationBar != null) 
-        {
-            if (hideNavigationBar.Contains(targetScreen)) navigationBar.Hide();
-            else navigationBar.Show();
-            UpdateData();
-        }
+
 
         if(_openedScreen != null) await _openedScreen.Hide();
         _openedScreen = targetScreen;
         _openedScreen.OnShow();
 
+        if (navigationBar != null)
+        {
+            if (hideNavigationBar.Contains(targetScreen)) navigationBar.Hide();
+            else navigationBar.Show();
+            UpdateData();
+        }
     }
 
 

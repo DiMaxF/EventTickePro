@@ -527,7 +527,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _text: {fileID: 0}
 --- !u!1001 &85998185
 PrefabInstance:
@@ -3260,7 +3259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba2533cebdc624a42bfb60224ca4184d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   views:
   - {fileID: 9073345321753858255}
   - {fileID: 8923948763049324821}
@@ -3508,7 +3506,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _text: {fileID: 940746655}
 --- !u!1001 &315885674
 PrefabInstance:
@@ -4552,7 +4549,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbcf872986e9a7b4093068365d854b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   inputField: {fileID: 494575384}
   outline: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -6681,7 +6677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8561f6980e3a4c84b9105173d8770cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   list: {fileID: 2014140297}
   add: {fileID: 0}
   send: {fileID: 0}
@@ -7521,7 +7516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15cf646adad01c418cea2669efc4c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appData:
+  _appData:
     selectedEvent:
       name: 
       date: 
@@ -9458,7 +9453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _text: {fileID: 1317754725}
 --- !u!1 &1023174081
 GameObject:
@@ -10442,7 +10436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _text: {fileID: 0}
 --- !u!1 &1130909032
 GameObject:
@@ -10692,7 +10685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f206ad887d354a469b4b93df4468d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _image: {fileID: 1453769381}
   _loading: {fileID: 0}
   widthFill: 0
@@ -10767,7 +10759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f206ad887d354a469b4b93df4468d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _image: {fileID: 811587697}
   _loading: {fileID: 0}
   widthFill: 0
@@ -12230,7 +12221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e0513b619b8484eb4fce9d9d1d533a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   hours: {fileID: 6302808971800890364}
   minutes: {fileID: 494575383}
   cancel: {fileID: 1787101364}
@@ -12898,7 +12888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _text: {fileID: 0}
 --- !u!1 &1443391559
 GameObject:
@@ -14718,7 +14707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _text: {fileID: 0}
 --- !u!1001 &1691649948
 PrefabInstance:
@@ -15473,10 +15461,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a57a25f94519547b41df38dbba832f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
+  persistent: 1
   _contentParent: {fileID: 1788433348}
-  _itemPrefab: {fileID: 169501576389381555, guid: aff55eae363d0944396dee4b59b3a9de, type: 3}
-  noItemPrefab: {fileID: 169501576389381555, guid: aff55eae363d0944396dee4b59b3a9de, type: 3}
+  _itemPrefab: {fileID: 2582087552750642690, guid: aff55eae363d0944396dee4b59b3a9de, type: 3}
+  noItemPrefab: {fileID: 2582087552750642690, guid: aff55eae363d0944396dee4b59b3a9de, type: 3}
   spawnDelayPerItem: 0
 --- !u!1 &1813068409
 GameObject:
@@ -15924,7 +15912,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6526b1b1460e614a9462b2aa9d358d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 0
   buttons: {fileID: 1788433350}
   show: {fileID: 11400000, guid: 232472e67aad28c40bdbc0f45af6c360, type: 2}
   hide: {fileID: 11400000, guid: 8cd397289e2d3374798ed799cdec781f, type: 2}
@@ -17208,7 +17195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba2533cebdc624a42bfb60224ca4184d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   views:
   - {fileID: 666745745}
   - {fileID: 1315226455}
@@ -17744,7 +17730,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a5b7d84a5f05574bb1d0aa441f2f340, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   camFocus: {fileID: 2026301998}
   scanning: {fileID: 1374865146}
   success: {fileID: 445745949}
@@ -18425,7 +18410,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba2533cebdc624a42bfb60224ca4184d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   views:
   - {fileID: 1691649949}
   expand: {fileID: 0}
@@ -19436,7 +19420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f206ad887d354a469b4b93df4468d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _image: {fileID: 1820914882}
   _loading: {fileID: 0}
   widthFill: 0
@@ -22600,7 +22583,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbcf872986e9a7b4093068365d854b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   inputField: {fileID: 6689076305432685431}
   outline: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -23437,7 +23419,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc1e2a9300b762d42b685f701d9b2117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   animationDuration: 0.3
   offsetY: -50
 --- !u!1001 &9073345321753858254
@@ -23647,7 +23628,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f206ad887d354a469b4b93df4468d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _image: {fileID: 2199114816693770718}
   _loading: {fileID: 0}
   widthFill: 0

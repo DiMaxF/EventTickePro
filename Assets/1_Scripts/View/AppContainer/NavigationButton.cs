@@ -15,7 +15,7 @@ public class NavigationButton : View
     [Header("Animation Configs")]
     [SerializeField] AnimationConfig colorAnim;
     [SerializeField] AnimationConfig scaleAnim;
-
+    int count;
     private bool val;
     private AppContainer.NavigationButtonData screenData;
     private LayoutElement layoutElement;
@@ -27,11 +27,10 @@ public class NavigationButton : View
 
     public override void Init<T>(T data)
     {
-        Loger.Log($"Init object {data}", "NavigationButton");
-
         if (data is AppContainer.NavigationButtonData screen)
         {
-            Loger.Log($"Init {screen.screen.name}", "NavigationButton");
+            count++;
+            Loger.Log($"Count init {count}", "NavigationButton");
             screenData = screen;
         }
         base.Init(data);    
@@ -40,24 +39,25 @@ public class NavigationButton : View
     public override void Subscriptions()
     {
         base.Subscriptions();
-        Loger.Log($"UpdateUI", "NavigationButton");
         UIContainer.RegisterView(button, true);
-        UIContainer.SubscribeToView<ButtonView, object>(button, _ => TriggerAction(screenData), true);
+        UIContainer.SubscribeToView<ButtonView, object>(button, _ => 
+        {
+            TriggerAction(screenData);
+        }, true);
     }
 
     public override void UpdateUI()
     {
-        Loger.Log($"UpdateUI", "NavigationButton");
-
         if (screenData != null)
         {
-            Loger.Log($"{screenData.screen.name}" , "NavigationButton");
             icon.sprite = screenData.icon;
         
             icon.color = screenData.selected ?  selectedColor : inactiveColor;
-            val = screenData.selected;
-
             AnimateSelected(screenData.selected);
+
+            val = screenData.selected;
+            Loger.Log($"AnimateSelected {screenData.selected}", "NavigationButton");
+
         }
     }
 
@@ -85,20 +85,26 @@ public class NavigationButton : View
             targetS = Vector3.zero;
             targetFlexibleWidth = 1;
         }
-
-        if (val == selected)
+        bool isAlreadyInTargetState =
+            this.selected.color == targetC &&
+            this.selected.transform.localScale == targetS &&
+            Mathf.Approximately(layoutElement.flexibleWidth, targetFlexibleWidth);
+        if (selected == val)
         {
             this.selected.color = targetC;
+            Loger.Log("VAL == SELECTED", "NavigationButton");
             return;
         }
         this.selected.transform.localScale = startS;
         this.selected.color = startC;
+        button.interactable = false;
 
-        StartAnimation().Append(this.selected.DOColor(targetC, colorAnim.Duration).SetEase(colorAnim.Ease))
-            .Append(this.selected.transform.DOScale(targetS, scaleAnim.Duration).SetEase(scaleAnim.Ease))
-            .Append(DOTween.To(() => layoutElement.flexibleWidth, x => layoutElement.flexibleWidth = x, targetFlexibleWidth, scaleAnim.Duration)
-            .SetEase(scaleAnim.Ease));
-        ;
-        
+        StartAnimation().Join(this.selected.DOColor(targetC, colorAnim.Duration).SetEase(colorAnim.Ease))
+            .Join(this.selected.transform.DOScale(targetS, scaleAnim.Duration).SetEase(scaleAnim.Ease))
+            .Join(
+            DOTween.To(() => layoutElement.flexibleWidth, 
+                        x => layoutElement.flexibleWidth = x, 
+                        targetFlexibleWidth, 
+                        scaleAnim.Duration).SetEase(scaleAnim.Ease)).OnComplete(() => button.interactable = true);
     }
 }
