@@ -34,10 +34,8 @@ public class AddEventScreen : AppScreen
         UIContainer.RegisterView(timePicker);
         datePicker.Hide();
         timePicker.Hide();
+        UIContainer.InitView(image, "");
 
-        UIContainer.InitView(name, model.name);
-        UIContainer.InitView(venue, model.venue);
-        addImage.gameObject.SetActive(true);
     }
     protected override void Subscriptions()
     {
@@ -48,8 +46,6 @@ public class AddEventScreen : AppScreen
 
         UIContainer.SubscribeToView<ButtonView, object>(dateOpen, _ => OnButtonDate());
         UIContainer.SubscribeToView<ButtonView, object>(timeOpen, _ => OnButtonTime());
-
-
 
         UIContainer.SubscribeToView<DatePickerView, string>(datePicker, OnDateSave);
         UIContainer.SubscribeToView<TimePickerView, string>(timePicker, OnTimeSave);
@@ -62,9 +58,11 @@ public class AddEventScreen : AppScreen
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        UIContainer.InitView(dateOpen, model.date);
-        UIContainer.InitView(timeOpen, model.time);
-
+        UIContainer.InitView(dateOpen, model.date.ToString());
+        UIContainer.InitView(timeOpen, model.time.ToString());
+        UIContainer.InitView(name, model.name);
+        UIContainer.InitView(venue, model.venue);
+        UIContainer.InitView(image, model.imgPath);
         ValidateModel();
     }
 
@@ -135,28 +133,23 @@ public class AddEventScreen : AppScreen
                 var selectedImagePath = FileManager.SaveImage(path);
                 UIContainer.InitView(image, selectedImagePath);
                 model.imgPath = selectedImagePath;
-                addImage.gameObject.SetActive(false);
             }
         }, "Select Image", "image/*");
     }
 
     private void ValidateModel() 
     {
-        
-        if(model.name == "")
+        name.DefaultColor();
+        venue.DefaultColor();
+        if (model.name == "" || model.venue == "")
         {
-            name.HighlightError();
+            if (model.name == "")name.HighlightError();
+            if (model.venue == "") venue.HighlightError();
+
             create.interactable = false;
+            return;
         }
-        else if(model.venue == "") 
-        {
-            venue.HighlightError();
-            create.interactable = false;
-        }
-        else
-    {
         create.interactable = true;
-    }
 
     }
 }

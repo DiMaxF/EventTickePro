@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5954312533557660947}
   - component: {fileID: 8029849885030079802}
   - component: {fileID: 5229830107355683678}
+  - component: {fileID: -6767298664621879746}
   m_Layer: 5
   m_Name: ButtonGradient
   m_TagString: Untagged
@@ -138,6 +139,20 @@ MonoBehaviour:
   m_color2: {r: 1, g: 0.79607844, b: 0.1254902, a: 1}
   m_angle: 0
   m_ignoreRatio: 1
+--- !u!114 &-6767298664621879746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885293214707532035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clearable: 1
+  _text: {fileID: 856227944294934263}
 --- !u!1001 &6610104470207416709
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -259,6 +274,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c64237d8445444a4e940a36d6e564f50, type: 3}
+--- !u!114 &856227944294934263 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5789975700267675506, guid: c64237d8445444a4e940a36d6e564f50, type: 3}
+  m_PrefabInstance: {fileID: 6610104470207416709}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1383038473455679435 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5227066010207092302, guid: c64237d8445444a4e940a36d6e564f50, type: 3}

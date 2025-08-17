@@ -1,12 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class InputTextView : View
 {
     [SerializeField] InputField inputField;
-    [SerializeField] Outline outline;
+    [SerializeField] Image outline;
     [SerializeField] Color normalColor;
     [SerializeField] Color errorColor;
 
@@ -16,7 +15,7 @@ public class InputTextView : View
         get => inputField.interactable;
         set => inputField.interactable = value;
     }
-    public bool isValid => outline.effectColor != errorColor;
+    public bool isValid => outline.color != errorColor;
 
     public override void Init<T>(T data)
     {
@@ -42,12 +41,12 @@ public class InputTextView : View
     }
     public void HighlightError()
     {
-        outline.effectColor = errorColor;
+        outline.color = errorColor;
     }
 
     public void DefaultColor()
     {
-        outline.effectColor = normalColor;
+        outline.color = normalColor;
     }
     public void UpdateColor(Color color)
     {
