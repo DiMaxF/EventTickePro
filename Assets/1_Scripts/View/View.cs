@@ -5,8 +5,7 @@ public abstract class View : MonoBehaviour
 {
     private readonly IAnimationController _animationController = new DOTweenAnimationController();
     public bool IsActive => gameObject.activeSelf;
-    public bool Clearable = true;
-    private bool _subscribed;
+    protected bool _subscribed;
 
     public virtual void Init<T>(T data) 
     {

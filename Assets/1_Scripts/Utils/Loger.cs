@@ -22,7 +22,7 @@ public class Loger
         }
         catch (Exception ex)
         {
-            LogError($"{ex.Message}\nStackTrace: {ex.StackTrace}", $"[TryCatch]{action.Method.Name}");
+            LogError($"{ex.Message}\nStackTrace: {ex.StackTrace}", $"[TryCatch] {action.Method.Name}");
         }
     }
 
@@ -44,7 +44,7 @@ public class Loger
     private static void DebugLog(string tag, string message, TypeMessage type = TypeMessage.Message) 
     {
         if (!active) return;
-        var log = $"[{type}][{(tag == "" ? TAG : tag)}] " + message;
+        var log = $"[{type}] [{(tag == "" ? TAG : tag)}] " + message;
         switch (type) 
         {
             case TypeMessage.Message:

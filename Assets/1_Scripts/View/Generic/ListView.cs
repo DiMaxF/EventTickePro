@@ -16,18 +16,14 @@ public class ListView : View
     public List<View> Items => _items;
     private bool _isUpdating;
     List<object> _dataSource = new List<object>();
-
+    public bool isGenerated => _items.Count > 0;
     public override void Init<TData>(TData data)
     {
         if (data is IEnumerable<object> enumerable)
         {
-            Init(enumerable.ToList());
+            _dataSource = enumerable.Cast<object>().ToList();
         }
-    }
-    private void Init<TData>(List<TData> dataSource)
-    {
-        _dataSource = dataSource.Cast<object>().ToList();
-        UpdateUI();
+        base.Init(data);
     }
 
     public override void UpdateUI()
@@ -81,5 +77,44 @@ public class ListView : View
 
             if (item != null) item.Show();
         }
+    }
+
+    public void UpdateViewsData<TData>(List<TData> newData)
+    {
+        if (_isUpdating) return;
+
+        _isUpdating = true;
+        var newDataList = newData.Cast<object>().ToList();
+
+        for (int i = 0; i < newDataList.Count; i++)
+        {
+            if (i < _items.Count)
+            {
+                UIContainer.InitView(_items[i], newDataList[i]);
+                Loger.Log($"({name}): Updated View {_items[i].name} with data {newDataList[i]}", "ListView");
+            }
+            else
+            {
+                SpawnView(newDataList[i]);
+            }
+        }
+
+        foreach (Transform c in _contentParent)
+        {
+            if (c.GetComponent<View>() == noItemPrefab)
+            {
+                Destroy(c.gameObject);
+            }
+        }
+
+        if (newDataList.Count == 0)
+        {
+            Instantiate(noItemPrefab, _contentParent, false);
+        }
+
+        _dataSource = newDataList;
+        _isUpdating = false;
+
+        AnimateItemsSpawn(_items);
     }
 }

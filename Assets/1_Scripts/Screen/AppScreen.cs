@@ -13,6 +13,7 @@ public abstract class AppScreen : MonoBehaviour
     private CanvasGroup canvasGroup;
     private readonly IAnimationController _animationController = new DOTweenAnimationController();
     [SerializeField] AnimationConfig fadeIn;
+    [SerializeField] AnimationConfig fadeOut;
     
     private void Awake()
     {
@@ -66,6 +67,17 @@ public abstract class AppScreen : MonoBehaviour
         Loading(false);
     }
 
+
+    public async UniTask Hide() 
+    {
+        var sequence = StartAnimation();
+        sequence.Append(canvasGroup
+                            .DOFade(0, fadeOut.Duration)
+                            .SetDelay(fadeOut.Delay)
+                            .SetEase(fadeOut.Ease));
+        await sequence.AsyncWaitForCompletion();
+        gameObject.SetActive(false);
+    }
 
     protected virtual void OnStart()
     {

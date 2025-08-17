@@ -41,7 +41,7 @@ public class NavigationButton : View
     {
         base.Subscriptions();
         Loger.Log($"UpdateUI", "NavigationButton");
-
+        UIContainer.RegisterView(button, true);
         UIContainer.SubscribeToView<ButtonView, object>(button, _ => TriggerAction(screenData), true);
     }
 

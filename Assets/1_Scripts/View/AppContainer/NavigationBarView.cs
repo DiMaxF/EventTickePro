@@ -22,27 +22,40 @@ public class NavigationBarView : View
         _initialPosition = _rectTransform.localPosition;
     }
 
+    
+
     public override void Init<T>(T data)
     {
         if (data is List<AppContainer.NavigationButtonData> updateData) 
         {
             Loger.Log($"Init: {updateData.Count}", "NavigationBarView");
-
+            
             _data = updateData;
+
+            if(!buttons.isGenerated) UIContainer.InitView(buttons, _data);
         }
         base.Init(data);
     }
 
     public override void UpdateUI()
     {
-        UIContainer.InitView(buttons, _data);
-        if(_data != null) Loger.Log($"screens: {_data.Count}", "NavigationBarView");
+        if (_data != null) 
+        {
+            buttons.UpdateViewsData(_data);
+            Loger.Log($"screens: {_data.Count}", "NavigationBarView");
+        }
+
     }
 
     public override void Subscriptions()
     {
         base.Subscriptions();
-        UIContainer.SubscribeToView<ListView, AppContainer.NavigationButtonData>(buttons, selected => TriggerAction(selected), true);
+
+        UIContainer.SubscribeToView<ListView, AppContainer.NavigationButtonData>(buttons, selected => 
+        {
+            TriggerAction(selected);
+            Loger.Log($"Selected data: {selected}", "NavigationBarView");
+        }, true);
 
     }
 

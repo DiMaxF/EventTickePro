@@ -7,15 +7,28 @@ using UnityEngine.UI;
 public static class UIContainer
 {
     private static readonly List<View> _currentViews = new();
+    private static readonly List<View> _persistentViews = new(); 
     private static readonly Dictionary<View, List<Action<object>>> _currentViewSubscriptions = new();
     private static readonly Dictionary<View, List<Action<object>>> _persistentViewSubscriptions = new();
     private static readonly Dictionary<View, object> _currentViewUpdateSources = new();
 
-    public static void RegisterView<TView>(TView view) where TView : View
+    public static void RegisterView<TView>(TView view, bool persistent = false) where TView : View
     {
-        if (!_currentViews.Contains(view))
+        if (persistent)
         {
-            _currentViews.Add(view);
+            if (!_persistentViews.Contains(view))
+            {
+                _persistentViews.Add(view);
+                Loger.Log($"Registered persistent view {view.name}", "UIContainer");
+            }
+        }
+        else
+        {
+            if (!_currentViews.Contains(view))
+            {
+                _currentViews.Add(view);
+                Loger.Log($"Registered non-persistent view {view.name}", "UIContainer");
+            }
         }
     }
 
@@ -56,7 +69,7 @@ public static class UIContainer
 
     public static TView GetView<TView>() where TView : View
     {
-        return _currentViews.OfType<TView>().FirstOrDefault();
+        return _persistentViews.OfType<TView>().FirstOrDefault() ?? _currentViews.OfType<TView>().FirstOrDefault();
     }
 
     public static void InitView<TView, TData>(TView view, TData data) where TView : View
@@ -73,20 +86,30 @@ public static class UIContainer
 
     public static TView FindView<TView>(string viewName) where TView : View
     {
-        return _currentViews.Find(v => v.name == viewName) as TView;
+        return _persistentViews.Find(v => v.name == viewName) as TView ?? _currentViews.Find(v => v.name == viewName) as TView;
     }
 
     public static void UnregisterView<TView>(TView view) where TView : View
     {
-        _currentViews.Remove(view);
-        _currentViewSubscriptions.Remove(view);
-        _persistentViewSubscriptions.Remove(view);
+        if (_persistentViews.Contains(view))
+        {
+            _persistentViews.Remove(view);
+            _persistentViewSubscriptions.Remove(view);
+            Loger.Log($"Unregistered persistent view {view.name}", "UIContainer");
+        }
+        else
+        {
+            _currentViews.Remove(view);
+            _currentViewSubscriptions.Remove(view);
+            Loger.Log($"Unregistered non-persistent view {view.name}", "UIContainer");
+        }
         _currentViewUpdateSources.Remove(view);
     }
 
     public static void UnsubscribeFromView<TView>(TView view) where TView : View
     {
         _currentViewSubscriptions.Remove(view);
+        Loger.Log($"Unsubscribed from view {view.name} (non-persistent subscriptions only)", "UIContainer");
     }
 
     public static void Clear()
@@ -94,5 +117,6 @@ public static class UIContainer
         _currentViews.Clear();
         _currentViewSubscriptions.Clear();
         _currentViewUpdateSources.Clear();
+        Loger.Log("Cleared non-persistent views and subscriptions", "UIContainer");
     }
 }

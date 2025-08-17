@@ -52,7 +52,7 @@ public class MapEditorScreen : AppScreen
     protected override void OnStart()
     {
         _objectManager = new MapObjectManager(area, this);
-        //_uiManager = new MapEditorUIManager(settingsPanel, colorsPicker, formsPicker, seatsPicker, forms);
+        _uiManager = new MapEditorUIManager(settingsPanel, colorsPicker, seatsPicker, formsPicker, forms);
         _dataManager = new MapDataManager(data, core);
         _previewGenerator = new MapPreviewGenerator(area, cam);
 

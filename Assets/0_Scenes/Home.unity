@@ -6441,7 +6441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74e76be36658ae469a67765e81b0e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstScreen: {fileID: 1304980829}
+  firstScreen: {fileID: 1298457664}
   screens:
   - {fileID: 1298457664}
   - {fileID: 1895084670}
@@ -6458,6 +6458,15 @@ MonoBehaviour:
     selected: 0
   - screen: {fileID: 1986955042}
     icon: {fileID: 21300000, guid: 0544237a73387e64896835d1c8290d2c, type: 3}
+    selected: 0
+  - screen: {fileID: 1716334383}
+    icon: {fileID: 21300000, guid: 89e482ac973af7e46807f178faeb0f28, type: 3}
+    selected: 0
+  - screen: {fileID: 1501340034}
+    icon: {fileID: 21300000, guid: 4f99e98a39eee0d47a99b13be9e03135, type: 3}
+    selected: 0
+  - screen: {fileID: 1304980829}
+    icon: {fileID: 21300000, guid: 7adf2d819330cee408d1d911895eca30, type: 3}
     selected: 0
   hideNavigationBar:
   - {fileID: 1895084670}
@@ -7612,6 +7621,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 903344340}
   m_CullTransparentMesh: 1
+--- !u!114 &905235778 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6767298664621879746, guid: c0545d5cebe06da47acf0f25379bf705, type: 3}
+  m_PrefabInstance: {fileID: 700058772}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &909857716
 GameObject:
   m_ObjectHideFlags: 0
@@ -11697,6 +11717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   events: {fileID: 2115590344}
   addEvent: {fileID: 1128899126}
 --- !u!225 &1298457665
@@ -11742,6 +11763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   name: {fileID: 1250148855}
   phone: {fileID: 1838145897}
   email: {fileID: 2113970558}
@@ -12211,10 +12233,10 @@ MonoBehaviour:
   Clearable: 1
   hours: {fileID: 6302808971800890364}
   minutes: {fileID: 494575383}
-  cancel: {fileID: 0}
-  save: {fileID: 0}
-  pm: {fileID: 0}
-  am: {fileID: 0}
+  cancel: {fileID: 1787101364}
+  save: {fileID: 905235778}
+  pm: {fileID: 1441567521}
+  am: {fileID: 1637323807}
 --- !u!114 &1331806523 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7046936177284398914, guid: 3289a8d0357ff094a84bb3c19565a33e, type: 3}
@@ -12391,6 +12413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   image: {fileID: 1141017081}
   preview: {fileID: 1137382049}
   name: {fileID: 282987310}
@@ -12733,6 +12756,7 @@ GameObject:
   - component: {fileID: 1441567519}
   - component: {fileID: 1441567518}
   - component: {fileID: 1441567517}
+  - component: {fileID: 1441567521}
   m_Layer: 5
   m_Name: PM
   m_TagString: Untagged
@@ -12862,6 +12886,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1441567515}
   m_CullTransparentMesh: 1
+--- !u!114 &1441567521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441567515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clearable: 1
+  _text: {fileID: 0}
 --- !u!1 &1443391559
 GameObject:
   m_ObjectHideFlags: 0
@@ -13133,6 +13171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   back: {fileID: 0}
   createEmail: {fileID: 0}
   importEmail: {fileID: 0}
@@ -13592,6 +13631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   kpis: {fileID: 283745424}
   occupancy: {fileID: 666047945}
   visitsChart: {fileID: 9073345321753858255}
@@ -14536,6 +14576,7 @@ GameObject:
   - component: {fileID: 1637323805}
   - component: {fileID: 1637323804}
   - component: {fileID: 1637323803}
+  - component: {fileID: 1637323807}
   m_Layer: 5
   m_Name: AM
   m_TagString: Untagged
@@ -14665,6 +14706,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1637323801}
   m_CullTransparentMesh: 1
+--- !u!114 &1637323807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637323801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clearable: 1
+  _text: {fileID: 0}
 --- !u!1001 &1691649948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15053,6 +15108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   statusText: {fileID: 1178119615}
   status: {fileID: 2026302000}
   camera: {fileID: 773478733}
@@ -15265,6 +15321,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772711154}
   m_CullTransparentMesh: 1
+--- !u!114 &1787101364 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7132077382689550545, guid: baf7e48276b741b49a7c9d44393a8288, type: 3}
+  m_PrefabInstance: {fileID: 1231522120}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1788332989
 GameObject:
   m_ObjectHideFlags: 0
@@ -16045,6 +16112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   back: {fileID: 1429530600}
   create: {fileID: 2066632313}
   addImage: {fileID: 67780727}
@@ -17276,6 +17344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   tickets: {fileID: 967008669}
   search: {fileID: 1957270880}
   qrCode: {fileID: 2131801763}
