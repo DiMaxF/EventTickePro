@@ -47,14 +47,14 @@ public class QRScanScreen : AppScreen
             if (t != null && t.valid != false)
             {
                 t.valid = false;
-                ui.InitView(status, StatusScanning.Success);
+                UIContainer.InitView(status, StatusScanning.Success);
                 statusText.text = "Scanned";
                 core.SaveData();
                 NativeMobilePlugin.Instance.ShowToast("Tickets is scanned");
             }else if (t.valid == false)
             {
 
-                ui.InitView(status, StatusScanning.Failed);
+                UIContainer.InitView(status, StatusScanning.Failed);
                 statusText.text = "Failed";
                 NativeMobilePlugin.Instance.ShowToast("Ticket is used");
 
@@ -85,7 +85,7 @@ public class QRScanScreen : AppScreen
 
     public void Play()
     {
-        ui.InitView(status, StatusScanning.Scanning);
+        UIContainer.InitView(status, StatusScanning.Scanning);
         Reset();
         if (this.e_qrController != null)
         {

@@ -88,11 +88,6 @@ public class ListView : View
         _isUpdating = false;
     }
 
-    protected override void OnShow()
-    {
-        UpdateUI();
-    }
-
     private void ClearItems()
     {
         foreach (var item in _items)

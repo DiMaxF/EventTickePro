@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class FormButtonView : View
 {
     [SerializeField] Image image;
-    [SerializeField] Button action;
+    [SerializeField] ButtonView action;
     [SerializeField] GameObject selected;
 
     [Serializable]
@@ -28,7 +28,7 @@ public class FormButtonView : View
         if (data is Data d)
         {
             _data = d;
-            UIContainer.SubscribeToComponent<Button, object>(action, _ => TriggerAction(_data.sprite));
+            UIContainer.SubscribeToView<ButtonView, object>(action, _ => TriggerAction(_data.sprite));
         }
 
         base.Init(data);

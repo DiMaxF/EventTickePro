@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class HomeScreen : AppScreen
 {
     [SerializeField] ListView events;
-    [SerializeField] Button addEvent;
+    [SerializeField] ButtonView addEvent;
 
 
     protected override void OnStart()
@@ -18,14 +18,14 @@ public class HomeScreen : AppScreen
     protected override void Subscriptions()
     {
         base.Subscriptions();
-        ui.SubscribeToComponent<Button, object>(addEvent, _ => OnButtonAddEvent());
-        ui.SubscribeToView<ListView, EventModel>(events, OnEventsAction);
+        UIContainer.SubscribeToView<ButtonView, object>(addEvent, _ => OnButtonAddEvent());
+        UIContainer.SubscribeToView<ListView, EventModel>(events, OnEventsAction);
     }
 
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        ui.InitView(events, data.events);
+        UIContainer.InitView(events, data.events);
     }
 
     private void OnButtonAddEvent() 

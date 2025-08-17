@@ -32,12 +32,12 @@ public class InputTextView : View
         _validationRule = validationRule ?? DefaultValidationRule;
         if (inputField != null)
         {
-            Loger.Log($"ui is null: {UIContainer == null}, initialText: {initialText}", "InputTextView");
-            UIContainer.SubscribeToComponent<InputField, string>(inputField, (string text) =>
+            inputField.onValueChanged.AddListener((val) => 
             {
-                ValidateInput(text);
-                TriggerAction(text);
+                ValidateInput(val);
+                TriggerAction(val);
             });
+
             inputField.text = FormatText(initialText) ?? "";
             ValidateInput(initialText);
         }

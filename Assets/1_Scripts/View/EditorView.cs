@@ -9,7 +9,7 @@ public abstract class EditorView : View
     protected RectTransform rectTransform;
     protected Transform transform;
     [SerializeField] private ControllerView controllerView;
-    [SerializeField] private Button selectButton;
+    [SerializeField] private ButtonView selectButton;
     [SerializeField] private float scaleSensitivity = 0.01f;
     [SerializeField] private float dragSensitivity = 2f;
     private Vector3 initialPosition;
@@ -20,13 +20,12 @@ public abstract class EditorView : View
     {
         transform = GetComponent<Transform>();
         rectTransform = GetComponent<RectTransform>();
-        if (UIContainer == null) SetUIContainer(UIContainer.Instance);
         UIContainer.RegisterView(controllerView);
         if (controllerView != null)
         {
             controllerView.Hide();
         }
-        UIContainer.SubscribeToComponent<Button, object>(selectButton, _ => OnClick());
+        UIContainer.SubscribeToView<ButtonView, object>(selectButton, _ => OnClick());
     }
 
     public virtual void Select()

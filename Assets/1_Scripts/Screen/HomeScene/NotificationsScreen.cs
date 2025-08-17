@@ -8,16 +8,16 @@ public class NotificationsScreen : AppScreen
 {
     [SerializeField] ToggleView masterToggle;
     [SerializeField] ListView notificationsList;
-    [SerializeField] Button save;
-    [SerializeField] Button back;
+    [SerializeField] ButtonView save;
+    [SerializeField] ButtonView back;
     protected override void OnStart()
     {
         base.OnStart();
         //ui.InitView(masterToggle, core.Notification);
-        ui.SubscribeToView<ToggleView, bool>(masterToggle, OnMasterToggle); 
-        ui.SubscribeToView<ListView, EventModel>(notificationsList, OnListAction);
-        ui.SubscribeToComponent<Button, object>(save, _ => Save());
-        ui.SubscribeToComponent<Button, object>(back, _ => Back());
+        UIContainer.SubscribeToView<ToggleView, bool>(masterToggle, OnMasterToggle); 
+        UIContainer.SubscribeToView<ListView, EventModel>(notificationsList, OnListAction);
+        UIContainer.SubscribeToView<ButtonView, object>(save, _ => Save());
+        UIContainer.SubscribeToView<ButtonView, object>(back, _ => Back());
         //UpdateNotifications().Forget();
     }
     private void Back()

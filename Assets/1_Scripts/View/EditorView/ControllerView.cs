@@ -25,12 +25,6 @@ public class ControllerView : View
         UpdateButtons();
     }
 
-    protected override void OnShow()
-    {
-        base.OnShow();
-        if (UIContainer == null) SetUIContainer(UIContainer.Instance);
-    }
-
     public override void Hide()
     {
         base.Hide();
@@ -96,7 +90,7 @@ public class ControllerView : View
             isDragging = false;
             currentState = ViewState.Default;
             activeButton = null;
-            UpdateButtons(); // —брасываем подсветку
+            UpdateButtons(); 
             TriggerAction(new ControllerData(currentState, null));
         });
         eventTrigger.triggers.Add(endEntry);

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ColorButtonView : View
 {
     [SerializeField] Image image;   
-    [SerializeField] Button action;
+    [SerializeField] ButtonView action;
     [SerializeField] GameObject selected;
 
     [Serializable]
@@ -28,7 +28,7 @@ public class ColorButtonView : View
         if (data is Data d) 
         {
             _data= d;
-            UIContainer.SubscribeToComponent<Button, object>(action, _ => TriggerAction(_data.color));
+            UIContainer.SubscribeToView<ButtonView, object>(action, _ => TriggerAction(_data.color));
         }
 
         base.Init(data);

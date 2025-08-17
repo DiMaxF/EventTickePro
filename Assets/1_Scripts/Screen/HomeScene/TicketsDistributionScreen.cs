@@ -8,9 +8,9 @@ using UnityEngine.UI;
 
 public class TicketsDistributionScreen : AppScreen
 {
-    [SerializeField] Button back;
-    [SerializeField] Button createEmail;
-    [SerializeField] Button importEmail;
+    [SerializeField] ButtonView back;
+    [SerializeField] ButtonView createEmail;
+    [SerializeField] ButtonView importEmail;
     [SerializeField] EmailSenderView emailSender;
     [SerializeField] private QRCodeEncodeController qrCode;
     private string currentQRPath;
@@ -25,7 +25,7 @@ public class TicketsDistributionScreen : AppScreen
                 HadnleTextureQR(texture);
             }
         );
-        ui.RegisterView(emailSender);
+        UIContainer.RegisterView(emailSender);
 
 
     }
@@ -33,23 +33,23 @@ public class TicketsDistributionScreen : AppScreen
     protected override void Subscriptions()
     {
         base.Subscriptions();
-        ui.RegisterView(emailSender);
-        ui.SubscribeToComponent<Button, object>(createEmail, _ => OnButtonCreateEmails());
-        ui.SubscribeToComponent<Button, object>(back, _ => OnButtonBack());
-        ui.SubscribeToComponent<Button, object>(importEmail, _ => OnButtonImportEmails());
-        ui.SubscribeToView<View, List<EmailModel>>(emailSender, AddTicketsToData);
+        UIContainer.RegisterView(emailSender);
+        UIContainer.SubscribeToView<ButtonView, object>(createEmail, _ => OnButtonCreateEmails());
+        UIContainer.SubscribeToView<ButtonView, object>(back, _ => OnButtonBack());
+        UIContainer.SubscribeToView<ButtonView, object>(importEmail, _ => OnButtonImportEmails());
+        UIContainer.SubscribeToView<View, List<EmailModel>>(emailSender, AddTicketsToData);
     }
 
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        ui.RegisterView(emailSender);
+        UIContainer.RegisterView(emailSender);
     }
 
     private void OnButtonCreateEmails()
     {
-        ui.RegisterView(emailSender);
-        ui.InitView(emailSender, "");
+        UIContainer.RegisterView(emailSender);
+        UIContainer .InitView(emailSender, "");
         Loger.Log("Tickerts", "TicketsDistributionScreen");
         emailSender.Show();
     }

@@ -12,7 +12,7 @@ public class TicketsScreen : AppScreen
     [SerializeField] ListView tickets;
     [SerializeField] SearchView search;
     [SerializeField] AsyncImageView qrCode;
-    [SerializeField] Button share;
+    [SerializeField] ButtonView share;
 
     private List<TicketModel> d;
     private TicketModel ticket;
@@ -27,24 +27,24 @@ public class TicketsScreen : AppScreen
         {
             d = data.AllTickets();
         }
-        ui.InitView(search, d);
+        UIContainer.InitView(search, d);
         base.OnStart();
 
     }
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        ui.InitView(tickets, d);
+        UIContainer.InitView(tickets, d);
     }
 
     protected override void Subscriptions()
     {
         base.Subscriptions();
-        ui.SubscribeToView<ListView, TicketModel>(tickets, ViewTicket);
-        ui.SubscribeToView<SearchView, List<TicketModel>>(search, Search);
-        ui.InitView(search, d);
-        ui.SubscribeToView<SearchView, object>(search, _ => { Loger.Log($"{typeof(object)}", "TicketsScreen"); });
-        ui.SubscribeToComponent<Button, object>(share, _ => OnButtonShare());
+        UIContainer.SubscribeToView<ListView, TicketModel>(tickets, ViewTicket);
+        UIContainer.SubscribeToView<SearchView, List<TicketModel>>(search, Search);
+        UIContainer.InitView(search, d);
+        UIContainer.SubscribeToView<SearchView, object>(search, _ => { Loger.Log($"{typeof(object)}", "TicketsScreen"); });
+        UIContainer.SubscribeToView<ButtonView, object>(share, _ => OnButtonShare());
         
 
     }
@@ -57,7 +57,7 @@ public class TicketsScreen : AppScreen
 
     private void ViewTicket(TicketModel ticket) 
     {
-        ui.InitView(qrCode, ticket.qrPath);
+        UIContainer.InitView(qrCode, ticket.qrPath);
         qrCode.Show();
         this.ticket = ticket;
     }

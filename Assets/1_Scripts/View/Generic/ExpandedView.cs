@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ExpandedView : View
 {
     [SerializeField] View[] views;
-    [SerializeField] Button expand;
+    [SerializeField] ButtonView expand;
     [SerializeField] int defaultSize;
     [SerializeField] int expandedSize;
     bool _active;
@@ -21,7 +21,7 @@ public class ExpandedView : View
             _active = active;
         }
 
-        UIContainer.SubscribeToComponent<Button, object>(expand, _ => ToggleExpand());
+        UIContainer.SubscribeToView<ButtonView, object>(expand, _ => ToggleExpand());
         base.Init(data);
     }
 

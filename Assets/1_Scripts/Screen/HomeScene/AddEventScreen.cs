@@ -7,18 +7,18 @@ using UnityEngine.UI;
 public class AddEventScreen : AppScreen
 {
     [Header("Buttons")]
-    [SerializeField] Button back;
-    [SerializeField] Button create;
+    [SerializeField] ButtonView back;
+    [SerializeField] ButtonView create;
     [Header("Image Input")]
-    [SerializeField] Button addImage;
+    [SerializeField] ButtonView addImage;
     [SerializeField] AsyncImageView image;
     [Header("Date")]
     [SerializeField] DatePickerView datePicker;
-    [SerializeField] Button dateOpen;
+    [SerializeField] ButtonView dateOpen;
     [SerializeField] Text selectedDate;
     [Header("Time")]
     [SerializeField] TimePickerView timePicker;
-    [SerializeField] Button timeOpen;
+    [SerializeField] ButtonView timeOpen;
     [SerializeField] Text selectedTime;
     [Header("Inputs")]
     [SerializeField] InputTextView name;
@@ -32,32 +32,32 @@ public class AddEventScreen : AppScreen
     {
         model = new EventModel(DateTime.Now.ToString(DateFormatter.Format), DateTime.Now.ToString(DateFormatter.TimeFormat), "");
         base.OnStart();
-        ui.RegisterView(datePicker);
-        ui.RegisterView(timePicker);
+        UIContainer.RegisterView(datePicker);
+        UIContainer.RegisterView(timePicker);
         datePicker.Hide();
         timePicker.Hide();
 
-        ui.InitView<InputTextView, string>(name, model.name);
-        ui.InitView<InputTextView, string>(venue, model.venue);
+        UIContainer.InitView(name, model.name);
+        UIContainer.InitView(venue, model.venue);
         addImage.gameObject.SetActive(true);
     }
     protected override void Subscriptions()
     {
         base.Subscriptions();
-        ui.SubscribeToComponent<Button, object>(create, _ => OnButtonCreate());
-        ui.SubscribeToComponent<Button, object>(addImage, _ => OnButtonGallery());
-        ui.SubscribeToComponent<Button, object>(back, _ => container.Show<HomeScreen>());
+        UIContainer.SubscribeToView<ButtonView, object>(create, _ => OnButtonCreate());
+        UIContainer.SubscribeToView<ButtonView, object>(addImage, _ => OnButtonGallery());
+        UIContainer.SubscribeToView<ButtonView, object>(back, _ => container.Show<HomeScreen>());
 
-        ui.SubscribeToComponent<Button, object>(dateOpen, _ => OnButtonDate());
-        ui.SubscribeToComponent<Button, object>(timeOpen, _ => OnButtonTime());
+        UIContainer.SubscribeToView<ButtonView, object>(dateOpen, _ => OnButtonDate());
+        UIContainer.SubscribeToView<ButtonView, object>(timeOpen, _ => OnButtonTime());
 
 
 
-        ui.SubscribeToView<DatePickerView, string>(datePicker, OnDateSave);
-        ui.SubscribeToView<TimePickerView, string>(timePicker, OnTimeSave);
+        UIContainer.SubscribeToView<DatePickerView, string>(datePicker, OnDateSave);
+        UIContainer.SubscribeToView<TimePickerView, string>(timePicker, OnTimeSave);
 
-        ui.SubscribeToView<InputTextView, string>(name, OnNameEdit);
-        ui.SubscribeToView<InputTextView, string>(venue, OnVenueEdit);
+        UIContainer.SubscribeToView<InputTextView, string>(name, OnNameEdit);
+        UIContainer.SubscribeToView<InputTextView, string>(venue, OnVenueEdit);
 
 
     }
@@ -84,14 +84,14 @@ public class AddEventScreen : AppScreen
     private void OnButtonDate()
     {
         datePicker.Show();
-        ui.InitView(datePicker, model.date);
+        UIContainer.InitView(datePicker, model.date);
         ValidateModel();
     }
 
     private void OnButtonTime()
     {
         timePicker.Show();
-        ui.InitView(timePicker, model.time);
+        UIContainer.InitView(timePicker, model.time);
         ValidateModel();
     }
 
@@ -134,7 +134,7 @@ public class AddEventScreen : AppScreen
             if (!string.IsNullOrEmpty(path))
             {
                 var selectedImagePath = FileManager.SaveImage(path);
-                ui.InitView(image, selectedImagePath);
+                UIContainer.InitView(image, selectedImagePath);
                 model.imgPath = selectedImagePath;
                 addImage.gameObject.SetActive(false);
             }

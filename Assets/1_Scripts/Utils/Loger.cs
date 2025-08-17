@@ -7,7 +7,7 @@ public class Loger
 {
     public enum TypeMessage 
     {
-        Default,
+        Message,
         Error,
         Warning
     }
@@ -41,13 +41,13 @@ public class Loger
         DebugLog(tag, message, TypeMessage.Warning);
     }
 
-    private static void DebugLog(string tag, string message, TypeMessage type = TypeMessage.Default) 
+    private static void DebugLog(string tag, string message, TypeMessage type = TypeMessage.Message) 
     {
         if (!active) return;
         var log = $"[{type}][{(tag == "" ? TAG : tag)}] " + message;
         switch (type) 
         {
-            case TypeMessage.Default:
+            case TypeMessage.Message:
                 Debug.Log(log);
                 break;
             case TypeMessage.Error:

@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class EmailSenderView : View
 {
     [SerializeField] ListView list;
-    [SerializeField] Button add;
-    [SerializeField] Button send;
-    [SerializeField] Button cancel;
+    [SerializeField] ButtonView add;
+    [SerializeField] ButtonView send;
+    [SerializeField] ButtonView cancel;
 
     List<EmailModel> emails;
 
@@ -26,9 +26,9 @@ public class EmailSenderView : View
     public override void UpdateUI()
     {
         base.UpdateUI();
-        UIContainer.SubscribeToComponent<Button, object>(add, _ => OnButtonAdd());
-        UIContainer.SubscribeToComponent<Button, object>(send, _ => OnButtonSend());
-        UIContainer.SubscribeToComponent<Button, object>(cancel, _ => OnButtonCancel());
+        UIContainer.SubscribeToView<ButtonView, object>(add, _ => OnButtonAdd());
+        UIContainer.SubscribeToView<ButtonView, object>(send, _ => OnButtonSend());
+        UIContainer.SubscribeToView<ButtonView, object>(cancel, _ => OnButtonCancel());
         UIContainer.InitView(list, emails);
     }
 

@@ -10,7 +10,7 @@ public class ProfileScreen : AppScreen
     [SerializeField] InputTextView email;
     [SerializeField] ToggleView sales;
     [SerializeField] ToggleView eventsUpdates;
-    [SerializeField] Button button;
+    [SerializeField] ButtonView button;
     [SerializeField] Text buttonText;
     bool editable;
     protected override void OnStart()
@@ -24,19 +24,19 @@ public class ProfileScreen : AppScreen
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        ui.InitView(name, data.name);
-        ui.InitView(phone, data.phone.ToString());
-        ui.InitView(email, data.email);
-        ui.InitView(sales, data.notificationsSales);
-        ui.InitView(eventsUpdates, data.notificationsEvents);
+        UIContainer.InitView(name, data.name);
+        UIContainer.InitView(phone, data.phone.ToString());
+        UIContainer.InitView(email, data.email);
+        UIContainer.InitView(sales, data.notificationsSales);
+        UIContainer.InitView(eventsUpdates, data.notificationsEvents);
     }
 
     protected override void Subscriptions()
     {
         base.Subscriptions();
-        ui.SubscribeToView<ToggleView, bool>(sales, OnToggleSales);
-        ui.SubscribeToView<ToggleView, bool>(eventsUpdates, OnToggleEvents);
-        ui.SubscribeToComponent<Button, object>(button, _ => OnButton());
+        UIContainer.SubscribeToView<ToggleView, bool>(sales, OnToggleSales);
+        UIContainer.SubscribeToView<ToggleView, bool>(eventsUpdates, OnToggleEvents);
+        UIContainer.SubscribeToView<ButtonView, object>(button, _ => OnButton());
     }
 
     private void OnToggleSales(bool val)

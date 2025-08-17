@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class NavigationButton : View
 {
     [SerializeField] private Image icon;
-    [SerializeField] private Button button;
+    [SerializeField] private ButtonView button;
     [SerializeField] private Image selected;
     [SerializeField] private Color selectedColor = Color.white;
     [SerializeField] private Color inactiveColor = Color.white;
@@ -27,7 +27,7 @@ public class NavigationButton : View
         if (data is NavigationBarView.Data screen)
         {
             screenData = screen;
-            UIContainer.StableSubscribeToComponent<Button, object>(button, _ => TriggerAction(screenData));
+            UIContainer.SubscribeToView<ButtonView, object>(button, _ => TriggerAction(screenData));
         }
         UpdateUI();
     }

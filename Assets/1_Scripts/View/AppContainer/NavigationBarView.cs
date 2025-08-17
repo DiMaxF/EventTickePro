@@ -21,6 +21,7 @@ public class NavigationBarView : View
 
     private AppContainer container;
     private Vector3 initialPosition;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -29,19 +30,15 @@ public class NavigationBarView : View
 
     public override void Init<T>(T data)
     {
-
         if (data is AppContainer app) 
         {
             container = app;
-            SetUIContainer(container.UIContainer);
         }
         base.Init(data);
     }
 
-    int count;
     public override void UpdateUI()
     {
-        count++;
         foreach (Transform t in content) Destroy(t.gameObject);
 
         foreach (var screen in screens)
@@ -61,15 +58,12 @@ public class NavigationBarView : View
         container.Show(screen);
         //UpdateUI();
     }
+
+
     public override void Show()
     {
-        gameObject.SetActive(true);
-        OnShow();
-    }
-
-    protected override void OnShow()
-    {
-        if(initialPosition != rectTransform.localPosition) 
+        base.Show();
+        if (initialPosition != rectTransform.localPosition) 
         {
             float height = rectTransform.rect.height;
 
@@ -87,7 +81,8 @@ public class NavigationBarView : View
 
             rectTransform.DOLocalMove(initialPosition - new Vector3(0, height, 0), 0.4f).SetEase(Ease.InQuint)
                 .OnComplete(() => gameObject.SetActive(false));
-        } 
+        }
+        base.Hide();
     }
 
 }

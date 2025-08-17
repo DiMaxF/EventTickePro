@@ -18,18 +18,18 @@ public class StatisticsScreen : AppScreen
     [SerializeField] ExpandedView conversation;
     [SerializeField] LineChartView conversationSentvsUsed;
     [SerializeField] LineChartView conversationRate;
-    [SerializeField] Button exportButton;
+    [SerializeField] ButtonView exportButton;
     [Header("Toggles")]
-    [SerializeField] Button week;
-    [SerializeField] Button month;
-    [SerializeField] Button year;
+    [SerializeField] ButtonView week;
+    [SerializeField] ButtonView month;
+    [SerializeField] ButtonView year;
     private TimePeriod _currentPeriod = TimePeriod.Week;
     protected override void OnStart()
     {
         base.OnStart(); 
-        ui.InitView(kpis, false);
-        ui.InitView(sales, false);
-        ui.InitView(conversation, false);
+        UIContainer.InitView(kpis, false);
+        UIContainer.InitView(sales, false);
+        UIContainer.InitView(conversation, false);
         SetPeriod(TimePeriod.Week);
     }
 
@@ -78,7 +78,7 @@ public class StatisticsScreen : AppScreen
         UpdateViews();
     }
 
-    private void ButtonActive(Button button, bool active) 
+    private void ButtonActive(ButtonView button, bool active) 
     {
         button.image.color = active ? Color.white : Color.clear;    
     }
@@ -86,20 +86,20 @@ public class StatisticsScreen : AppScreen
     protected override void UpdateViews()
     {
         base.UpdateViews();
-        ui.InitView(visitsChart, data.GetKPIs(_currentPeriod));
-        ui.InitView(salesChart, data.GetTicketSalesByPeriod(_currentPeriod));
-        ui.InitView(conversationSentvsUsed, GetSentVsUsedData(_currentPeriod));
-        ui.InitView(conversationRate, data.GetConversionRates(_currentPeriod));
+        UIContainer.InitView(visitsChart, data.GetKPIs(_currentPeriod));
+        UIContainer.InitView(salesChart, data.GetTicketSalesByPeriod(_currentPeriod));
+        UIContainer.InitView(conversationSentvsUsed, GetSentVsUsedData(_currentPeriod));
+        UIContainer.InitView(conversationRate, data.GetConversionRates(_currentPeriod));
         occupancy.SetValue(data.GetPersentOccupancy(_currentPeriod));
     }
 
     protected override void Subscriptions()
     {
         base.Subscriptions();
-        ui.SubscribeToComponent<Button, object>(week, _ => SetPeriod(TimePeriod.Week));
-        ui.SubscribeToComponent<Button, object>(month, _ => SetPeriod(TimePeriod.Month));
-        ui.SubscribeToComponent<Button, object>(year, _ => SetPeriod(TimePeriod.Year));
-        ui.SubscribeToComponent<Button, object>(exportButton, _ => ExportCsv());
+        UIContainer.SubscribeToView<ButtonView, object>(week, _ => SetPeriod(TimePeriod.Week));
+        UIContainer.SubscribeToView<ButtonView, object>(month, _ => SetPeriod(TimePeriod.Month));
+        UIContainer.SubscribeToView<ButtonView, object>(year, _ => SetPeriod(TimePeriod.Year));
+        UIContainer.SubscribeToView<ButtonView, object>(exportButton, _ => ExportCsv());
     }
     public void ExportCsv()
     {

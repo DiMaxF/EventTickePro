@@ -9,10 +9,10 @@ public class TimePickerView : View
 
     [SerializeField] private InputTextView hours;
     [SerializeField] private InputTextView minutes;
-    [SerializeField] private Button cancel;
-    [SerializeField] private Button save;
-    [SerializeField] private Button pm;
-    [SerializeField] private Button am;
+    [SerializeField] private ButtonView cancel;
+    [SerializeField] private ButtonView save;
+    [SerializeField] private ButtonView pm;
+    [SerializeField] private ButtonView am;
     int _hours;
     int _minutes;
     TimeSpan _time;
@@ -27,10 +27,10 @@ public class TimePickerView : View
             Loger.Log("Data get " + val, "TimePickerView");
             _hours = _time.Hours;
             _minutes = _time.Minutes;
-            UIContainer.SubscribeToComponent<Button, object>(save, _ => SaveTime());
-            UIContainer.SubscribeToComponent<Button, object>(cancel, _ => TriggerAction(""));
-            UIContainer.SubscribeToComponent<Button, object>(pm, _ => { _isAm = false; UpdateUI(); });
-            UIContainer.SubscribeToComponent<Button, object>(am, _ => { _isAm = true; UpdateUI(); });
+            UIContainer.SubscribeToView<ButtonView, object>(save, _ => SaveTime());
+            UIContainer.SubscribeToView<ButtonView, object>(cancel, _ => TriggerAction(""));
+            UIContainer.SubscribeToView<ButtonView, object>(pm, _ => { _isAm = false; UpdateUI(); });
+            UIContainer.SubscribeToView<ButtonView, object>(am, _ => { _isAm = true; UpdateUI(); });
 
         }
         base.Init(data);
@@ -106,7 +106,7 @@ public class TimePickerView : View
         return false;
     }
 
-    private void SetButtonFormat(Button btn, bool active) 
+    private void SetButtonFormat(ButtonView btn, bool active) 
     {
         btn.image.color= active ? Color.white : Color.clear;
         btn.transform.GetChild(0).GetComponent<Text>().color = active ? Color.black : Color.white;

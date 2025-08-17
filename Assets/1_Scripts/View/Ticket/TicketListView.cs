@@ -9,7 +9,7 @@ public class TicketListView : View
     [SerializeField] Text seat;
     [SerializeField] Text dateTime;
     [SerializeField] GameObject valid;
-    [SerializeField] Button action;
+    [SerializeField] ButtonView action;
     TicketModel _ticket;
     EventModel _event;
     public override void UpdateUI()
@@ -26,7 +26,7 @@ public class TicketListView : View
         if (data is TicketModel model) 
         {
             _ticket = model;
-            UIContainer.SubscribeToComponent<Button, object>(action, _ => TriggerAction(_ticket));
+            UIContainer.SubscribeToView<ButtonView, object>(action, _ => TriggerAction(_ticket));
             _event = DataCore.Instance.AppData.GetEventByTicket(_ticket);
         } 
         base.Init(data);

@@ -13,8 +13,7 @@ public class AppContainer : MonoBehaviour
     [SerializeField] private List<AppScreen> screens = new List<AppScreen>();
 
     private DataCore core => DataCore.Instance;
-    private UIContainer ui => UIContainer.Instance;
-    public UIContainer UIContainer => ui;
+
 
 
     public event Action<AppScreen> OnScreenChanged;
@@ -24,11 +23,10 @@ public class AppContainer : MonoBehaviour
 
     public async void UpdateViews(bool delay = false)
     {
-        if (navigationBar == null) return;
-        else navigationBar.SetUIContainer(ui);
 
-        ui.RegisterView(navigationBar);
-        ui.InitView(navigationBar, this);
+
+        UIContainer.RegisterView(navigationBar);
+        UIContainer.InitView(navigationBar, this);
         count++;
     }
     int count;
@@ -38,7 +36,7 @@ public class AppContainer : MonoBehaviour
 
         foreach (var screen in screens)
         {
-            screen.Init(ui, core, this);
+            screen.Init(core, this);
         }
 
 

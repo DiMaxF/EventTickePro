@@ -9,7 +9,7 @@ public class EventListView : View
     [SerializeField] Text name;
     [SerializeField] Text dateTime;
     [SerializeField] Text description;
-    [SerializeField] Button action;
+    [SerializeField] ButtonView action;
     EventModel _event;
     public override void UpdateUI()
     {
@@ -27,7 +27,7 @@ public class EventListView : View
         if (data is EventModel model) 
         {
             _event = model;
-            UIContainer.SubscribeToComponent<Button, object>(action, _ => TriggerAction(_event));
+            UIContainer.SubscribeToView<ButtonView, object>(action, _ => TriggerAction(_event));
         }
         base.Init(data);
     }

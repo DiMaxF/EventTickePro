@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class SearchView : View
 {
     [SerializeField] private InputTextView inputTextView;
-    [SerializeField] private Button searchButton;
+    [SerializeField] private ButtonView searchButton;
 
     private List<TicketModel> _dataSource = new List<TicketModel>();
     private List<TicketModel> _lastSearchResults = new List<TicketModel>();
@@ -23,9 +23,8 @@ public class SearchView : View
         _displayFormatter = displayFormatter ?? DefaultDisplayFormatter;
 
         _lastSearchResults.Clear();
-        Loger.Log($"Init {UIContainer == null}", "SearchView");
         //UIContainer.SubscribeToView<InputTextView, string>(inputTextView, _ => PerformSearch());
-        UIContainer.SubscribeToComponent<Button, object>(searchButton, _ => 
+        UIContainer.SubscribeToView<ButtonView, object>(searchButton, _ => 
         {
             Loger.Log("Action", "SearchView");
             PerformSearch();
@@ -54,7 +53,6 @@ public class SearchView : View
         UIContainer.InitView<InputTextView, string>(inputTextView, "");
     }
 
-    protected override void OnShow() { }
 
     private void PerformSearch()
     {

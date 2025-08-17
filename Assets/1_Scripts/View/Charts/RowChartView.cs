@@ -16,12 +16,8 @@ public class RowChartView : View
         if (data is ChartData d)
         {
             _data = d;
-            Debug.Log($"[RowChartView] Initialized with ChartData: Title={_data.title}, ValuesCount={_data.values.Count}");
         }
-        else
-        {
-            Debug.LogError("[RowChartView] Invalid data type provided for initialization");
-        }
+
         base.Init(data);
     }
 
@@ -97,7 +93,7 @@ public class RowChartView : View
         E2ChartData chartData = chart.GetComponent<E2ChartData>();
         if (chartData == null)
         {
-            Debug.Log("[RowChartView] Adding E2ChartData...");
+            Loger.Log("Adding E2ChartData...", "RowChartView");
             chartData = chart.gameObject.AddComponent<E2ChartData>();
         }
 
@@ -111,7 +107,7 @@ public class RowChartView : View
         {
             chartData.categoriesX.Add(data.Key);
             values.Add(data.Value);
-            Debug.Log($"[RowChartView] Adding data: Key={data.Key}, Value={data.Value}");
+            Loger.Log($"Adding data: Key={data.Key}, Value={data.Value}", "RowChartView");
         }
 
         E2ChartData.Series valueSeries = new E2ChartData.Series
@@ -122,21 +118,20 @@ public class RowChartView : View
 
         chartData.series = new List<E2ChartData.Series> { valueSeries };
 
-        Debug.Log($"[RowChartView] Updating chart with {chartData.categoriesX.Count} categories and {values.Count} values");
-
-        // Принудительный пересчет layout перед обновлением графика
+        Loger.Log($"Updating chart with {chartData.categoriesX.Count} categories and {values.Count} values", "RowChartView");
         LayoutRebuilder.ForceRebuildLayoutImmediate(chartRect);
         chart.UpdateChart();
     }
 
-    protected override void OnShow()
+    public override void Show()
     {
+        base.Show();
         if (canvasGroup == null)
         {
             canvasGroup = GetComponent<CanvasGroup>();
             if (canvasGroup == null)
             {
-                Debug.Log("[RowChartView] Adding CanvasGroup...");
+                Loger.Log("Adding CanvasGroup...", "RowChartView");
                 canvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
         }
@@ -145,15 +140,14 @@ public class RowChartView : View
         canvasGroup.alpha = 0f;
         chart.gameObject.SetActive(true);
 
-        // Ждем один кадр, чтобы UI успел обновиться
         DOTween.Sequence()
             .AppendCallback(() => LayoutRebuilder.ForceRebuildLayoutImmediate(chart.GetComponent<RectTransform>()))
             .Append(canvasGroup.DOFade(1f, 0.5f))
             .SetEase(Ease.OutQuad)
             .OnComplete(() =>
             {
-                Debug.Log("[RowChartView] Chart show animation completed");
-                UpdateUI(); // Повторный вызов UpdateUI после анимации
+                Loger.Log("Chart show animation completed", "RowChartView");
+                UpdateUI();
             });
     }
 
@@ -176,7 +170,7 @@ public class RowChartView : View
             {
                 chart.gameObject.SetActive(false);
                 base.Hide();
-                Debug.Log("[RowChartView] Chart hidden");
+                Loger.Log("Chart hidden", "RowChartView");
             });
     }
 }

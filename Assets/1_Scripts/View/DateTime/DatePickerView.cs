@@ -6,8 +6,8 @@ using System;
 public class DatePickerView : View
 {
     [SerializeField] CalendarManager calendar;
-    [SerializeField] Button cancel;
-    [SerializeField] Button save;
+    [SerializeField] ButtonView cancel;
+    [SerializeField] ButtonView save;
 
     string _date;
     public override void Init<T>(T data)
@@ -15,8 +15,8 @@ public class DatePickerView : View
         if (data is string date)
         {
             _date = date;
-            UIContainer.SubscribeToComponent<Button, object>(cancel, _ => TriggerAction(""));
-            UIContainer.SubscribeToComponent<Button, object>(save, _ => TriggerAction(_date));
+            UIContainer.SubscribeToView<ButtonView, object>(cancel, _ => TriggerAction(""));
+            UIContainer.SubscribeToView<ButtonView, object>(save, _ => TriggerAction(_date));
             calendar.OnSelect +=(d) => _date = d.ToString(DateFormatter.Format);
         }
         base.Init(data);

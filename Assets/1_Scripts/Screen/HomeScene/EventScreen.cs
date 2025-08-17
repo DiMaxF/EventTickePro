@@ -16,10 +16,10 @@ public class EventScreen : AppScreen
     [SerializeField] Text desciption;
     [SerializeField] Image previewBg;
     [Header("Buttons")]
-    [SerializeField] Button back;
-    [SerializeField] Button mapEditor;
-    [SerializeField] Button ticketsDistribution;
-    [SerializeField] Button tickets;
+    [SerializeField] ButtonView back;
+    [SerializeField] ButtonView mapEditor;
+    [SerializeField] ButtonView ticketsDistribution;
+    [SerializeField] ButtonView tickets;
 
     protected override void UpdateViews()
     {
@@ -30,26 +30,26 @@ public class EventScreen : AppScreen
         venue.text = data.selectedEvent.venue;
         previewBg.color = Color.clear;
         desciption.text = data.selectedEvent.description;
-        ui.InitView(image, data.selectedEvent.imgPath);
+        UIContainer.InitView(image, data.selectedEvent.imgPath);
         var map = data.GetByEvent(data.selectedEvent);
         if (map != null) 
         {
             previewBg.color = Color.white;
-            ui.InitView(preview, map.pathPreview);
+            UIContainer.InitView(preview, map.pathPreview);
         }
         else
         {
-            ui.InitView(preview, "");
+            UIContainer.InitView(preview, "");
         }
     }
 
     protected override void Subscriptions()
     {
         base.Subscriptions();
-        ui.SubscribeToComponent<Button, object>(tickets, _ => OnButtonTickets());
-        ui.SubscribeToComponent<Button, object>(back, _ => OnButtonBack());
-        ui.SubscribeToComponent<Button, object>(ticketsDistribution, _ => OnButtonTicketsDistribution());
-        ui.SubscribeToComponent<Button, object>(mapEditor, _ => OnButtonMapEditor());
+        UIContainer.SubscribeToView<ButtonView, object>(tickets, _ => OnButtonTickets());
+        UIContainer.SubscribeToView<ButtonView, object>(back, _ => OnButtonBack());
+        UIContainer.SubscribeToView<ButtonView, object>(ticketsDistribution, _ => OnButtonTicketsDistribution());
+        UIContainer.SubscribeToView<ButtonView, object>(mapEditor, _ => OnButtonMapEditor());
     }
     private void OnButtonTickets() 
     {

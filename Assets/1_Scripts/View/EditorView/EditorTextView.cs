@@ -9,10 +9,9 @@ public class EditorTextView : EditorView
 
     string _val;
 
-    protected override void OnShow()
+    public override void Show()
     {
-        base.OnShow();
-        if (UIContainer == null) SetUIContainer(UIContainer.Instance);
+        base.Show();
         UIContainer.RegisterView(name);
         UIContainer.SubscribeToView<InputTextView, string>(name, val => _val = val);
     }

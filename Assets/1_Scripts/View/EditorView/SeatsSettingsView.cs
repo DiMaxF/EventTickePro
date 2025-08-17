@@ -9,11 +9,11 @@ public class SeatsSettingsView : View
     private const int MAX_SEATS = 20;  
     private const int MAX_ROWS = 20;  
     [SerializeField] InputTextView numer;
-    [SerializeField] Button numerAction;
+    [SerializeField] ButtonView numerAction;
     [SerializeField] InputTextView countRow;
     [SerializeField] InputTextView seats;
-    [SerializeField] Button toggleLeft;
-    [SerializeField] Button toggleRight;
+    [SerializeField] ButtonView toggleLeft;
+    [SerializeField] ButtonView toggleRight;
 
     public EditorSeatView.Data Data => _data;
     private EditorSeatView.Data _data;
@@ -32,19 +32,18 @@ public class SeatsSettingsView : View
             UIContainer.SubscribeToView<InputTextView, string>(seats, HandleSeats);
             UIContainer.SubscribeToView<InputTextView, string>(countRow, HandleRows);
 
-            UIContainer.SubscribeToComponent<Button, object>(numerAction, _ =>
+            UIContainer.SubscribeToView<ButtonView, object>(numerAction, _ =>
             {
                 UIContainer.InitView(numer, _data.numer == "Alphabet" ? "Numbers" : "Alphabet");
             });
-            UIContainer.SubscribeToComponent<Button, object>(toggleLeft, _ => Toggle(false));
-            UIContainer.SubscribeToComponent<Button, object>(toggleRight, _ => Toggle(true));
+            UIContainer.SubscribeToView<ButtonView, object>(toggleLeft, _ => Toggle(false));
+            UIContainer.SubscribeToView<ButtonView, object>(toggleRight, _ => Toggle(true));
         }
         base.Init(data);
     }
     public override void UpdateUI()
     {
         base.UpdateUI();
-        SetUIContainer(UIContainer.Instance);
         UIContainer.RegisterView(numer);
         UIContainer.RegisterView(seats);
         UIContainer.RegisterView(countRow);

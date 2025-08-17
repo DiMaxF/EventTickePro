@@ -12,7 +12,7 @@ public class ToggleView : View
     [SerializeField] private Color inactive;
     [SerializeField] private Color activeHandle;
     [SerializeField] private Color inactiveHandle;
-    [SerializeField] private Button button; 
+    [SerializeField] private ButtonView button; 
 
     private bool isOn = true; 
     private Sequence animation; 
@@ -55,7 +55,7 @@ public class ToggleView : View
             isOn = initialState;
         }
         base.Init(data);
-        UIContainer.SubscribeToComponent<Button, object>(button, _ => OnToggle());
+        UIContainer.SubscribeToView<ButtonView, object>(button, _ => OnToggle());
     }
 
 
