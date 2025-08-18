@@ -32,7 +32,7 @@ public class AppContainer : MonoBehaviour
         if (navigationBar != null) UIContainer.SubscribeToView(navigationBar, (NavigationButtonData data) => 
         {
             Show(data.screen);
-            Loger.Log("SHOW", "AppContainer");
+            Logger.Log("SHOW", "AppContainer");
         }, true);
     }
 

@@ -17,7 +17,7 @@ public class PersonalManager : IDataManager
     public void SetSelectedEvent(EventModel eventModel)
     {
         _appData.selectedEvent = eventModel;
-        Loger.Log($"Selected event changed to: {eventModel?.name ?? "null"}", "PersonalManager");
+        Logger.Log($"Selected event changed to: {eventModel?.name ?? "null"}", "PersonalManager");
     }
 
     public string GetName()
@@ -29,11 +29,11 @@ public class PersonalManager : IDataManager
     {
         if (string.IsNullOrEmpty(name))
         {
-            Loger.LogWarning("Attempted to set empty or null name", "PersonalManager");
+            Logger.LogWarning("Attempted to set empty or null name", "PersonalManager");
             return;
         }
         _appData.name = name;
-        Loger.Log($"Name changed to: {name}", "PersonalManager");
+        Logger.Log($"Name changed to: {name}", "PersonalManager");
     }
 
     public string GetPhone()
@@ -45,11 +45,11 @@ public class PersonalManager : IDataManager
     {
         if (string.IsNullOrEmpty(phone))
         {
-            Loger.LogWarning("Attempted to set empty or null phone", "PersonalManager");
+            Logger.LogWarning("Attempted to set empty or null phone", "PersonalManager");
             return;
         }
         _appData.phone = phone;
-        Loger.Log($"Phone changed to: {phone}", "PersonalManager");
+        Logger.Log($"Phone changed to: {phone}", "PersonalManager");
     }
 
     public string GetEmail()
@@ -61,11 +61,11 @@ public class PersonalManager : IDataManager
     {
         if (string.IsNullOrEmpty(email))
         {
-            Loger.LogWarning("Attempted to set empty or null email", "PersonalManager");
+            Logger.LogWarning("Attempted to set empty or null email", "PersonalManager");
             return;
         }
         _appData.email = email;
-        Loger.Log($"Email changed to: {email}", "PersonalManager");
+        Logger.Log($"Email changed to: {email}", "PersonalManager");
     }
 
     public bool GetNotificationsSales()
@@ -76,7 +76,7 @@ public class PersonalManager : IDataManager
     public void SetNotificationsSales(bool enabled)
     {
         _appData.notificationsSales = enabled;
-        Loger.Log($"NotificationsSales set to: {enabled}", "PersonalManager");
+        Logger.Log($"NotificationsSales set to: {enabled}", "PersonalManager");
     }
 
     public bool GetNotificationsEvents()
@@ -87,7 +87,7 @@ public class PersonalManager : IDataManager
     public void SetNotificationsEvents(bool enabled)
     {
         _appData.notificationsEvents = enabled;
-        Loger.Log($"NotificationsEvents set to: {enabled}", "PersonalManager");
+        Logger.Log($"NotificationsEvents set to: {enabled}", "PersonalManager");
     }
 
     public void UpdatePersonalData(string name, string phone, string email)
@@ -95,7 +95,7 @@ public class PersonalManager : IDataManager
         SetName(name);
         SetPhone(phone);
         SetEmail(email);
-        Loger.Log("Personal data updated", "PersonalManager");
+        Logger.Log("Personal data updated", "PersonalManager");
     }
 
     public void ClearPersonalData()

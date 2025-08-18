@@ -6,8 +6,8 @@ public class DataCore : MonoBehaviour
 {
     public static DataCore Instance { get; private set; }
 
-    [SerializeField]
-    private AppData _appData = new AppData();
+    [SerializeField] AppData _appData = new AppData();
+
     private EventManager _eventManager;
     private TicketManager _ticketManager;
     private MapManager _mapManager;
@@ -25,9 +25,10 @@ public class DataCore : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 60;
+
         if (Instance == null)
         {
-            Application.targetFrameRate = 60;
             Instance = this;
             DontDestroyOnLoad(gameObject);
             InitializeManagers();
@@ -49,16 +50,29 @@ public class DataCore : MonoBehaviour
         _personalManager = new PersonalManager(_appData);
     }
 
+
+    /// <summary>
+    /// Discards changes and reloads data.
+    /// </summary>
     public void DiscardChanges()
     {
         LoadData();
     }
 
+    /// <summary>
+    /// Saves data to file.
+    /// </summary>
+    public void SaveData()
+    {
+        string json = JsonUtility.ToJson(_appData, true);
+        FileManager.WriteToFile(AppDataFileName, json);
+        Logger.Log("GlobalData saved successfully");
+    }
     private void LoadData()
     {
         if (!FileManager.FileExist(AppDataFileName))
         {
-            Loger.Log($"{AppDataFileName} not found, starting with default data");
+            Logger.Log($"{AppDataFileName} not found, starting with default data");
             return;
         }
 
@@ -69,29 +83,15 @@ public class DataCore : MonoBehaviour
             if (loadedData != null)
             {
                 _appData = loadedData;
-                InitializeManagers(); 
+                InitializeManagers();
             }
         }
         catch (Exception ex)
         {
-            Loger.LogError($"Error loading {AppDataFileName}: {ex.Message}");
+            Logger.LogError($"Error loading {AppDataFileName}: {ex.Message}");
         }
     }
 
-    public void SaveData()
-    {
-        Loger.TryCatch(() =>
-        {
-            string json = JsonUtility.ToJson(_appData, true);
-            FileManager.WriteToFile(AppDataFileName, json);
-            Loger.Log("GlobalData saved successfully");
-        });
-    }
-
-    private void OnApplicationQuit()
-    {
-        SaveData();
-    }
 
     private async UniTask UpdateNotificationsAsync()
     {

@@ -25,7 +25,7 @@ public class FileManager : MonoBehaviour
 
         using var writer = new StreamWriter(fileStream);
         writer.Write(content);
-        Loger.Log(path);
+        Logger.Log(path);
     }
 
     public static bool FileExist(string fileName)
