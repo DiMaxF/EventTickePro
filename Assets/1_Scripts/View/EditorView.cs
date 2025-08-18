@@ -20,12 +20,12 @@ public abstract class EditorView : View
     {
         transform = GetComponent<Transform>();
         rectTransform = GetComponent<RectTransform>();
-        UIContainer.RegisterView(controllerView);
+        UIContainer.RegisterView(controllerView, true);
         if (controllerView != null)
         {
             controllerView.Hide();
         }
-        UIContainer.SubscribeToView<ButtonView, object>(selectButton, _ => OnClick());
+        UIContainer.SubscribeToView<ButtonView, object>(selectButton, _ => OnClick(), true);
     }
 
     public virtual void Select()
@@ -135,22 +135,15 @@ public abstract class EditorView : View
 
         Vector2 adjustedDelta = delta;
 
-        if (button.transform.localPosition.x > 0)
-        {
-            // Правая кнопка: поведение без изменений (как в исходном коде)
-        }
+        if (button.transform.localPosition.x > 0) {}
         else if (button.transform.localPosition.x < 0)
         {
-            adjustedDelta.x = -delta.x; // Левая кнопка: инверсия
+            adjustedDelta.x = -delta.x; 
         }
-
-        if (button.transform.localPosition.y > 0)
-        {
-            // Верхняя кнопка: поведение без изменений
-        }
+        if (button.transform.localPosition.y > 0) {}
         else if (button.transform.localPosition.y < 0)
         {
-            adjustedDelta.y = -delta.y; // Нижняя кнопка: инверсия
+            adjustedDelta.y = -delta.y; 
         }
 
         return adjustedDelta;

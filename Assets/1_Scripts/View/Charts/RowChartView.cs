@@ -1,67 +1,50 @@
 using DG.Tweening;
 using E2C;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RowChartView : View
 {
     [SerializeField] private E2Chart chart;
-    [SerializeField] private Color colorBar = new Color(1, 0.851f, 0);
+    [SerializeField] private Color labelTextColor = Color.black;
+    [SerializeField] private Color barColor = new Color(1, 0.851f, 0);
+    [Header("Animations")]
+    [SerializeField] AnimationConfig fadeIn;
+    [SerializeField] AnimationConfig fadeOut;
+    [SerializeField] AnimationConfig scaleAnim;
+    private E2ChartOptions chartOptions;
+    private E2ChartData chartData;
     private ChartData _data;
+    private Vector3 _initialScale;
     private CanvasGroup canvasGroup;
 
-    public override void Init<T>(T data)
+    private void Awake()
     {
-        if (data is ChartData d)
+        canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
         {
-            _data = d;
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
+        _initialScale = transform.localScale;
 
-        base.Init(data);
-    }
+        chartOptions = chart.GetComponent<E2ChartOptions>();
+        chartData = chart.GetComponent<E2ChartData>();
 
-    public override void UpdateUI()
-    {
-        if (_data == null || _data.values == null || _data.values.Count == 0)
-        {
-            Debug.LogWarning("[RowChartView] No valid data to display in chart");
-            return;
-        }
-
-        if (chart == null)
-        {
-            Debug.LogError("[RowChartView] E2Chart component is not assigned");
-            return;
-        }
-
-        RectTransform chartRect = chart.GetComponent<RectTransform>();
-        if (chartRect.sizeDelta.x <= 0 || chartRect.sizeDelta.y <= 0)
-        {
-            Debug.LogWarning("[RowChartView] Chart RectTransform has invalid size. Setting default size.");
-            chartRect.sizeDelta = new Vector2(400, 300); 
-        }
-
-        chart.gameObject.SetActive(true);
         chart.chartType = E2Chart.ChartType.BarChart;
 
-        E2ChartOptions chartOptions = chart.GetComponent<E2ChartOptions>();
-        if (chartOptions == null)
-        {
-            Debug.Log("[RowChartView] Adding E2ChartOptions...");
-            chartOptions = chart.gameObject.AddComponent<E2ChartOptions>();
-        }
-
-        chartOptions.title.enableTitle = true;
+        chartOptions.title.enableTitle = false;
         chartOptions.title.enableSubTitle = false;
-        chartOptions.title.titleTextOption = new E2ChartOptions.TextOptions { fontSize = 24 };
+        chartOptions.title.titleTextOption = new E2ChartOptions.TextOptions { fontSize = 24, color = Color.clear };
 
         chartOptions.xAxis.enableTitle = true;
         chartOptions.xAxis.titleTextOption = new E2ChartOptions.TextOptions { fontSize = 30 };
         chartOptions.xAxis.labelTextOption.fontSize = 36;
         chartOptions.xAxis.enableAxisLine = true;
         chartOptions.xAxis.axisLineWidth = 3.0f;
-        chartOptions.xAxis.axisLineColor = Color.white;
+        chartOptions.xAxis.tickColor = labelTextColor;
+        chartOptions.xAxis.axisLineColor = labelTextColor;
         chartOptions.xAxis.gridLineWidth = 3.0f;
 
         chartOptions.yAxis.enableTitle = true;
@@ -69,108 +52,108 @@ public class RowChartView : View
         chartOptions.yAxis.labelTextOption.fontSize = 36;
         chartOptions.yAxis.enableAxisLine = true;
         chartOptions.yAxis.axisLineWidth = 3.0f;
-        chartOptions.yAxis.axisLineColor = Color.white;
+        chartOptions.yAxis.axisLineColor = labelTextColor;
+        chartOptions.yAxis.tickColor = labelTextColor;
         chartOptions.yAxis.gridLineWidth = 3.0f;
+        chartOptions.label.offset = 30f;
 
-        chartOptions.label.enable = true;
-        chartOptions.label.textOption = new E2ChartOptions.TextOptions
-        {
-            fontSize = 46,
-            color = Color.white
-        };
-        chartOptions.label.offset = 26f;
-
-        chartOptions.legend.enable = true;
+        chartOptions.label.enable = false;
+        chartOptions.legend.enable = false;
         chartOptions.legend.textOption.fontSize = 44;
+        chartOptions.legend.textOption.color = labelTextColor;
         chartOptions.plotOptions.mouseTracking = E2ChartOptions.MouseTracking.BySeries;
         chartOptions.plotOptions.colorMode = E2ChartOptions.ColorMode.BySeries;
         chartOptions.chartStyles.barChart.barWidth = 80f;
-        //chartOptions.chartStyles.
-        chartOptions.chartStyles.barChart.categoryBackgroundColor = colorBar;
-        chartOptions.chartStyles.barChart.barBackgroundColor = colorBar;
+        chartOptions.chartStyles.barChart.categoryBackgroundColor = barColor;
+        chartOptions.chartStyles.barChart.barBackgroundColor = barColor;
 
-
-        E2ChartData chartData = chart.GetComponent<E2ChartData>();
-        if (chartData == null)
+        chartOptions.label.textOption = new E2ChartOptions.TextOptions
         {
-            Loger.Log("Adding E2ChartData...", "RowChartView");
-            chartData = chart.gameObject.AddComponent<E2ChartData>();
-        }
-
-        chartData.title = _data.title;
-        chartData.xAxisTitle = "";
-        chartData.yAxisTitle = "";
-        chartData.categoriesX = new List<string>();
-        List<float> values = new List<float>();
-
-        foreach (var data in _data.values)
-        {
-            chartData.categoriesX.Add(data.Key);
-            values.Add(data.Value);
-            Loger.Log($"Adding data: Key={data.Key}, Value={data.Value}", "RowChartView");
-        }
-
-        E2ChartData.Series valueSeries = new E2ChartData.Series
-        {
-            name = _data.title,
-            dataY = values
+            fontSize = 46,
+            color = labelTextColor
         };
+    }
 
-        chartData.series = new List<E2ChartData.Series> { valueSeries };
+    public override void UpdateUI()
+    {
+        if (_data == null || _data.values == null || _data.values.Count == 0)
+        {
+            Loger.LogWarning("No valid data to display in chart", "RowChartView");
+            return;
+        }
 
-        Loger.Log($"Updating chart with {chartData.categoriesX.Count} categories and {values.Count} values", "RowChartView");
-        LayoutRebuilder.ForceRebuildLayoutImmediate(chartRect);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(chart.GetComponent<RectTransform>());
         chart.UpdateChart();
+    }
+
+    public override void Init<T>(T data)
+    {
+        if (data is ChartData d)
+        {
+            _data = d;
+
+            if (chartData == null)
+            {
+                chartData = chart.gameObject.AddComponent<E2ChartData>();
+            }
+
+            if (chartOptions == null)
+            {
+                Loger.LogWarning("Adding E2ChartOptions...", "RowChartView");
+                chartOptions = chart.gameObject.AddComponent<E2ChartOptions>();
+            }
+
+            chartData.title = _data.title;
+            chartData.xAxisTitle = "";
+            chartData.yAxisTitle = "";
+            chartData.categoriesX = new List<string>();
+            chartData.series = new List<E2ChartData.Series>();
+
+            if (_data.series != null && _data.series.Count > 0)
+            {
+                foreach (var series in _data.series)
+                {
+                    chartData.categoriesX = series.values.Keys.ToList();
+                    chartData.series.Add(new E2ChartData.Series
+                    {
+                        name = series.name,
+                        dataY = series.values.Values.ToList()
+                    });
+                }
+                chartOptions.plotOptions.seriesColors = new Color[] { barColor };
+            }
+            else
+            {
+                chartData.categoriesX = _data.values.Keys.ToList();
+                chartData.series.Add(new E2ChartData.Series
+                {
+                    name = _data.title,
+                    dataY = _data.values.Values.ToList()
+                });
+                chartOptions.plotOptions.seriesColors = new Color[] { barColor };
+            }
+        }
+        base.Init(data);
     }
 
     public override void Show()
     {
         base.Show();
-        if (canvasGroup == null)
-        {
-            canvasGroup = GetComponent<CanvasGroup>();
-            if (canvasGroup == null)
-            {
-                Loger.Log("Adding CanvasGroup...", "RowChartView");
-                canvasGroup = gameObject.AddComponent<CanvasGroup>();
-            }
-        }
-
-        canvasGroup.DOKill();
+        transform.localScale = _initialScale * 0.8f;
         canvasGroup.alpha = 0f;
-        chart.gameObject.SetActive(true);
 
-        DOTween.Sequence()
-            .AppendCallback(() => LayoutRebuilder.ForceRebuildLayoutImmediate(chart.GetComponent<RectTransform>()))
-            .Append(canvasGroup.DOFade(1f, 0.5f))
-            .SetEase(Ease.OutQuad)
-            .OnComplete(() =>
-            {
-                Loger.Log("Chart show animation completed", "RowChartView");
-                UpdateUI();
-            });
+        Tween fade = canvasGroup.DOFade(1f, fadeIn.Duration).SetEase(fadeIn.Ease);
+        Tween scaleTween = transform.DOScale(_initialScale, scaleAnim.Duration).SetEase(scaleAnim.Ease);
+        StartAnimation().Append(fade).Join(scaleTween);
     }
 
     public override void Hide()
     {
-        if (canvasGroup == null)
-        {
-            canvasGroup = GetComponent<CanvasGroup>();
-            if (canvasGroup == null)
+        StartAnimation().Append(
+            canvasGroup.DOFade(0f, fadeOut.Duration).OnComplete(() =>
             {
-                canvasGroup = gameObject.AddComponent<CanvasGroup>();
-            }
-        }
-
-        canvasGroup.DOKill();
-        DOTween.Sequence()
-            .Append(canvasGroup.DOFade(0f, 0.5f))
-            .SetEase(Ease.InQuad)
-            .OnComplete(() =>
-            {
-                chart.gameObject.SetActive(false);
                 base.Hide();
-                Loger.Log("Chart hidden", "RowChartView");
-            });
+                canvasGroup.alpha = 1f;
+            }).SetEase(fadeOut.Ease));
     }
 }

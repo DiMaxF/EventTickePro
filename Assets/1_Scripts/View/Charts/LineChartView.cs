@@ -11,12 +11,24 @@ public class LineChartView : View
     [SerializeField] private Color labelTextColor = Color.black;
     [SerializeField] private Color[] lineColors = { Color.blue, Color.green };
     [SerializeField] private Color pointColor = Color.red;
+    [Header("Animations")]
+    [SerializeField] AnimationConfig fadeIn;
+    [SerializeField] AnimationConfig fadeOut;
+    [SerializeField] AnimationConfig scaleAnim;
     private E2ChartOptions chartOptions;
     private E2ChartData chartData;
     private ChartData _data;
-
+    private Vector3 _initialScale;
+    private CanvasGroup canvasGroup;
     private void Awake()
     {
+        canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
+        _initialScale = transform.localScale;
+
         chartOptions = chart.GetComponent<E2ChartOptions>();
         chartData = chart.GetComponent<E2ChartData>();
 
@@ -68,14 +80,6 @@ public class LineChartView : View
             Loger.LogWarning("Adding E2ChartOptions...", "LineChartView");
             return;
         }
-
-        if (chartOptions == null)
-        {
-            Loger.LogWarning("Adding E2ChartOptions...", "LineChartView");
-            chartOptions = chart.gameObject.AddComponent<E2ChartOptions>();
-        }
-
-
         LayoutRebuilder.ForceRebuildLayoutImmediate(chart.GetComponent<RectTransform>());
         chart.UpdateChart();
     }
@@ -91,6 +95,12 @@ public class LineChartView : View
                 chartData = chart.gameObject.AddComponent<E2ChartData>();
             }
 
+
+            if (chartOptions == null)
+            {
+                Loger.LogWarning("Adding E2ChartOptions...", "LineChartView");
+                chartOptions = chart.gameObject.AddComponent<E2ChartOptions>();
+            }
 
             chartData.title = _data.title;
             chartData.xAxisTitle = "";
@@ -124,5 +134,24 @@ public class LineChartView : View
         }
         base.Init(data);
     }
+    public override void Show()
+    {
+        base.Show();
+        transform.localScale = _initialScale * 0.8f;
+        canvasGroup.alpha = 0f;
 
+        Tween fade = canvasGroup.DOFade(1f, fadeIn.Duration).SetEase(fadeIn.Ease);
+        Tween scaleTween = transform.DOScale(_initialScale, scaleAnim.Duration).SetEase(scaleAnim.Ease);
+        StartAnimation().Append(fade).Join(scaleTween);
+    }
+
+    public override void Hide()
+    {
+        StartAnimation().Append(
+            canvasGroup.DOFade(0f, fadeOut.Duration).OnComplete(() =>
+            {
+                base.Hide();
+                canvasGroup.alpha = 1f;
+            }).SetEase(fadeOut.Ease));
+    }
 }

@@ -9,27 +9,27 @@ public class EditorTextView : EditorView
 
     string _val;
 
-    public override void Show()
-    {
-        base.Show();
-        UIContainer.RegisterView(value);
-        UIContainer.SubscribeToView<InputTextView, string>(value, val => _val = val);
-    }
-
     public string Text => value.text;
     public override void UpdateUI()
     {
         base.UpdateUI();
+        UIContainer.InitView(value, _val);
     }
 
     public override void Init<T>(T data)
     {
         if (data is string s) 
         {
-            UIContainer.RegisterView(value);
-            UIContainer.InitView(value, s);
+            _val = s;
+            UIContainer.RegisterView(value, true);
         }
         base.Init(data);
+    }
+
+    public override void Subscriptions()
+    {
+        base.Subscriptions();
+        UIContainer.SubscribeToView<InputTextView, string>(value, val => _val = val);
     }
 
     public override void Select()

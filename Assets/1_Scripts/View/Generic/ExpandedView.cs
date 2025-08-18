@@ -24,6 +24,7 @@ public class ExpandedView : View
     {
         _rectTransform = GetComponent<RectTransform>();
         if (_updater == null) _updater = GetComponentInParent<VerticaUpdater>();
+        InstantHide();
     }
     public override void Init<T>(T data)
     {
@@ -48,13 +49,14 @@ public class ExpandedView : View
 
         if (_active)
         {
-            await AnimateExpand();
-
+            AnimateExpand();
+            await UniTask.WaitForSeconds(moveAnim.Duration);
             await AnimateItemsSpawn(false);
         }
         else
         {
-            await AnimateItemsSpawn(true);
+            AnimateItemsSpawn(true);
+            await UniTask.WaitForSeconds(moveAnim.Duration);
 
             await AnimateExpand();
         }
@@ -110,4 +112,9 @@ public class ExpandedView : View
         if (_active) view.Show();
         else view.Hide();
     } 
+
+    private void InstantHide() 
+    {
+        foreach (var view in views) view.gameObject.SetActive(false);
+    }
 }

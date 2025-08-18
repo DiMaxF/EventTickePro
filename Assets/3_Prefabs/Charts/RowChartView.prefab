@@ -425,6 +425,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1401c917a7b9e214daa01ec2a528328b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   chart: {fileID: 5563988516546563054}
-  colorBar: {r: 1, g: 0.851, b: 0, a: 1}
+  labelTextColor: {r: 0, g: 0, b: 0, a: 1}
+  barColor: {r: 1, g: 0.851, b: 0, a: 1}
+  fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
+  scaleAnim: {fileID: 11400000, guid: 60eaa18a974e33340be2f70afa126509, type: 2}

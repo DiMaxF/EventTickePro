@@ -7,10 +7,9 @@ using UnityEngine;
 public class ChartData
 {
     public string title;
-    public Dictionary<string, float> values; // Для одиночных графиков
-    public List<(string name, Dictionary<string, float> values)> series; // Для графиков с несколькими линиями
+    public Dictionary<string, float> values;
+    public List<(string name, Dictionary<string, float> values)> series;
 
-    // Конструктор для одиночных графиков
     public ChartData(string title, Dictionary<string, int> values)
     {
         this.title = title;
@@ -18,7 +17,6 @@ public class ChartData
         this.series = null;
     }
 
-    // Конструктор для графиков с несколькими сериями
     public ChartData(string title, Dictionary<string, float> values, List<(string name, Dictionary<string, float> values)> series)
     {
         this.title = title;

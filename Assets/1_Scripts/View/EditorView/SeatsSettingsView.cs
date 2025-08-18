@@ -23,30 +23,30 @@ public class SeatsSettingsView : View
         if (data is EditorSeatView.Data d)
         {
             _data = d;
-            UIContainer.RegisterView(numer);
-            UIContainer.RegisterView(seats);
-            UIContainer.RegisterView(countRow);
-
-
-            UIContainer.SubscribeToView<InputTextView, string>(numer, HandleNumer);
-            UIContainer.SubscribeToView<InputTextView, string>(seats, HandleSeats);
-            UIContainer.SubscribeToView<InputTextView, string>(countRow, HandleRows);
-
-            UIContainer.SubscribeToView<ButtonView, object>(numerAction, _ =>
-            {
-                UIContainer.InitView(numer, _data.numer == "Alphabet" ? "Numbers" : "Alphabet");
-            });
-            UIContainer.SubscribeToView<ButtonView, object>(toggleLeft, _ => Toggle(false));
-            UIContainer.SubscribeToView<ButtonView, object>(toggleRight, _ => Toggle(true));
+            UIContainer.RegisterView(numer, true);
+            UIContainer.RegisterView(seats, true);
+            UIContainer.RegisterView(countRow, true);
         }
         base.Init(data);
+    }
+
+    public override void Subscriptions()
+    {
+        base.Subscriptions();
+        UIContainer.SubscribeToView<InputTextView, string>(numer, HandleNumer, true);
+        UIContainer.SubscribeToView<InputTextView, string>(seats, HandleSeats, true);
+        UIContainer.SubscribeToView<InputTextView, string>(countRow, HandleRows, true);
+
+        UIContainer.SubscribeToView<ButtonView, object>(numerAction, _ =>
+        {
+            UIContainer.InitView(numer, _data.numer == "Alphabet" ? "Numbers" : "Alphabet");
+        }, true);
+        UIContainer.SubscribeToView<ButtonView, object>(toggleLeft, _ => Toggle(false), true);
+        UIContainer.SubscribeToView<ButtonView, object>(toggleRight, _ => Toggle(true), true);
     }
     public override void UpdateUI()
     {
         base.UpdateUI();
-        UIContainer.RegisterView(numer);
-        UIContainer.RegisterView(seats);
-        UIContainer.RegisterView(countRow);
         UIContainer.InitView(seats, _data.countSeats.ToString());
         UIContainer.InitView(countRow, _data.countRow.ToString());
         UIContainer.InitView(numer, _data.numer);

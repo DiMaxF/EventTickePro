@@ -89,13 +89,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa9090c80e66682409ba804097308818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   chart: {fileID: 6001914967031849831}
   labelTextColor: {r: 0, g: 0, b: 0, a: 1}
   lineColors:
   - {r: 0, g: 0, b: 1, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
   pointColor: {r: 1, g: 0, b: 0, a: 1}
+  fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
+  scaleAnim: {fileID: 11400000, guid: 60eaa18a974e33340be2f70afa126509, type: 2}
 --- !u!1 &5157462390159884944
 GameObject:
   m_ObjectHideFlags: 0

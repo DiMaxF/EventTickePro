@@ -48,4 +48,9 @@ public abstract class View : MonoBehaviour
         _animationController.StopAnimation();
     }
     protected bool HasActiveAnimation => _animationController.HasActiveAnimation;
+
+    private void OnDisable()
+    {
+        _subscribed = false;
+    }
 }

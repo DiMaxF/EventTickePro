@@ -15,12 +15,10 @@ public class EmailSenderView : View
 
     public override void Init<T>(T data)
     {
-        Loger.Log($"Init 0", "EmailSenderView");
-
         emails = new List<EmailModel>();
         UIContainer.RegisterView(list);
-        Loger.Log($"Init", "EmailSenderView");
         base.Init(data);
+        OnButtonAdd();
     }
 
     public override void UpdateUI()
@@ -62,14 +60,10 @@ public class EmailSenderView : View
 
     private void OnButtonSend()
     {
-        if (emails == null || emails.Count == 0)
-            return;
-
-        var emailAddresses = string.Join(",", emails.ConvertAll(e => e.email));
+        if (emails == null || emails.Count == 0) return;
 
         string subject = UnityWebRequest.EscapeURL("Тема письма");
         string body = UnityWebRequest.EscapeURL("Текст письма");
-        string mailto = $"mailto:{emailAddresses}?subject={subject}&body={body}";
 
         TriggerAction(emails);
         NativeMobilePlugin.Instance.OpenEmailMultiple(emails.ConvertAll(e => e.email).ToArray(), subject, body);
@@ -79,5 +73,4 @@ public class EmailSenderView : View
     {
         Hide();
     }
-
 }

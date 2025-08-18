@@ -345,8 +345,8 @@ MonoBehaviour:
   dateTime: {fileID: 730636176676982672}
   description: {fileID: 8571305063645937039}
   action: {fileID: 949060825226158824}
-  scaleAnim: {fileID: 11400000, guid: 232472e67aad28c40bdbc0f45af6c360, type: 2}
-  moveAnim: {fileID: 11400000, guid: 232472e67aad28c40bdbc0f45af6c360, type: 2}
+  scaleAnim: {fileID: 11400000, guid: 60eaa18a974e33340be2f70afa126509, type: 2}
+  moveAnim: {fileID: 11400000, guid: 60eaa18a974e33340be2f70afa126509, type: 2}
 --- !u!1 &7468151215490221420
 GameObject:
   m_ObjectHideFlags: 0

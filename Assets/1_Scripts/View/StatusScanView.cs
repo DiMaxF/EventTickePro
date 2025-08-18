@@ -53,9 +53,7 @@ public class StatusScanView : View
 
     void MoveScannerLine()
     {
-
-        Sequence sequence = DOTween.Sequence();
-        sequence
+        StartAnimation()
             .Append(scanning.transform.DOLocalMoveY(pos.y + 180, 2f).SetEase(Ease.InOutSine)) 
             .Append(scanning.transform.DOLocalMoveY(pos.y - 180, 2f).SetEase(Ease.InOutSine)) 
             .SetLoops(-1, LoopType.Yoyo); 
