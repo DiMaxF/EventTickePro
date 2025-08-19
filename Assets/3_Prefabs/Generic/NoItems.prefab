@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4330406259196887679}
   - component: {fileID: 5376627854588822678}
   - component: {fileID: 3089902975823322973}
-  - component: {fileID: 4562781614000744920}
   m_Layer: 5
   m_Name: NoItems
   m_TagString: Untagged
@@ -63,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.972549, g: 0.98039216, b: 0.9843137, a: 1}
+  m_Color: {r: 0.047058824, g: 0.047058824, b: 0.08235294, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -126,22 +125,6 @@ MonoBehaviour:
   fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
   fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   scaleAnim: {fileID: 11400000, guid: 5debe229796e1e74c9dfb2a473eeccca, type: 2}
---- !u!114 &4562781614000744920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7716406931632434823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a488aaa16f707479c065ca1ca3c37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_color1: {r: 0.007843138, g: 0, b: 0.2627451, a: 0.9019608}
-  m_color2: {r: 0.12213292, g: 0, b: 0.2627451, a: 0.34901962}
-  m_angle: -53
-  m_ignoreRatio: 1
 --- !u!1001 &3570876597074984904
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 926438099800556187}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7064450650376116203}
@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 8381337401304227211}
   - component: {fileID: 7214626740796800788}
   - component: {fileID: 4571800356150480147}
+  - component: {fileID: 3744450259667424066}
   m_Layer: 5
   m_Name: Selecnted
   m_TagString: Untagged
@@ -125,7 +126,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 210, y: 210}
+  m_SizeDelta: {x: 135, y: 135}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7214626740796800788
 CanvasRenderer:
@@ -148,14 +149,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.27450982, g: 0.3882353, b: 0.7372549, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -4948438469318495077, guid: 2d3ccb8d4082fe74b933448f4e77117c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7b59c93bccea7074aa94fe1251a1497b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -165,6 +166,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &3744450259667424066
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622466216471431782}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4900244830273438684
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +287,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 6965018184698851475}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -382,7 +395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 8501294455282157998}
   button: {fileID: 1334143849967146471}
-  selected: {fileID: 4571800356150480147}
+  selected: {fileID: 3744450259667424066}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   inactiveColor: {r: 0.7372549, g: 0.7372549, b: 0.7372549, a: 1}
   colorAnim: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}

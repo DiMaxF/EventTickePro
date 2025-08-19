@@ -42,24 +42,11 @@ public static class UIContainer
     {
         var targetSubscriptions = isPersistent ? _persistentViewSubscriptions : _currentViewSubscriptions;
 
-        if (!targetSubscriptions.TryGetValue(view, out var subscriptions))
+        if (!targetSubscriptions.ContainsKey(view))
         {
-            subscriptions = new List<Action<object>>();
-            targetSubscriptions[view] = subscriptions;
+            targetSubscriptions[view] = new List<Action<object>>();
         }
-
-        subscriptions.Add(obj =>
-        {
-            if (obj is TData data)
-            {
-                handler(data);
-            }
-            else
-            {
-                Debug.LogWarning($"Invalid data type for {view.name}: expected {typeof(TData)}, got {obj?.GetType()}");
-            }
-        });
-
+        targetSubscriptions[view].Add(obj => handler(obj is TData data ? data : default));
         Logger.Log($"Subscribed to view {view.name} for type {typeof(TData).Name} (Persistent: {isPersistent})", "UIContainer");
     }
 

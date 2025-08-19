@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4540477773181531632}
   - component: {fileID: 1728348281036602486}
   - component: {fileID: 2040165483328412925}
-  - component: {fileID: 723395815089595763}
   m_Layer: 5
   m_Name: InputTextView
   m_TagString: Untagged
@@ -65,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.047058824, g: 0.047058824, b: 0.08235294, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -107,7 +106,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0, g: 0, b: 0, a: 0.101960786}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -162,27 +161,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbcf872986e9a7b4093068365d854b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   inputField: {fileID: 1728348281036602486}
   outline: {fileID: 8689651917962019498}
-  normalColor: {r: 0.7254902, g: 0.38823533, b: 0.96470594, a: 1}
-  errorColor: {r: 1, g: 0.2627451, b: 0.5254902, a: 1}
---- !u!114 &723395815089595763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4269455340262958550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a488aaa16f707479c065ca1ca3c37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_color1: {r: 0.007843138, g: 0, b: 0.2627451, a: 0.9019608}
-  m_color2: {r: 0.12213292, g: 0, b: 0.2627451, a: 0.34901962}
-  m_angle: -53
-  m_ignoreRatio: 1
+  normalColor: {r: 1, g: 1, b: 1, a: 0.4}
+  errorColor: {r: 1, g: 0.2627451, b: 0.5254902, a: 0.4}
 --- !u!1001 &1538054130392277038
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -280,16 +262,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7912715092489249412, guid: 23eec2fb24d48d345999be96bb539800, type: 3}
+      propertyPath: m_Color.a
+      value: 0.2509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912715092489249412, guid: 23eec2fb24d48d345999be96bb539800, type: 3}
       propertyPath: m_Color.b
-      value: 0.9647059
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7912715092489249412, guid: 23eec2fb24d48d345999be96bb539800, type: 3}
       propertyPath: m_Color.g
-      value: 0.3882353
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7912715092489249412, guid: 23eec2fb24d48d345999be96bb539800, type: 3}
       propertyPath: m_Color.r
-      value: 0.7254902
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -431,16 +417,20 @@ PrefabInstance:
       value: Enter text...
       objectReference: {fileID: 0}
     - target: {fileID: 2055360293007343234, guid: d8efbcc4227e06c4daea345a03e8e9a1, type: 3}
+      propertyPath: m_Color.a
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055360293007343234, guid: d8efbcc4227e06c4daea345a03e8e9a1, type: 3}
       propertyPath: m_Color.b
-      value: 0.85490197
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2055360293007343234, guid: d8efbcc4227e06c4daea345a03e8e9a1, type: 3}
       propertyPath: m_Color.g
-      value: 0.4117647
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2055360293007343234, guid: d8efbcc4227e06c4daea345a03e8e9a1, type: 3}
       propertyPath: m_Color.r
-      value: 0.6431373
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2055360293007343234, guid: d8efbcc4227e06c4daea345a03e8e9a1, type: 3}
       propertyPath: m_FontData.m_MinSize

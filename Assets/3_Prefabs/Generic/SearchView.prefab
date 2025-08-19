@@ -60,7 +60,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d71e7430a675da4e9fbdf95decfaf6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   inputTextView: {fileID: 4980983004082664098}
   searchButton: {fileID: 6298213296038316164}
 --- !u!1 &3104313608789447693
@@ -149,7 +148,6 @@ GameObject:
   - component: {fileID: 3770601567768309116}
   - component: {fileID: 5431778104632621247}
   - component: {fileID: 7194330287461880780}
-  - component: {fileID: 4265502540635330287}
   - component: {fileID: 5998222503718043534}
   - component: {fileID: 6298213296038316164}
   m_Layer: 5
@@ -177,7 +175,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 3, y: 0}
-  m_SizeDelta: {x: 150, y: 126}
+  m_SizeDelta: {x: 140, y: 126}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &5431778104632621247
 CanvasRenderer:
@@ -200,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.27450982, g: 0.3882353, b: 0.7372549, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -217,22 +215,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4265502540635330287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4188811004340684971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a488aaa16f707479c065ca1ca3c37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_color1: {r: 1, g: 0.20392157, b: 0.20392157, a: 1}
-  m_color2: {r: 1, g: 0.79607844, b: 0.1254902, a: 1}
-  m_angle: 0
-  m_ignoreRatio: 1
 --- !u!114 &5998222503718043534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,7 +271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _text: {fileID: 0}
 --- !u!1 &8797909315349314922
 GameObject:

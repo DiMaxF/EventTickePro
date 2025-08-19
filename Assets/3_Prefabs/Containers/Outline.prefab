@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7254902, g: 0.3882353, b: 0.9647059, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.2509804}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -178,4 +178,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b6173ba2cbebd8459659d17dd098fc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invertedMaskShader: {fileID: 4800000, guid: cd062a87cd098ad4d9e26db3a10d71c1, type: 3}

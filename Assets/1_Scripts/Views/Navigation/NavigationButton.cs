@@ -9,7 +9,7 @@ public class NavigationButton : View
 {
     [SerializeField] private Image icon;
     [SerializeField] private ButtonView button;
-    [SerializeField] private Image selected;
+    [SerializeField] private CanvasGroup selected;
     [SerializeField] private Color selectedColor = Color.white;
     [SerializeField] private Color inactiveColor = Color.white;
     [Header("Animation Configs")]
@@ -82,14 +82,13 @@ public class NavigationButton : View
 
         if (selected == val)
         {
-            this.selected.color = targetC;
+            this.selected.alpha = targetC.a;
             return;
         }
         this.selected.transform.localScale = startS;
-        this.selected.color = startC;
+        this.selected.alpha = startC.a;
         button.interactable = false;
-
-        StartAnimation().Join(this.selected.DOColor(targetC, colorAnim.Duration).SetEase(colorAnim.Ease))
+        StartAnimation().Join(this.selected.DOFade(targetC.a, colorAnim.Duration).SetEase(colorAnim.Ease))
             .Join(this.selected.transform.DOScale(targetS, scaleAnim.Duration).SetEase(scaleAnim.Ease))
             .Join(
             DOTween.To(() => layoutElement.flexibleWidth, 

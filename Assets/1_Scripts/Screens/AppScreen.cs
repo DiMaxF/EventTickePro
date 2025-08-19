@@ -25,8 +25,8 @@ public abstract class AppScreen : MonoBehaviour
     /// </summary>
     public void Init(DataCore data, AppContainer container)
     {
-        Data = data;
-        Container = container;
+        this.Data = data;
+        this.Container = container;
     }
 
     private void Loading(bool value)
@@ -64,20 +64,16 @@ public abstract class AppScreen : MonoBehaviour
         _canvasGroup.alpha = 0f;
         await PreloadViewsAsync();
         OnStart();
-
         if (_fadeIn != null)
         {
             var sequence = StartAnimation();
-            sequence.Append(_canvasGroup.DOFade(1f, _fadeIn.Duration)
-                .SetDelay(_fadeIn.Delay)
-                .SetEase(_fadeIn.Ease));
+            sequence.Append(_canvasGroup
+                                .DOFade(1f, _fadeIn.Duration)
+                                .SetDelay(_fadeIn.Delay)
+                                .SetEase(_fadeIn.Ease));
             await sequence.AsyncWaitForCompletion();
         }
-        else
-        {
-            Logger.LogError("Animation Config not found", "AppScreen");
-        }
-
+        else Logger.LogError("Animation Config not found", "AppScreen");
         Loading(false);
     }
 
@@ -86,10 +82,11 @@ public abstract class AppScreen : MonoBehaviour
     /// </summary>
     public async UniTask Hide()
     {
-        var sequence = StartAnimation()
-                                    .Append(_canvasGroup.DOFade(0, _fadeOut.Duration)
-                                    .SetDelay(_fadeOut.Delay)
-                                    .SetEase(_fadeOut.Ease));
+        var sequence = StartAnimation();
+        sequence.Append(_canvasGroup
+                            .DOFade(0, _fadeOut.Duration)
+                            .SetDelay(_fadeOut.Delay)
+                            .SetEase(_fadeOut.Ease));
         await sequence.AsyncWaitForCompletion();
         gameObject.SetActive(false);
     }
