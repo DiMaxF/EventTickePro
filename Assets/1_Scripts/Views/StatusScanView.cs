@@ -14,14 +14,15 @@ public class StatusScanView : View
     private Vector2 pos;
     private void Awake()
     {
-        pos = scanning.transform.localPosition;
+        pos = Vector3.zero;
+        scanning.transform.localPosition = pos - new Vector2(0, 180);
     }       
     public override void Init<T>(T data)
     {
         if (data is StatusScanning status) this.status = status;
         base.Init(data);
     }
-
+    
 
     public override void UpdateUI()
     {

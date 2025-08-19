@@ -80,7 +80,7 @@ public class StatisticsScreen : AppScreen
 
     private void ButtonActive(ButtonView button, bool active) 
     {
-        button.image.color = active ? Color.white : Color.clear;    
+        button.image.color = active ? new Color(70f/255f, 99f/255f, 188f/255f) : Color.clear;    
     }
 
     protected override void UpdateViews()

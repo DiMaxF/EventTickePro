@@ -119,7 +119,6 @@ GameObject:
   - component: {fileID: 2786457813588572775}
   - component: {fileID: 1363882223508760843}
   - component: {fileID: 722674836092873226}
-  - component: {fileID: 866014256773714671}
   - component: {fileID: 4677826587284187720}
   - component: {fileID: 4946252304010676781}
   m_Layer: 5
@@ -170,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.57254905, b: 0.08627451, a: 1}
+  m_Color: {r: 0.27450982, g: 0.3882353, b: 0.7372549, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -231,21 +230,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &866014256773714671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3466612010216110461}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.8901961, g: 0.8901961, b: 0.8901961, a: 1}
-  m_EffectDistance: {x: 2, y: -2}
-  m_UseGraphicAlpha: 1
 --- !u!114 &4677826587284187720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,7 +242,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550981c1d596bdf4090cd23de18f5d96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 1
   _text: {fileID: 0}
 --- !u!114 &4946252304010676781
 MonoBehaviour:
@@ -272,10 +255,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4aed819f7e43d443bfe6515aecfe421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clearable: 0
   background: {fileID: 1363882223508760843}
   handle: {fileID: 8576093491711730556}
-  active: {r: 0, g: 0.57254905, b: 0.08627451, a: 1}
+  active: {r: 0.27450982, g: 0.3882353, b: 0.7372549, a: 1}
   inactive: {r: 0.22352943, g: 0.22352943, b: 0.2392157, a: 1}
   activeHandle: {r: 1, g: 1, b: 1, a: 1}
   inactiveHandle: {r: 1, g: 1, b: 1, a: 1}
