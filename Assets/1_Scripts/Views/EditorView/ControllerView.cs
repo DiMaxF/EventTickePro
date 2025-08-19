@@ -100,7 +100,7 @@ public class ControllerView : View
     {
         if (currentState == ViewState.Move)
         {
-            TriggerAction(new ControllerData(currentState, delta));
+            TriggerAction(new ControllerData(currentState, delta)); 
         }
     }
 

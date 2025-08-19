@@ -1,14 +1,16 @@
-using UnityEngine;
-using System.Runtime.InteropServices;
-using UnityEngine.UI;
+using DG.Tweening;
 using System;
+using System.Runtime.InteropServices;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class DatePickerView : View
 {
     [SerializeField] CalendarManager calendar;
     [SerializeField] ButtonView cancel;
     [SerializeField] ButtonView save;
-
+    [SerializeField] AnimationConfig fadeIn;
+    private CanvasGroup canvasGroup;
     string _date;
     public override void Init<T>(T data)
     {
@@ -38,5 +40,19 @@ public class DatePickerView : View
             calendar.UpdateCalender(DateTime.Now.Year, DateTime.Now.Month);
         }
 
+    }
+    public override void Show()
+    {
+        base.Show();
+        canvasGroup.alpha = 0f;
+        StartAnimation().Append(canvasGroup.DOFade(1f, fadeIn.Duration).SetEase(fadeIn.Ease));
+    }
+    private void Awake()
+    {
+        canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
     }
 }

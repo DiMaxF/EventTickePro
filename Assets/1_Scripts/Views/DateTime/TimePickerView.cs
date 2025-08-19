@@ -1,8 +1,9 @@
-using UnityEngine;
-using System.Runtime.InteropServices;
+using DG.Tweening;
 using System;
-using UnityEngine.UI;
+using System.Runtime.InteropServices;
+using UnityEngine;
 using UnityEngine.TerrainUtils;
+using UnityEngine.UI;
 
 public class TimePickerView : View
 {
@@ -11,12 +12,20 @@ public class TimePickerView : View
     [SerializeField] private InputTextView minutes;
     [SerializeField] private ButtonView cancel;
     [SerializeField] private ButtonView save;
-    [SerializeField] private ButtonView pm;
-    [SerializeField] private ButtonView am;
+    [SerializeField] AnimationConfig fadeIn;
+    private CanvasGroup canvasGroup;
+
     int _hours;
     int _minutes;
     TimeSpan _time;
-    private bool _isAm;
+    private void Awake()
+    {
+        canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
+    }
     public override void Init<T>(T data)
     {
         
@@ -38,8 +47,6 @@ public class TimePickerView : View
         
         UIContainer.InitView(minutes, _time.Minutes.ToString());
         UIContainer.SubscribeToView<InputTextView, string>(minutes, OnMinutesEdit);
-        SetButtonFormat(pm, !_isAm);
-        SetButtonFormat(am, _isAm);
     }
 
     public override void Subscriptions()
@@ -47,9 +54,6 @@ public class TimePickerView : View
         base.Subscriptions();
         UIContainer.SubscribeToView<ButtonView, object>(save, _ => SaveTime());
         UIContainer.SubscribeToView<ButtonView, object>(cancel, _ => TriggerAction(""));
-        UIContainer.SubscribeToView<ButtonView, object>(pm, _ => { _isAm = false; UpdateUI(); });
-        UIContainer.SubscribeToView<ButtonView, object>(am, _ => { _isAm = true; UpdateUI(); });
-
     }
 
     private void OnHoursEdit(string val) 
@@ -85,8 +89,7 @@ public class TimePickerView : View
         if (ValidateHours(_hours.ToString()) && ValidateMinutes(_minutes.ToString()))
         {
             Logger.Log($"{_hours} {_minutes}", "TimeValue");
-            int hours24 = _isAm ? (_hours % 12) : (_hours % 12 + 12);
-            TriggerAction(new TimeSpan(hours24, _minutes, 0).ToString(DateTimeUtils.TimeFormat));
+            TriggerAction(new TimeSpan(_hours, _minutes, 0).ToString(DateTimeUtils.TimeFormat));
         }
     }
 
@@ -94,7 +97,7 @@ public class TimePickerView : View
     {
         if (int.TryParse(text, out var h))
         {
-            return h >= 1 && h <= 12;
+            return h >= 1 && h <= 23;
         }
         return false;
     }
@@ -108,9 +111,10 @@ public class TimePickerView : View
         return false;
     }
 
-    private void SetButtonFormat(ButtonView btn, bool active) 
+    public override void Show()
     {
-        btn.image.color= active ? Color.white : Color.clear;
-        btn.transform.GetChild(0).GetComponent<Text>().color = active ? Color.black : Color.white;
+        base.Show();
+        canvasGroup.alpha = 0f;
+        StartAnimation().Append(canvasGroup.DOFade(1f, fadeIn.Duration).SetEase(fadeIn.Ease));
     }
 }
