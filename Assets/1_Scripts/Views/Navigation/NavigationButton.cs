@@ -4,25 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(LayoutElement))]
 public class NavigationButton : View
 {
     [SerializeField] private Image icon;
     [SerializeField] private ButtonView button;
-    [SerializeField] private CanvasGroup selected;
-    [SerializeField] private Color selectedColor = Color.white;
-    [SerializeField] private Color inactiveColor = Color.white;
-    [Header("Animation Configs")]
-    [SerializeField] AnimationConfig colorAnim;
-    [SerializeField] AnimationConfig scaleAnim;
-    private AppContainer.NavigationButtonData screenData;
-    private LayoutElement layoutElement;
-    private bool val;
 
-    private void Awake()
-    {
-        layoutElement = GetComponent<LayoutElement>();
-    }
+
+    private AppContainer.NavigationButtonData screenData;
+    private bool val;
+    private bool firstIteration = true;
+    
 
     public override void Init<T>(T data)
     {
@@ -49,51 +40,27 @@ public class NavigationButton : View
         {
             icon.sprite = screenData.icon;
         
-            icon.color = screenData.selected ?  selectedColor : inactiveColor;
             AnimateSelected(screenData.selected);
             val = screenData.selected;
         }
     }
 
-    private void AnimateSelected(bool selected) 
+
+
+    private async void AnimateSelected(bool selected) 
     {
-        Color startC;
-        Color targetC;
-        Vector3 targetS;
-        Vector3 startS;
-        float targetFlexibleWidth;
-
-        if (selected) 
-        {
-            startC = Color.clear;
-            startS = Vector3.zero;
-            targetC = selectedColor;
-            targetS = Vector3.one;
-            targetFlexibleWidth = 1.7f;
-        }
-        else
-        {
-            startC = selectedColor;
-            startS = Vector3.one;
-            targetC = Color.clear;
-            targetS = Vector3.zero;
-            targetFlexibleWidth = 1;
-        }
-
+        button.interactable = false;
         if (selected == val)
         {
-            this.selected.alpha = targetC.a;
+            if (firstIteration) 
+            {
+                firstIteration = false;
+                await AnimationPlayer.PlayAnimationsAsync(gameObject, selected);
+            }
+            button.interactable = true;
             return;
         }
-        this.selected.transform.localScale = startS;
-        this.selected.alpha = startC.a;
-        button.interactable = false;
-        StartAnimation().Join(this.selected.DOFade(targetC.a, colorAnim.Duration).SetEase(colorAnim.Ease))
-            .Join(this.selected.transform.DOScale(targetS, scaleAnim.Duration).SetEase(scaleAnim.Ease))
-            .Join(
-            DOTween.To(() => layoutElement.flexibleWidth, 
-                        x => layoutElement.flexibleWidth = x, 
-                        targetFlexibleWidth, 
-                        scaleAnim.Duration).SetEase(scaleAnim.Ease)).OnComplete(() => button.interactable = true);
+        await AnimationPlayer.PlayAnimationsAsync(gameObject, selected);
+        button.interactable = true;
     }
 }

@@ -8,19 +8,9 @@ using UnityEngine.UI;
 public class NavigationBarView : View
 {
     [SerializeField] private ListView buttons;
-    [Header("Animations")]
-    [SerializeField] AnimationConfig show;
-    [SerializeField] AnimationConfig hide;
 
-    private Vector3 _initialPosition;
-    private RectTransform _rectTransform;
+
     List<AppContainer.NavigationButtonData> _data;
-
-    private void Awake()
-    {
-        _rectTransform = GetComponent<RectTransform>();
-        _initialPosition = _rectTransform.localPosition;
-    }
 
     public override void Init<T>(T data)
     {
@@ -63,31 +53,5 @@ public class NavigationBarView : View
         }, true);
 
     }
-
-    public override void Show()
-    {
-        base.Show();
-        if (_initialPosition != _rectTransform.localPosition) 
-        {
-            float height = _rectTransform.rect.height;
-
-            _rectTransform.localPosition = _initialPosition - new Vector3(0, height, 0);
-            StartAnimation().Append(_rectTransform.DOLocalMove(_initialPosition, show.Duration).SetEase(show.Ease));
-        }
-
-    }
-
-    public override void Hide()
-    {
-        if (_initialPosition == _rectTransform.localPosition)
-        {
-            float height = _rectTransform.rect.height;
-            var target = _initialPosition - new Vector3(0, height, 0);
-            StartAnimation()
-                .Append(_rectTransform.DOLocalMove(target, hide.Duration).SetEase(hide.Ease))
-                .OnComplete(() => base.Hide());
-        }
-    }
-
 
 }

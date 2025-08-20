@@ -51,13 +51,13 @@ public class EventListView : View
     public override void Show()
     {
         base.Show();
-        float height = view.rect.height; 
+        /*float height = view.rect.height; 
         view.localPosition = _initialPosition - new Vector3(0, height, 0); 
         view.localScale = _initialScale * 0.8f;
 
         Tween positionTween = view.DOLocalMove(_initialPosition, moveAnim.Duration).SetEase(moveAnim.Ease); 
         Tween scaleTween = view.DOScale(_initialScale, scaleAnim.Duration).SetEase(scaleAnim.Ease);
 
-        StartAnimation().Append(positionTween).Join(scaleTween);
+        StartAnimation().Append(positionTween).Join(scaleTween);*/
     }
 }

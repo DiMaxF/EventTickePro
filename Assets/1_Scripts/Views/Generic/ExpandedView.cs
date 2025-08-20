@@ -75,7 +75,7 @@ public class ExpandedView : View
 
     private async UniTask AnimateExpand()
     {
-        float targetSize = _active ? expandedSize : defaultSize;
+       /* float targetSize = _active ? expandedSize : defaultSize;
         float targetRotation = _active ? 0f : 180f;
 
         var sequence = StartAnimation();
@@ -85,7 +85,7 @@ public class ExpandedView : View
                        .SetEase(moveAnim.Ease));
 
         sequence.Play();
-        await sequence.AsyncWaitForCompletion();
+        await sequence.AsyncWaitForCompletion();*/
     }
 
     private async UniTask AnimateItemsSpawn(bool reverse)

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class TicketListView : View
     [SerializeField] ButtonView action;
     TicketModel _ticket;
     EventModel _event;
+
     public override void UpdateUI()
     {
         base.UpdateUI();

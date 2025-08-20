@@ -44,8 +44,8 @@ public class DatePickerView : View
     public override void Show()
     {
         base.Show();
-        canvasGroup.alpha = 0f;
-        StartAnimation().Append(canvasGroup.DOFade(1f, fadeIn.Duration).SetEase(fadeIn.Ease));
+        /*canvasGroup.alpha = 0f;
+        StartAnimation().Append(canvasGroup.DOFade(1f, fadeIn.Duration).SetEase(fadeIn.Ease));*/
     }
     private void Awake()
     {

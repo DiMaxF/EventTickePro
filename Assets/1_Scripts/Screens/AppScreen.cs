@@ -8,11 +8,7 @@ public abstract class AppScreen : MonoBehaviour
 {
     protected AppContainer Container;
     protected DataCore Data;
-
     private CanvasGroup _canvasGroup;
-    private readonly IAnimationController _animationController = new DOTweenAnimationController();
-    [SerializeField] AnimationConfig _fadeIn;
-    [SerializeField] AnimationConfig _fadeOut;
 
     private void Awake()
     {
@@ -25,8 +21,8 @@ public abstract class AppScreen : MonoBehaviour
     /// </summary>
     public void Init(DataCore data, AppContainer container)
     {
-        this.Data = data;
-        this.Container = container;
+        Data = data;
+        Container = container;
     }
 
     private void Loading(bool value)
@@ -60,20 +56,10 @@ public abstract class AppScreen : MonoBehaviour
     public async void OnShow()
     {
         Loading(true);
-        StopAnimation();
         _canvasGroup.alpha = 0f;
         await PreloadViewsAsync();
         OnStart();
-        if (_fadeIn != null)
-        {
-            var sequence = StartAnimation();
-            sequence.Append(_canvasGroup
-                                .DOFade(1f, _fadeIn.Duration)
-                                .SetDelay(_fadeIn.Delay)
-                                .SetEase(_fadeIn.Ease));
-            await sequence.AsyncWaitForCompletion();
-        }
-        else Logger.LogError("Animation Config not found", "AppScreen");
+        await AnimationPlayer.PlayAnimationsAsync(gameObject, true);
         Loading(false);
     }
 
@@ -82,12 +68,7 @@ public abstract class AppScreen : MonoBehaviour
     /// </summary>
     public async UniTask Hide()
     {
-        var sequence = StartAnimation();
-        sequence.Append(_canvasGroup
-                            .DOFade(0, _fadeOut.Duration)
-                            .SetDelay(_fadeOut.Delay)
-                            .SetEase(_fadeOut.Ease));
-        await sequence.AsyncWaitForCompletion();
+        await AnimationPlayer.PlayAnimationsAsync(gameObject, false);
         gameObject.SetActive(false);
     }
 
@@ -120,22 +101,4 @@ public abstract class AppScreen : MonoBehaviour
     /// </summary>
     protected virtual void UpdateViews() { }
 
-    /// <summary>
-    /// Starts a new animation sequence.
-    /// </summary>
-    protected Sequence StartAnimation()
-    {
-        _animationController.StartAnimation();
-        return ((DOTweenAnimationController)_animationController).GetSequence();
-    }
-
-    /// <summary>
-    /// Stops the current animation.
-    /// </summary>
-    protected void StopAnimation()
-    {
-        _animationController.StopAnimation();
-    }
-
-    protected bool HasActiveAnimation => _animationController.HasActiveAnimation;
 }

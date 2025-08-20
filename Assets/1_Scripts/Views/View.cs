@@ -1,9 +1,10 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using System.Linq;
 using UnityEngine;
 
 public abstract class View : MonoBehaviour
 {
-    private readonly IAnimationController _animationController = new DOTweenAnimationController();
     public bool IsActive => gameObject.activeSelf;
     protected bool _subscribed;
 
@@ -33,23 +34,6 @@ public abstract class View : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows the view.
-    /// </summary>
-    public virtual void Show()
-    {
-        gameObject.SetActive(true);
-        UpdateUI();
-    }
-
-    /// <summary>
-    /// Hides the view.
-    /// </summary>
-    public virtual void Hide()
-    {
-        gameObject.SetActive(false);
-    }
-
-    /// <summary>
     /// Triggers an action with data.
     /// </summary>
     protected void TriggerAction<T>(T data)
@@ -58,23 +42,24 @@ public abstract class View : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts a new animation sequence.
+    /// Shows the view.
     /// </summary>
-    protected Sequence StartAnimation()
+    public virtual async void Show()
     {
-        _animationController.StartAnimation();
-        return ((DOTweenAnimationController)_animationController).GetSequence();
+        gameObject.SetActive(true);
+        UpdateUI();
+        await AnimationPlayer.PlayAnimationsAsync(gameObject, true);
     }
 
     /// <summary>
-    /// Stops the current animation.
+    /// Hides the view.
     /// </summary>
-    protected void StopAnimation()
+    public virtual async void Hide()
     {
-        _animationController.StopAnimation();
+        await AnimationPlayer.PlayAnimationsAsync(gameObject, false);
+        gameObject.SetActive(false);
     }
 
-    protected bool HasActiveAnimation => _animationController.HasActiveAnimation;
 
     private void OnDisable()
     {

@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 2402421333201586386}
   - component: {fileID: 1270711567011644892}
   - component: {fileID: 1337829702251146270}
+  - component: {fileID: 488347913704634285}
   m_Layer: 5
   m_Name: TicketView
   m_TagString: Untagged
@@ -344,6 +345,24 @@ MonoBehaviour:
   dateTime: {fileID: 8567936098628523955}
   valid: {fileID: 4461212651051351263}
   action: {fileID: 3184076083802127269}
+  fadeIn: {fileID: 0}
+  moveAnim: {fileID: 0}
+--- !u!114 &488347913704634285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5425901746927604989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551f3da42fd28174aa27debe9be94a2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 2062409511793945751}
+  offset: {x: 200, y: 0, z: 0}
+  config: {fileID: 11400000, guid: ca0b9d8fe7f371a4295e86759222e7e9, type: 2}
+  order: 0
 --- !u!1 &9208618865831852526
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,6 +740,10 @@ PrefabInstance:
     - target: {fileID: 856227944294934263, guid: c0545d5cebe06da47acf0f25379bf705, type: 3}
       propertyPath: m_Text
       value: B2
+      objectReference: {fileID: 0}
+    - target: {fileID: 856227944294934263, guid: c0545d5cebe06da47acf0f25379bf705, type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 856227944294934263, guid: c0545d5cebe06da47acf0f25379bf705, type: 3}
       propertyPath: m_FontData.m_Alignment
@@ -1269,6 +1292,10 @@ PrefabInstance:
     - target: {fileID: 2055360293007343234, guid: d8efbcc4227e06c4daea345a03e8e9a1, type: 3}
       propertyPath: m_Text
       value: SEAT
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055360293007343234, guid: d8efbcc4227e06c4daea345a03e8e9a1, type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2055360293007343234, guid: d8efbcc4227e06c4daea345a03e8e9a1, type: 3}
       propertyPath: m_FontData.m_MinSize

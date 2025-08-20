@@ -137,21 +137,22 @@ public class LineChartView : View
     public override void Show()
     {
         base.Show();
-        transform.localScale = _initialScale * 0.8f;
+        /*transform.localScale = _initialScale * 0.8f;
         canvasGroup.alpha = 0f;
 
         Tween fade = canvasGroup.DOFade(1f, fadeIn.Duration).SetEase(fadeIn.Ease);
         Tween scaleTween = transform.DOScale(_initialScale, scaleAnim.Duration).SetEase(scaleAnim.Ease);
-        StartAnimation().Append(fade).Join(scaleTween);
+        StartAnimation().Append(fade).Join(scaleTween);*/
     }
 
     public override void Hide()
     {
-        StartAnimation().Append(
+        /*StartAnimation().Append(
             canvasGroup.DOFade(0f, fadeOut.Duration).OnComplete(() =>
             {
                 base.Hide();
                 canvasGroup.alpha = 1f;
-            }).SetEase(fadeOut.Ease));
+            }).SetEase(fadeOut.Ease));*/
     }
+
 }

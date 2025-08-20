@@ -23,12 +23,7 @@ public class ToggleView : View
 
     private void AnimateHandle()
     {
-        var handleRectTransform = handle.rectTransform;
-        float targetX = handleRectTransform.sizeDelta.x / 2;
-        targetX *= _isOn ? 0.8f: -0.8f;
-        Vector3 targetPosition = new Vector3(targetX, handleRectTransform.anchoredPosition.y);
-        StartAnimation().Append(handleRectTransform.DOAnchorPos(targetPosition, moveAnim.Duration))
-               .SetEase(moveAnim.Ease);
+        AnimationPlayer.PlayAnimationsAsync(handle.gameObject, _isOn);
     }
 
     public override void UpdateUI()

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 105ef0e467afa2e46a7f0a57ba0eeb43, type: 3}
-  m_Name: SmoothScale
+  m_Name: ViewScale
   m_EditorClassIdentifier: 
-  Duration: 0.4
-  Delay: 0.1
+  Duration: 0.3
+  Delay: 0
   Ease: 27
