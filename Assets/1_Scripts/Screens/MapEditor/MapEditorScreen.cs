@@ -70,6 +70,7 @@ public class MapEditorScreen : AppScreen
             _dataManager.LoadMap(map, _objectManager, textPrefab, figurePrefab, seatPrefab, forms);
         }
         _uiManager.HideAllPanels();
+        _objectManager.DeselectAll(_uiManager);
     }
 
     protected override void UpdateViews()
@@ -117,6 +118,7 @@ public class MapEditorScreen : AppScreen
 
     private void SaveMap()
     {
+        _objectManager.DeselectAll(_uiManager);
         var mapData = _dataManager.CreateMapData(_objectManager.EditorViews, _uiManager);
         var name = $"{Data.Personal.GetSelectedEvent().date}_{Data.Personal.GetSelectedEvent().name}";
         mapData.pathPreview = _previewGenerator.GeneratePreview(_objectManager.EditorViews, _uiManager, name);

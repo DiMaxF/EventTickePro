@@ -88,6 +88,7 @@ public class MapDataManager
             view.RectTransform.sizeDelta = textData.sizeDelta;
             view.RectTransform.position = textData.position;
             UIContainer.InitView(view, textData.text);
+            view.UpdateColor(textData.color);
             viewsWithIndices.Add((view, textData.siblingIndex));
         }
 

@@ -7,7 +7,6 @@ public class EditorSeatView : EditorView
     [SerializeField] ListView seats;
      public Data data => _data;
      Data _data;
-    RectTransform rectTransform;    
     int rowHeight = 100;
     int columnWidth = 80;
     [Serializable]
