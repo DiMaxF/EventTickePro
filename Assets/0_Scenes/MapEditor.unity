@@ -3699,6 +3699,8 @@ GameObject:
   - component: {fileID: 1091595114}
   - component: {fileID: 1091595113}
   - component: {fileID: 1091595115}
+  - component: {fileID: 1091595117}
+  - component: {fileID: 1091595116}
   m_Layer: 5
   m_Name: SettingsPanel
   m_TagString: Untagged
@@ -3740,9 +3742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc1e2a9300b762d42b685f701d9b2117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
-  fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
-  scaleAnim: {fileID: 11400000, guid: 5debe229796e1e74c9dfb2a473eeccca, type: 2}
 --- !u!114 &1091595110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3865,6 +3864,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationDuration: 1
+--- !u!114 &1091595116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091595107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551f3da42fd28174aa27debe9be94a2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1091595108}
+  offset: {x: 0, y: 200, z: 0}
+  config: {fileID: 11400000, guid: 8cd397289e2d3374798ed799cdec781f, type: 2}
+  order: 0
+  parallel: 1
+--- !u!114 &1091595117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091595107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c99b6d46577792f43ae144abda63a072, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 9148cbc6c2d5e1246b29535a089c2682, type: 2}
+  canvasGroup: {fileID: 0}
 --- !u!1 &1176843786
 GameObject:
   m_ObjectHideFlags: 0
@@ -4465,6 +4495,7 @@ GameObject:
   - component: {fileID: 1287550122}
   - component: {fileID: 1287550124}
   - component: {fileID: 1287550123}
+  - component: {fileID: 1287550125}
   m_Layer: 5
   m_Name: MapEditorScreen
   m_TagString: Untagged
@@ -4507,8 +4538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd2e254685461364ca58839d63d7fe6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeIn: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
-  _fadeOut: {fileID: 11400000, guid: 0f708a37390def549896fb19aba124f0, type: 2}
   cam: {fileID: 519420033}
   area: {fileID: 970075998}
   clickDetector: {fileID: 232874610}
@@ -4550,6 +4579,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1287550125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287550121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c99b6d46577792f43ae144abda63a072, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: 8f8398dcf51a5524987f072ec7b5c5e8, type: 2}
+  canvasGroup: {fileID: 0}
 --- !u!1 &1287992469
 GameObject:
   m_ObjectHideFlags: 0
@@ -5077,7 +5120,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 986778340586194880, guid: 3522f0b42bf3d9547ad54487a1763654, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 469.49762
+      value: 474
       objectReference: {fileID: 0}
     - target: {fileID: 986778340586194880, guid: 3522f0b42bf3d9547ad54487a1763654, type: 3}
       propertyPath: m_SizeDelta.y

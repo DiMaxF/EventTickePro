@@ -13,9 +13,9 @@ public class MoveAnimation : MonoBehaviour, IViewAnimation
 
     public bool IsParallel => parallel;
 
-    [SerializeField] private Vector3 originalPos;
+    private Vector3 originalPos;
 
-    private void Awake()
+    private void OnEnable()
     {
         if (target == null) target = GetComponent<RectTransform>();  
         originalPos = target.anchoredPosition;
@@ -23,14 +23,14 @@ public class MoveAnimation : MonoBehaviour, IViewAnimation
 
     public Tween AnimateShow(Action onComplete)
     {
-        //target.anchoredPosition = originalPos + offset;
+        target.anchoredPosition = originalPos + offset;
         return target.DOAnchorPos(originalPos, config.Duration)
             .SetEase(config.Ease).SetDelay(config.Delay).OnComplete(() => onComplete?.Invoke());
     }
 
     public Tween AnimateHide()
     {
-        //target.anchoredPosition = originalPos;
+        target.anchoredPosition = originalPos;
         return target.DOAnchorPos(originalPos + offset, config.Duration).SetEase(config.Ease);
     }
 }

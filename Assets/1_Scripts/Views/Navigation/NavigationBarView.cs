@@ -54,4 +54,16 @@ public class NavigationBarView : View
 
     }
 
+    public override void Show()
+    {
+        if (IsActive) return;
+        base.Show();
+    }
+
+    public override void Hide()
+    {
+        if (!IsActive) return;
+        base.Hide();
+    }
+
 }

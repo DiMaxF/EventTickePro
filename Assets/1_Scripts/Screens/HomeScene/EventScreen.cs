@@ -29,17 +29,16 @@ public class EventScreen : AppScreen
         date.text = selected.date;
         time.text = selected.time;
         venue.text = selected.venue;
-        previewBg.color = Color.clear;
         desciption.text = selected.description;
         UIContainer.InitView(image, selected.imgPath);
         var map = Data.Maps.GetByEvent(selected);
         if (map != null) 
         {
-            previewBg.color = Color.white;
             UIContainer.InitView(preview, map.pathPreview);
         }
         else
         {
+            previewBg.color = Color.clear;
             UIContainer.InitView(preview, "");
         }
     }

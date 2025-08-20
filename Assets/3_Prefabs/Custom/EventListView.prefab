@@ -292,6 +292,8 @@ GameObject:
   - component: {fileID: 6734114508681818205}
   - component: {fileID: 3093747291364418016}
   - component: {fileID: 4873444219612186575}
+  - component: {fileID: 4232879422738214862}
+  - component: {fileID: 5769435587201499639}
   m_Layer: 5
   m_Name: EventListView
   m_TagString: Untagged
@@ -347,6 +349,40 @@ MonoBehaviour:
   action: {fileID: 949060825226158824}
   scaleAnim: {fileID: 11400000, guid: 60eaa18a974e33340be2f70afa126509, type: 2}
   moveAnim: {fileID: 11400000, guid: 60eaa18a974e33340be2f70afa126509, type: 2}
+--- !u!114 &4232879422738214862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225470069852313431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551f3da42fd28174aa27debe9be94a2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 7822452674013142999}
+  offset: {x: 0, y: -50, z: 0}
+  config: {fileID: 11400000, guid: ca0b9d8fe7f371a4295e86759222e7e9, type: 2}
+  order: 0
+  parallel: 1
+--- !u!114 &5769435587201499639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7225470069852313431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4b223cc0c1b8c459bf9d6aa1709918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 7822452674013142999}
+  startScale: {x: 0.8, y: 0.8, z: 0.8}
+  config: {fileID: 11400000, guid: 60eaa18a974e33340be2f70afa126509, type: 2}
+  order: 0
+  parallel: 1
 --- !u!1 &7468151215490221420
 GameObject:
   m_ObjectHideFlags: 0
