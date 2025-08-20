@@ -11,10 +11,7 @@ public class ExpandedView : View
 {
     [SerializeField] View[] views;
     [SerializeField] ButtonView expand;
-    [SerializeField] int defaultSize;
-    [SerializeField] int expandedSize;
     [SerializeField] float spawnDelayPerItem;
-    [SerializeField] AnimationConfig moveAnim;
 
     bool _active;
 
@@ -42,50 +39,37 @@ public class ExpandedView : View
         UIContainer.SubscribeToView<ButtonView, object>(expand, _ => ToggleExpand());
     }
 
-
-    public override async void UpdateUI()
-    {
-        base.UpdateUI();
-
-        if (_active)
-        {
-            AnimateExpand();
-            await UniTask.WaitForSeconds(moveAnim.Duration);
-            await AnimateItemsSpawn(false);
-        }
-        else
-        {
-            AnimateItemsSpawn(true);
-            await UniTask.WaitForSeconds(moveAnim.Duration);
-
-            await AnimateExpand();
-        }
-
-        if (_updater != null) _updater.UpdateSpacing();
-    }
-
     private void ToggleExpand()
     {
         _active = !_active;
-        UpdateUI();
-        if (_updater != null) _updater.UpdateSpacing();
+        AnimateExpand();
     }
 
 
 
     private async UniTask AnimateExpand()
     {
-       /* float targetSize = _active ? expandedSize : defaultSize;
-        float targetRotation = _active ? 0f : 180f;
+        if (_active)
+        {
+            Show();
+            await UniTask.WaitForSeconds(0.3f);
 
-        var sequence = StartAnimation();
-        sequence.Append(_rectTransform.DOSizeDelta(new Vector2(_rectTransform.sizeDelta.x, targetSize), moveAnim.Duration)
-                       .SetEase(moveAnim.Ease))
-               .Join(expand.rect.DORotate(new Vector3(0, 0, targetRotation), moveAnim.Duration)
-                       .SetEase(moveAnim.Ease));
+            await AnimateItemsSpawn(false);
+        }
+        else
+        {
+            await AnimateItemsSpawn(true);
+            await UniTask.WaitForSeconds(0.3f);
 
-        sequence.Play();
-        await sequence.AsyncWaitForCompletion();*/
+            Hide();
+        }
+
+        if (_updater != null) _updater.UpdateSpacing();
+    }
+
+    override public async void Hide()
+    {
+        await AnimationPlayer.PlayAnimationsAsync(gameObject, false);
     }
 
     private async UniTask AnimateItemsSpawn(bool reverse)

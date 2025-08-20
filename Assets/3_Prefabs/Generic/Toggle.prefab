@@ -291,3 +291,4 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 9148cbc6c2d5e1246b29535a089c2682, type: 2}
   order: 0
   parallel: 1
+  originalPos: {x: 28, y: 0, z: 0}

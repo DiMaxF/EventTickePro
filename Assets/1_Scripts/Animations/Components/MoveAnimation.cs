@@ -13,12 +13,11 @@ public class MoveAnimation : MonoBehaviour, IViewAnimation
 
     public bool IsParallel => parallel;
 
-    private Vector3 originalPos;
+    [SerializeField]  private Vector3 originalPos;
 
-    private void OnEnable()
+    private void Awake()
     {
         if (target == null) target = GetComponent<RectTransform>();  
-        originalPos = target.anchoredPosition;
     }
 
     public Tween AnimateShow(Action onComplete)
