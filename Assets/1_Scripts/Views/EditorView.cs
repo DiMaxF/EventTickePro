@@ -7,6 +7,7 @@ public abstract class EditorView : View
 {
     protected bool isSelected = false;
     protected RectTransform rectTransform;
+    public RectTransform RectTransform => rectTransform;
     protected Transform transform;
     [SerializeField] private ControllerView controllerView;
     [SerializeField] private ButtonView selectButton;

@@ -21,13 +21,14 @@ public class MapObjectManager
         _screen = screen;
     }
 
-    public void AddText(GameObject prefab, Color color)
+    public EditorTextView AddText(GameObject prefab, Color color)
     {
         var view = Object.Instantiate(prefab, DisplayManager.Center, Quaternion.identity, _area).GetComponent<EditorTextView>();
         AddView(view, v => v.UpdateColor(color));
+        return view;
     }
 
-    public void AddFigure(GameObject prefab, Color color, Sprite form)
+    public EditorFigureView AddFigure(GameObject prefab, Color color, Sprite form)
     {
         var view = Object.Instantiate(prefab, DisplayManager.Center, Quaternion.identity, _area).GetComponent<EditorFigureView>();
         AddView(view, v =>
@@ -35,24 +36,27 @@ public class MapObjectManager
             v.UpdateColor(color);
             ((EditorFigureView)v).UpdateForm(form);
         });
+        return view;
     }
 
-    public void AddSeat(GameObject prefab, EditorSeatView.Data settings)
+    public EditorSeatView AddSeat(GameObject prefab, EditorSeatView.Data settings)
     {
         if (settings == null || settings.countRow != 1)
             settings = new EditorSeatView.Data("1", 5, 1, settings?.color ?? Color.white);
 
         var view = Object.Instantiate(prefab, DisplayManager.Center, Quaternion.identity, _area).GetComponent<EditorSeatView>();
         AddView(view, v => UIContainer.InitView(v, settings));
+        return view;
     }
 
-    public void AddSeats(GameObject prefab, EditorSeatView.Data settings)
+    public EditorSeatView AddSeats(GameObject prefab, EditorSeatView.Data settings)
     {
         if (settings == null || settings.countRow == 1)
             settings = new EditorSeatView.Data("Numbers", 5, 3, settings?.color ?? Color.white);
 
         var view = Object.Instantiate(prefab, DisplayManager.Center, Quaternion.identity, _area).GetComponent<EditorSeatView>();
         AddView(view, v => UIContainer.InitView(v, settings));
+        return view;
     }
 
     private void AddView(EditorView view, Action<EditorView> initialize)

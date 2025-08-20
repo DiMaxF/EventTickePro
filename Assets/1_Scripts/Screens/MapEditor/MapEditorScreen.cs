@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Microsoft.Unity.VisualStudio.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ public class MapEditorScreen : AppScreen
     [SerializeField] private CameraController cam;
     [SerializeField] private Transform area;
     [SerializeField] private ButtonView clickDetector;
+    [SerializeField] private AreaConfig areaConfig;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject textPrefab;
@@ -48,6 +50,7 @@ public class MapEditorScreen : AppScreen
     private MapEditorUIManager _uiManager;
     private MapDataManager _dataManager;
     private MapPreviewGenerator _previewGenerator;
+    private GridGenerator _gridGenerator;
 
     protected override void OnStart()
     {
@@ -55,7 +58,8 @@ public class MapEditorScreen : AppScreen
         _uiManager = new MapEditorUIManager(settingsPanel, colorsPicker, seatsPicker, formsPicker, forms);
         _dataManager = new MapDataManager(Data);
         _previewGenerator = new MapPreviewGenerator(area, cam);
-
+        _gridGenerator = new GridGenerator(areaConfig);
+        _gridGenerator.GenerateGrid();
         _uiManager.InitializeColors();
         base.OnStart();
         UIContainer.RegisterView(seatsPicker);

@@ -7,20 +7,13 @@ using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Vector2 gridSize = new Vector2(50f, 50f); // Размер сетки
-    [SerializeField] private float cellSize = 1f; // Размер ячейки сетки
-    [SerializeField] private Color gridLineColor = Color.gray; // Цвет линий сетки
-    [SerializeField] private float lineWidth = 0.05f; // Толщина линий сетки
-    [SerializeField] private float gridZ = 5f; // Z-позиция сетки
-    [SerializeField] private Shader shaderGrid; // Z-позиция сетки
+    [SerializeField] private AreaConfig areaConfig;
     [SerializeField] private Button ignoreButton;
-    [SerializeField] private float moveSpeed = 10f; // Скорость движения камеры
-    [SerializeField] private float inertiaDamping = 0.1f; // Коэффициент затухания инерции
-
-    [SerializeField] private bool active = true; // Активность управления камерой
+    [SerializeField] private float moveSpeed = 10f;
+    [SerializeField] private float inertiaDamping = 0.1f; 
+    [SerializeField] private bool active = true; 
 
     private Camera mainCamera;
-    private GameObject gridContainer;
     private Vector3 touchStartPos;
     private Vector3 velocity;
     private bool isDragging;
@@ -33,8 +26,6 @@ public class CameraController : MonoBehaviour
         mainCamera.orthographic = true;
         mainCamera.orthographicSize = 5f;
         mainCamera.nearClipPlane = 0.3f;
-
-        GenerateGrid();
         CalculateCameraBounds();
     }
 
@@ -47,60 +38,7 @@ public class CameraController : MonoBehaviour
         ApplyInertia();
     }
 
-    // Генерация сетки
-    private void GenerateGrid()
-    {
-        gridContainer = new GameObject("GridLayout");
-        gridContainer.transform.position = new Vector3(0, 0, gridZ);
 
-        int horizontalLines = Mathf.CeilToInt(gridSize.y / cellSize) + 1;
-        int verticalLines = Mathf.CeilToInt(gridSize.x / cellSize) + 1;
-
-        for (int i = 0; i < horizontalLines; i++)
-        {
-            float y = -gridSize.y / 2 + i * cellSize;
-            CreateLine(new Vector3(-gridSize.x / 2, y, gridZ), new Vector3(gridSize.x / 2, y, gridZ), $"horizontal_{i}");
-        }
-
-        for (int i = 0; i < verticalLines; i++)
-        {
-            float x = -gridSize.x / 2 + i * cellSize;
-            CreateLine(new Vector3(x, -gridSize.y / 2, gridZ), new Vector3(x, gridSize.y / 2, gridZ), $"vertical_{i}");
-        }
-    }
-
-    // Создание линии для сетки
-    private void CreateLine(Vector3 start, Vector3 end, string name)
-    {
-
-        GameObject lineObj = new GameObject(name);
-        lineObj.transform.SetParent(gridContainer.transform);
-        LineRenderer lineRenderer = lineObj.AddComponent<LineRenderer>();
-
-        lineRenderer.material = new Material(shaderGrid);
-        
-        lineRenderer.material.color = gridLineColor;
-        lineRenderer.startColor = gridLineColor;
-        lineRenderer.endColor = gridLineColor;
-        lineRenderer.startWidth = lineWidth;
-        lineRenderer.endWidth = lineWidth;
-        lineRenderer.positionCount = 2;
-        lineRenderer.SetPosition(0, start);
-        lineRenderer.SetPosition(1, end);
-        lineRenderer.useWorldSpace = true;
-    }
-
-    // Расчет границ камеры
-    private void CalculateCameraBounds()
-    {
-        float camHeight = 2f * mainCamera.orthographicSize;
-        float camWidth = camHeight * mainCamera.aspect;
-
-        minBounds = new Vector2(-gridSize.x / 2 + camWidth / 2, -gridSize.y / 2 + camHeight / 2);
-        maxBounds = new Vector2(gridSize.x / 2 - camWidth / 2, gridSize.y / 2 - camHeight / 2);
-    }
-
-    // Обработка сенсорного ввода
     private void HandleTouchInput()
     {
         if (Input.touchCount == 1)
@@ -108,7 +46,6 @@ public class CameraController : MonoBehaviour
             Touch touch = Input.GetTouch(0);
             if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
             {
-                // Выполняем raycast для получения всех объектов под касанием
                 PointerEventData eventData = new PointerEventData(EventSystem.current)
                 {
                     position = touch.position
@@ -116,7 +53,6 @@ public class CameraController : MonoBehaviour
                 List<RaycastResult> results = new List<RaycastResult>();
                 EventSystem.current.RaycastAll(eventData, results);
 
-                // Проверяем, есть ли среди результатов другие UI-элементы, кроме ignoreButton
                 bool onlyIgnoreButton = true;
                 bool hasIgnoreButton = false;
                 if (ignoreButton != null)
@@ -136,11 +72,9 @@ public class CameraController : MonoBehaviour
                 }
                 else
                 {
-                    // Если ignoreButton не назначена, блокируем на любом UI
                     onlyIgnoreButton = false;
                 }
 
-                // Разрешаем движение, только если касание над ignoreButton и нет других UI-элементов
                 if (!(hasIgnoreButton && onlyIgnoreButton))
                 {
                     isDragging = false;
@@ -174,7 +108,6 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    // Применение инерции
     private void ApplyInertia()
     {
         if (!isDragging && velocity.magnitude > 0.01f)
@@ -184,7 +117,6 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    // Перемещение камеры
     private void MoveCamera(Vector3 delta)
     {
         Vector3 newPos = mainCamera.transform.position + delta;
@@ -194,7 +126,6 @@ public class CameraController : MonoBehaviour
         mainCamera.transform.position = newPos;
     }
 
-    // Асинхронное перемещение камеры к заданной позиции
     public async UniTask MoveToPosition(Vector3 targetPosition, float duration = 0.5f)
     {
         targetPosition.z = transform.position.z;
@@ -217,5 +148,15 @@ public class CameraController : MonoBehaviour
             velocity = Vector3.zero;
         }
         return active;
+    }
+
+
+    private void CalculateCameraBounds()
+    {
+        float camHeight = 2f * mainCamera.orthographicSize;
+        float camWidth = camHeight * mainCamera.aspect;
+
+        minBounds = new Vector2(-areaConfig.gridSize.x / 2 + camWidth / 2, -areaConfig.gridSize.y / 2 + camHeight / 2);
+        maxBounds = new Vector2(areaConfig.gridSize.x / 2 - camWidth / 2, areaConfig.gridSize.y / 2 - camHeight / 2);
     }
 }

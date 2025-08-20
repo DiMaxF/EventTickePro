@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e49bcecda941a734f9bded96ee5a99f9, type: 3}
+  m_Name: AreaConfig
+  m_EditorClassIdentifier: 
+  gridSize: {x: 50, y: 50}
+  cellSize: 0.5
+  gridLineColor: {r: 0.28235295, g: 0.41176474, b: 0.37254903, a: 1}
+  lineWidth: 0.05
+  gridZ: 5
+  shaderGrid: {fileID: 10755, guid: 0000000000000000f000000000000000, type: 0}

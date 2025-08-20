@@ -1174,12 +1174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 880c88c564289d24b8189d4fa0dfbc19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 20, y: 20}
-  cellSize: 0.33
-  gridLineColor: {r: 1, g: 0.759434, b: 0.97498226, a: 1}
-  lineWidth: 0.03
-  gridZ: 5
-  shaderGrid: {fileID: 10755, guid: 0000000000000000f000000000000000, type: 0}
+  areaConfig: {fileID: 11400000, guid: 3fdcb01b38b12c145a2da2c6c74c482b, type: 2}
   ignoreButton: {fileID: 232874607}
   moveSpeed: 15
   inertiaDamping: 0.05
@@ -4517,6 +4512,7 @@ MonoBehaviour:
   cam: {fileID: 519420033}
   area: {fileID: 970075998}
   clickDetector: {fileID: 232874610}
+  areaConfig: {fileID: 11400000, guid: 3fdcb01b38b12c145a2da2c6c74c482b, type: 2}
   textPrefab: {fileID: 1793971555615398101, guid: f59743b30513c274d8758b90ff875986, type: 3}
   figurePrefab: {fileID: 6244753881490182565, guid: 02bac616a722063408683e3b1c33ef6f, type: 3}
   seatPrefab: {fileID: 6591918258949441643, guid: 2d57551b673a7be4ca6d7f6ca5e152e9, type: 3}

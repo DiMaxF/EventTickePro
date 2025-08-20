@@ -33,7 +33,7 @@ public class MapDataManager
         foreach (var view in editorViews.OfType<EditorFigureView>())
         {
             var rect = view.GetComponent<RectTransform>();
-            int formIndex = 0;//System.Array.IndexOf(uiManager.GetForms(), view.Form);
+            int formIndex = System.Array.IndexOf(uiManager.Forms, view.Form);
             mapData.figures.Add(new FigureViewData
             {
                 position = view.transform.position,
@@ -84,29 +84,30 @@ public class MapDataManager
 
         foreach (var textData in mapData.texts)
         {
-            var view = Object.Instantiate(textPrefab, textData.position, Quaternion.Euler(textData.rotation), objectManager.Area).GetComponent<EditorTextView>();
-            if (view.GetComponent<RectTransform>() is RectTransform rect) rect.sizeDelta = textData.sizeDelta;
+            var view = objectManager.AddText(textPrefab, textData.color); 
+            view.RectTransform.sizeDelta = textData.sizeDelta;
+            view.RectTransform.position = textData.position;
             UIContainer.InitView(view, textData.text);
-            objectManager.AddText(view.gameObject, textData.color);
             viewsWithIndices.Add((view, textData.siblingIndex));
         }
 
         foreach (var figureData in mapData.figures)
         {
-            var view = Object.Instantiate(figurePrefab, figureData.position, Quaternion.Euler(figureData.rotation), objectManager.Area).GetComponent<EditorFigureView>();
-            if (view.GetComponent<RectTransform>() is RectTransform rect) rect.sizeDelta = figureData.sizeDelta;
+            var view = objectManager.AddFigure(figurePrefab, figureData.color, forms[figureData.formIndex]);
+            view.RectTransform.sizeDelta = figureData.sizeDelta;
+            view.RectTransform.position = figureData.position;
             view.UpdateColor(figureData.color);
             view.UpdateForm(figureData.formIndex < forms.Length ? forms[figureData.formIndex] : forms[0]);
-            objectManager.AddFigure(view.gameObject, figureData.color, forms[figureData.formIndex]);
             viewsWithIndices.Add((view, figureData.siblingIndex));
+
         }
 
         foreach (var seatData in mapData.seats)
         {
-            var view = Object.Instantiate(seatPrefab, seatData.position, Quaternion.Euler(seatData.rotation), objectManager.Area).GetComponent<EditorSeatView>();
-            if (view.GetComponent<RectTransform>() is RectTransform rect) rect.sizeDelta = seatData.sizeDelta;
+            var view = objectManager.AddSeat(seatPrefab, seatData.seatSettings);
+            view.RectTransform.sizeDelta = seatData.sizeDelta;
+            view.RectTransform.position = seatData.position;    
             UIContainer.InitView(view, seatData.seatSettings);
-            objectManager.AddSeat(view.gameObject, seatData.seatSettings);
             viewsWithIndices.Add((view, seatData.siblingIndex));
         }
 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class EditorFigureView : EditorView
 {
     [SerializeField] Image color;
-
+    public Sprite Form => color.sprite;
     public override void UpdateColor(Color newColor)
     {
         base.UpdateColor(newColor);
