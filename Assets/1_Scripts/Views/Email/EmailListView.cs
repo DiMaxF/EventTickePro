@@ -12,16 +12,6 @@ public class EmailListView : View
     [SerializeField] InputTextView email;
     [SerializeField] RectTransform container;
 
-    [Header("Animations")]
-    [SerializeField] AnimationConfig fadeIn;
-    [SerializeField] AnimationConfig moveAnim;
-    Vector3 containerOriginalPos;
-    private void Awake()
-    {
-        Vector3 containerOriginalPos = container.localPosition;
-
-    }
-
     public EmailModel GetModel() 
     {         
         return new EmailModel(name.text, email.text);
@@ -45,16 +35,4 @@ public class EmailListView : View
         count.text = $"Ticket owner {transform.GetSiblingIndex()}";
     }
 
-
-    public override void Show()
-    {
-        base.Show();
-        /*container.localPosition = containerOriginalPos + new Vector3(200, 0);
-        container.localScale = Vector3.one * 0.8f;
-
-        StartAnimation()
-            .Append(container.DOLocalMoveX(containerOriginalPos.x, 0.5f).SetEase(Ease.OutCubic))
-            .Join(container.DOScale(1.05f, 0.3f).SetEase(Ease.OutBack))
-            .Append(container.DOScale(1f, 0.2f).SetEase(Ease.InOutSine));*/
-    }
 }
