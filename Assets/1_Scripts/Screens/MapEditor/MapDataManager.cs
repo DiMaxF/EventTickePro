@@ -1,3 +1,4 @@
+using NUnit.Framework.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -79,8 +80,6 @@ public class MapDataManager
 
     public void LoadMap(MapData mapData, MapObjectManager objectManager, GameObject textPrefab, GameObject figurePrefab, GameObject seatPrefab, Sprite[] forms)
     {
-        /*objectManager.Clear();
-
         var viewsWithIndices = new List<(EditorView view, int siblingIndex)>();
 
         foreach (var textData in mapData.texts)
@@ -88,7 +87,8 @@ public class MapDataManager
             var view = Object.Instantiate(textPrefab, textData.position, Quaternion.Euler(textData.rotation), objectManager.Area).GetComponent<EditorTextView>();
             if (view.GetComponent<RectTransform>() is RectTransform rect) rect.sizeDelta = textData.sizeDelta;
             UIContainer.InitView(view, textData.text);
-            objectManager.AddText(view, textData.siblingIndex);
+            objectManager.AddText(view.gameObject, textData.color);
+            viewsWithIndices.Add((view, textData.siblingIndex));
         }
 
         foreach (var figureData in mapData.figures)
@@ -97,7 +97,8 @@ public class MapDataManager
             if (view.GetComponent<RectTransform>() is RectTransform rect) rect.sizeDelta = figureData.sizeDelta;
             view.UpdateColor(figureData.color);
             view.UpdateForm(figureData.formIndex < forms.Length ? forms[figureData.formIndex] : forms[0]);
-            objectManager.AddFigure(view, figureData.siblingIndex);
+            objectManager.AddFigure(view.gameObject, figureData.color, forms[figureData.formIndex]);
+            viewsWithIndices.Add((view, figureData.siblingIndex));
         }
 
         foreach (var seatData in mapData.seats)
@@ -105,9 +106,11 @@ public class MapDataManager
             var view = Object.Instantiate(seatPrefab, seatData.position, Quaternion.Euler(seatData.rotation), objectManager.Area).GetComponent<EditorSeatView>();
             if (view.GetComponent<RectTransform>() is RectTransform rect) rect.sizeDelta = seatData.sizeDelta;
             UIContainer.InitView(view, seatData.seatSettings);
-            objectManager.AddSeat(view, seatData.siblingIndex);
+            objectManager.AddSeat(view.gameObject, seatData.seatSettings);
+            viewsWithIndices.Add((view, seatData.siblingIndex));
         }
 
-        objectManager.SortViewsBySiblingIndex();*/
+        foreach (var view in viewsWithIndices) 
+            view.view.transform.SetSiblingIndex(view.siblingIndex);
     }
 }

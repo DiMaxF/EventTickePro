@@ -241,9 +241,6 @@ MonoBehaviour:
   image: {fileID: 7819551755704734474}
   action: {fileID: 1729210837164009054}
   selected: {fileID: 8693787314845567774}
-  _data:
-    color: {r: 0, g: 0, b: 0, a: 0}
-    active: 0
 --- !u!1001 &2256382202353647748
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -344,6 +341,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 73a7462cefed61d458be22402b490ccf, type: 3}
+    - target: {fileID: 7912715092489249412, guid: 23eec2fb24d48d345999be96bb539800, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7912715092489249412, guid: 23eec2fb24d48d345999be96bb539800, type: 3}
       propertyPath: m_Color.b
       value: 0.02745098

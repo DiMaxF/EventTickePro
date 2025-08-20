@@ -28,6 +28,8 @@ public class EditorSeatView : EditorView
             this.left = left;
         }   
     }
+
+    private bool _listGenerated;
     public override void Init<T>(T data)
     {
         if (data is Data d)
@@ -39,11 +41,17 @@ public class EditorSeatView : EditorView
             prev = _data;
 
             UIContainer.RegisterView(seats);
-            UIContainer.InitView(seats, GenerateList(_data));
-
+             UIContainer.InitView(seats, GenerateList(_data));
         }
         base.Init(data);
     }
+
+    /*public override void Subscriptions()
+    {
+        base.Subscriptions();
+        if(_listGenerated) seats.UpdateViewsData(GenerateList(_data));
+        _listGenerated = true;
+    }*/
 
     private List<Data> GenerateList(Data data)
     {

@@ -13,6 +13,7 @@ public class MapObjectManager
 
     public IReadOnlyList<EditorView> EditorViews => _editorViews;
     public EditorView SelectedView => _selectedView;
+    public Transform Area => _area;
 
     public MapObjectManager(Transform area, MapEditorScreen screen)
     {

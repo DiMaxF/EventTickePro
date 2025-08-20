@@ -115,6 +115,6 @@ public class ListView : View
         _dataSource = newDataList;
         _isUpdating = false;
 
-        AnimateItemsSpawn(_items);
+        //AnimateItemsSpawn(_items);
     }
 }
