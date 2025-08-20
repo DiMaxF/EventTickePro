@@ -60,7 +60,7 @@ public class FileManager : MonoBehaviour
     {
         try
         {
-            string fileName = $"{fileNamePrefix}_{DateTime.Now.Ticks}.png";
+            string fileName = $"{fileNamePrefix}_{DateTime.Now.Second}.png";
             string path = GetFilePath(fileName);
             byte[] textureBytes = texture.EncodeToPNG(); 
             File.WriteAllBytes(path, textureBytes);

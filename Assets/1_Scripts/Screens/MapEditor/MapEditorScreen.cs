@@ -114,7 +114,8 @@ public class MapEditorScreen : AppScreen
     private void SaveMap()
     {
         var mapData = _dataManager.CreateMapData(_objectManager.EditorViews, _uiManager);
-        mapData.pathPreview = _previewGenerator.GeneratePreview(_objectManager.EditorViews, _uiManager);
+        var name = $"{Data.Personal.GetSelectedEvent().date}_{Data.Personal.GetSelectedEvent().name}";
+        mapData.pathPreview = _previewGenerator.GeneratePreview(_objectManager.EditorViews, _uiManager, name);
         _dataManager.SaveMap(mapData, Data.Personal.GetSelectedEvent());
         NativeMobilePlugin.Instance.ShowToast("Map saved successfully!");
     }

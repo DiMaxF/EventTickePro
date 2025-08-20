@@ -71,18 +71,18 @@ public class MapEditorUIManager
         if (selectedView is EditorTextView)
         {
             _textColor = color;
-            UIContainer.InitView(_colorsPicker, GetTextColorsList());
+            _colorsPicker.UpdateViewsData(GetTextColorsList());
         }
         else if (selectedView is EditorFigureView)
         {
             _viewColor = color;
-            UIContainer.InitView(_colorsPicker, GetViewColorsList());
+            _colorsPicker.UpdateViewsData(GetViewColorsList());
         }
         else if (selectedView is EditorSeatView seatView)
         {
             _seatColor = color;
             _seatSettings = new EditorSeatView.Data(_seatSettings?.numer, _seatSettings.countSeats, _seatSettings.countRow, color);
-            UIContainer.InitView(_colorsPicker, GetSeatsColorsList());
+            _colorsPicker.UpdateViewsData(GetSeatsColorsList());
             UIContainer.InitView(seatView, _seatSettings);
         }
     }
@@ -93,7 +93,8 @@ public class MapEditorUIManager
         {
             figure.UpdateForm(form);
             _currentForm = form;
-            UIContainer.InitView(_formsPicker, GetFormsList());
+            _formsPicker.UpdateViewsData(GetFormsList());
+
         }
     }
 
@@ -114,7 +115,7 @@ public class MapEditorUIManager
             _colorsPicker.Show();
             _formsPicker.Hide();
             _seatsPicker.Hide();
-            UIContainer.InitView(_colorsPicker, GetTextColorsList());
+            _colorsPicker.UpdateViewsData(GetTextColorsList());
         }
         else
         {
@@ -130,8 +131,8 @@ public class MapEditorUIManager
             _colorsPicker.Show();
             _formsPicker.Show();
             _seatsPicker.Hide();
-            UIContainer.InitView(_colorsPicker, GetViewColorsList());
-            UIContainer.InitView(_formsPicker, GetFormsList());
+            _colorsPicker.UpdateViewsData(GetViewColorsList());
+            _formsPicker.UpdateViewsData(GetFormsList());
         }
         else
         {
@@ -144,7 +145,7 @@ public class MapEditorUIManager
         if (show)
         {
             _seatSettings = settings;
-            UIContainer.InitView(_colorsPicker, GetSeatsColorsList());
+            _colorsPicker.UpdateViewsData(GetSeatsColorsList());
             UIContainer.InitView(_seatsPicker, _seatSettings);
             _seatsPicker.Show();
             _settingsPanel.Show();

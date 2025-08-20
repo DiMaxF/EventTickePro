@@ -17,7 +17,7 @@ public class ProfileScreen : AppScreen
     {
         base.OnStart();
         SetEditable(false);
-        UIContainer.InitView(button, "UPDATE PROFILE");
+        UIContainer.InitView(button, "Update profile");
     }
 
     protected override void UpdateViews()
@@ -87,7 +87,7 @@ public class ProfileScreen : AppScreen
                 Data.Personal.SetName(name.text);
                 Data.Personal.SetPhone(phone.text);
                 Data.Personal.SetEmail(email.text);
-                UIContainer.InitView(button, "UPDATE PROFILE");
+                UIContainer.InitView(button, "Update profile");
                 Data.SaveData();
             }
 
@@ -98,7 +98,7 @@ public class ProfileScreen : AppScreen
             email.DefaultColor();
             phone.DefaultColor();
             name.DefaultColor();
-            UIContainer.InitView(button, "SAVE");
+            UIContainer.InitView(button, "Save");
 
         }
     }

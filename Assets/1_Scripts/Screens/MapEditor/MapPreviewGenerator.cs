@@ -12,7 +12,7 @@ public class MapPreviewGenerator
         _cam = cam;
     }
 
-    public string GeneratePreview(IReadOnlyList<EditorView> editorViews, MapEditorUIManager uiManager)
+    public string GeneratePreview(IReadOnlyList<EditorView> editorViews, MapEditorUIManager uiManager, string name = "")
     {
         var panelStates = uiManager.SavePanelStates();
         uiManager.HideAllPanels();
@@ -41,7 +41,7 @@ public class MapPreviewGenerator
         texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
         texture.Apply();
 
-        string path = ""; //FileManager.SaveTexture(texture, $"preview_map_{_cam.Data.selectedEvent.date}");
+        string path = FileManager.SaveTexture(texture, $"preview_map_{name}");
 
         uiManager.RestorePanelStates(panelStates);
         tempCamera.targetTexture = null;
