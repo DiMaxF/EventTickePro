@@ -130,7 +130,12 @@ public class AddEventScreen : AppScreen
 #if UNITY_WEBGL
         CrossplatformUtilsManager.PickFile((path) =>
         {
-
+            if (!string.IsNullOrEmpty(path))
+            {
+                var selectedImagePath = FileManager.SaveImage(path);
+                UIContainer.InitView(image, selectedImagePath);
+                model.imgPath = selectedImagePath;
+            }
         }, "");
 #else
         NativeGallery.GetImageFromGallery((path) =>

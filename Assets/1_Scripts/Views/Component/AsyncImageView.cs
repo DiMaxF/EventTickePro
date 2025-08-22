@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.IO;
 using UnityEngine;
@@ -74,10 +75,27 @@ public class AsyncImageView : View
                !path.StartsWith(Application.persistentDataPath, StringComparison.OrdinalIgnoreCase);
     }
 
-    private void LoadLocalFile(string path)
+    private async UniTask LoadLocalFile(string path)
     {
-        Logger.TryCatch(() =>
+        try
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Texture2D texture = await FileManager.LoadImage(path);
+        if (texture != null)
+        {
+            _image.color = Color.white;
+            _image.texture = texture;
+            UpdateAspectRatio(texture);
+            if (_loading != null) _loading.SetActive(false);
+            TriggerAction(path);
+        }
+        else
+        {
+            _image.texture = null;
+            if (_loading != null) _loading.SetActive(false);
+            TriggerAction<string>(null);
+        }
+#else
             if (!File.Exists(path))
             {
                 _image.texture = null;
@@ -94,7 +112,7 @@ public class AsyncImageView : View
                 _image.texture = texture;
                 UpdateAspectRatio(texture);
                 if (_loading != null) _loading.SetActive(false);
-                TriggerAction(_imagePath);
+                TriggerAction(path);
             }
             else
             {
@@ -103,7 +121,13 @@ public class AsyncImageView : View
                 TriggerAction<string>(null);
                 Destroy(texture);
             }
-        });
+#endif
+        }
+        catch (Exception ex) 
+        {
+        
+        }
+
     }
 
     private void LoadResourcesPath(string path)
