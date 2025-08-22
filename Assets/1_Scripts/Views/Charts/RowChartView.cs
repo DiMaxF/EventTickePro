@@ -34,8 +34,8 @@ public class RowChartView : View
         chartOptions.xAxis.labelTextOption.fontSize = 36;
         chartOptions.xAxis.enableAxisLine = true;
         chartOptions.xAxis.axisLineWidth = 3.0f;
-        chartOptions.xAxis.tickColor = labelTextColor;
-        chartOptions.xAxis.axisLineColor = labelTextColor;
+        chartOptions.xAxis.tickColor = Color.white;
+        chartOptions.xAxis.axisLineColor = Color.white;
         chartOptions.xAxis.gridLineWidth = 3.0f;
 
         chartOptions.yAxis.enableTitle = true;
@@ -43,8 +43,8 @@ public class RowChartView : View
         chartOptions.yAxis.labelTextOption.fontSize = 36;
         chartOptions.yAxis.enableAxisLine = true;
         chartOptions.yAxis.axisLineWidth = 3.0f;
-        chartOptions.yAxis.axisLineColor = labelTextColor;
-        chartOptions.yAxis.tickColor = labelTextColor;
+        chartOptions.yAxis.axisLineColor = Color.white;
+        chartOptions.yAxis.tickColor = Color.white;
         chartOptions.yAxis.gridLineWidth = 3.0f;
         chartOptions.label.offset = 30f;
 

@@ -14,7 +14,6 @@ public class QRScanScreen : AppScreen
     protected override void OnStart()
     {
         base.OnStart();
-        //camera.StartWork();
 
         Play();
         statusText.text = "Scanning...";
@@ -23,7 +22,7 @@ public class QRScanScreen : AppScreen
     private void OnDisable()
     {
         Stop();
-        //camera.StopWork();
+      
     }
 
     protected override void Subscriptions()

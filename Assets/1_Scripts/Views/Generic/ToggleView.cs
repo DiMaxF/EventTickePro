@@ -10,8 +10,7 @@ public class ToggleView : View
     private void OnToggle()
     {
         _isOn = !_isOn;
-        if (_isOn) Show();
-        else Hide();
+        Animate();
         TriggerAction(_isOn);
     }
 
@@ -24,6 +23,7 @@ public class ToggleView : View
     {
         if (data is bool initialState) _isOn = initialState;
         base.Init(data);
+        Animate();
     }
 
     public override void Subscriptions()
@@ -31,5 +31,11 @@ public class ToggleView : View
         base.Subscriptions();
         UIContainer.SubscribeToView<ButtonView, object>(button, _ => OnToggle());
 
+    }
+
+    private void Animate()
+    {
+        if (_isOn) Show();
+        else Hide();
     }
 }

@@ -7,19 +7,30 @@ public class InputTextView : View
     [SerializeField] InputField inputField;
     [SerializeField] Image outline;
     [SerializeField] Color normalColor;
+    [SerializeField] Color disableColor = Color.clear;
     [SerializeField] Color errorColor;
 
     public string text => inputField != null ? inputField.text : "";
     public bool interactable
     {
         get => inputField.interactable;
-        set => inputField.interactable = value;
+        set 
+        {
+            if (value) DefaultColor();
+            else DisableColor();
+            inputField.interactable = value;
+        }
     }
     public bool isValid => outline.color != errorColor;
 
     public override void Init<T>(T data)
     {
-        if (data != null) inputField.text = data.ToString();
+        if (data != null) 
+        {
+            inputField.text = data.ToString();
+
+
+        }
         base.Init<T>(data);
     }
 
@@ -29,16 +40,10 @@ public class InputTextView : View
         inputField.onValueChanged.AddListener((string text) =>
         {
             TriggerAction(text);
-            UpdateUI();
-
         });
+
     }
 
-
-    public void Lock(bool value)
-    {
-        inputField.interactable = value;
-    }
     public void HighlightError()
     {
         outline.color = errorColor;
@@ -47,6 +52,11 @@ public class InputTextView : View
     public void DefaultColor()
     {
         outline.color = normalColor;
+    }
+
+    public void DisableColor() 
+    {
+        outline.color = disableColor;
     }
     public void UpdateColor(Color color)
     {
