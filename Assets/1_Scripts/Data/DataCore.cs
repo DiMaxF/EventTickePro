@@ -70,7 +70,7 @@ public class DataCore : MonoBehaviour
     }
     private void LoadData()
     {
-        if (!FileManager.FileExist(AppDataFileName))
+        if (!FileManager.FileExists(AppDataFileName))
         {
             Logger.Log($"{AppDataFileName} not found, starting with default data");
             return;

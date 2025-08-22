@@ -115,12 +115,12 @@ public class MapEditorScreen : AppScreen
             : new Color(47f / 255f, 34f / 255f, 98f / 255f);
     }
 
-    private void SaveMap()
+    private async void SaveMap()
     {
         _objectManager.DeselectAll(_uiManager);
         var mapData = _dataManager.CreateMapData(_objectManager.EditorViews, _uiManager);
         var name = $"{Data.Personal.GetSelectedEvent().date}_{Data.Personal.GetSelectedEvent().name}";
-        mapData.pathPreview = _previewGenerator.GeneratePreview(_objectManager.EditorViews, _uiManager, name);
+        mapData.pathPreview = await _previewGenerator.GeneratePreview(_objectManager.EditorViews, _uiManager, name);
         _dataManager.SaveMap(mapData, Data.Personal.GetSelectedEvent());
         NativeMobilePlugin.Instance.ShowToast("Map saved successfully!");
     }

@@ -4,11 +4,17 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class FileManager : MonoBehaviour 
+using Cysharp.Threading.Tasks;
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using UnityEngine;
+
+public class FileManager : MonoBehaviour
 {
 #if UNITY_WEBGL && !UNITY_EDITOR
     [DllImport("__Internal")]
-    private static extern void SaveImageToIndexedDB(string fileName, string base64Data, int dataLength);
+    private static extern void SaveImageToIndexedDB(string fileName, string base64Data, int dataLength, string callbackObjectName, string callbackMethodName);
 
     [DllImport("__Internal")]
     private static extern void LoadImageFromIndexedDB(string fileName, string callbackObjectName, string callbackMethodName);
@@ -16,110 +22,191 @@ public class FileManager : MonoBehaviour
 
     public static string ReadFile(string fileName)
     {
-        var path = GetFilePath(fileName);
-        if (File.Exists(path))
+        try
         {
-            using StreamReader reader = new StreamReader(path);
-            var json = reader.ReadToEnd();
-            return json;
+            string path = GetFilePath(fileName);
+            if (File.Exists(path))
+            {
+                using StreamReader reader = new StreamReader(path);
+                return reader.ReadToEnd();
+            }
+            Debug.LogWarning($"File not found: {path}");
+            return null;
         }
-        return "Error: File not found";
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to read file {fileName}: {ex.Message}");
+            return null;
+        }
     }
 
-    public static void WriteToFile(string fileName, string content)
+    public static async UniTask WriteToFile(string fileName, string content)
     {
-        var path = GetFilePath(fileName);
-        var fileStream = new FileStream(path, FileMode.Create);
-
-        using var writer = new StreamWriter(fileStream);
-        writer.Write(content);
-        Logger.Log(path);
+        try
+        {
+            string path = GetFilePath(fileName);
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            using (var writer = new StreamWriter(fileStream))
+            {
+                await writer.WriteAsync(content);
+                Debug.Log($"File written to: {path}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to write file {fileName}: {ex.Message}");
+        }
     }
 
-    public static bool FileExist(string fileName)
+    public static bool FileExists(string fileName)
     {
-        return File.Exists(GetFilePath(fileName));
+        try
+        {
+            return File.Exists(GetFilePath(fileName));
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Error checking file existence {fileName}: {ex.Message}");
+            return false;
+        }
     }
 
     public static string GetFilePath(string fileName)
     {
-        return Application.persistentDataPath + "/" + fileName;
+        return Path.Combine(Application.persistentDataPath, fileName);
     }
 
-    public static string SaveImage(string data, bool isBase64 = false)
+    public static async UniTask<string> SaveImage(string data, bool isBase64 = false)
     {
+        string fileName = $"catch_{DateTime.Now.Ticks}.jpg";
+        string newPath = GetFilePath(fileName);
+        Debug.Log($"Saving image to: {newPath}");
+
         try
         {
-            string fileName = $"catch_{DateTime.Now.Ticks}.jpg";
-            string newPath = GetFilePath(fileName);
-            Debug.Log($"Saving image to: {newPath}");
-
 #if UNITY_WEBGL && !UNITY_EDITOR
             string base64 = isBase64 ? data : Convert.ToBase64String(File.ReadAllBytes(data));
-            Debug.Log($"Saving base64 data (length: {base64.Length}) to IndexedDB");
             if (string.IsNullOrEmpty(base64))
             {
                 Debug.LogError("Base64 data is empty");
                 return null;
             }
-            SaveImageToIndexedDB(fileName, base64, base64.Length);
+            Debug.Log($"Saving base64 data (length: {base64.Length}) to IndexedDB");
+
+            var tcs = new UniTaskCompletionSource<string>();
+            var callbackObject = new GameObject("ImageSaveCallback");
+            var callbackComponent = callbackObject.AddComponent<ImageSaveCallback>();
+            callbackComponent.SetCallback((result) =>
+            {
+                if (result == "success")
+                {
+                    tcs.TrySetResult(newPath);
+                }
+                else
+                {
+                    tcs.TrySetException(new Exception($"Save error: {result}"));
+                }
+            });
+
+            SaveImageToIndexedDB(fileName, base64, base64.Length, callbackObject.name, nameof(ImageSaveCallback.OnImageSaved));
+            return await tcs.Task;
 #else
             byte[] imageBytes = isBase64 ? Convert.FromBase64String(data) : File.ReadAllBytes(data);
             Debug.Log($"Writing {imageBytes.Length} bytes to: {newPath}");
-            File.WriteAllBytes(newPath, imageBytes);
-#endif
-
+            await File.WriteAllBytesAsync(newPath, imageBytes);
             return newPath;
+#endif
         }
         catch (Exception ex)
         {
-            Debug.LogError($"Failed to save image: {ex.Message}");
+            Debug.LogError($"Failed to save image {fileName}: {ex.Message}");
             return null;
+        }
+        finally
+        {
+            var obj = GameObject.Find("ImageSaveCallback");
+            if (obj != null) Destroy(obj);
         }
     }
 
-    public static string SaveTexture(Texture2D texture, string fileNamePrefix = "qr")
+    public static async UniTask<string> SaveTexture(Texture2D texture, string fileNamePrefix = "qr")
     {
+        string fileName = $"{fileNamePrefix}_{DateTime.Now.Second}_{DateTime.Now.Ticks}.png";
+        string path = GetFilePath(fileName);
+        Debug.Log($"Saving texture to: {path}");
+
         try
         {
-            string fileName = $"{fileNamePrefix}_{DateTime.Now.Second}_{DateTime.Now.Ticks}.png";
-            string path = GetFilePath(fileName);
             byte[] textureBytes = texture.EncodeToPNG();
+            if (textureBytes == null || textureBytes.Length == 0)
+            {
+                Debug.LogError("Texture encoding failed: Empty or null bytes");
+                return null;
+            }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             string base64 = Convert.ToBase64String(textureBytes);
-            SaveImageToIndexedDB(fileName, base64, base64.Length);
-#else
-            File.WriteAllBytes(path, textureBytes);
-#endif
+            if (string.IsNullOrEmpty(base64))
+            {
+                Debug.LogError("Base64 conversion failed for texture");
+                return null;
+            }
+            Debug.Log($"Saving texture base64 data (length: {base64.Length}) to IndexedDB");
 
+            var tcs = new UniTaskCompletionSource<string>();
+            var callbackObject = new GameObject("ImageSaveCallback");
+            var callbackComponent = callbackObject.AddComponent<ImageSaveCallback>();
+            callbackComponent.SetCallback((result) =>
+            {
+                if (result == "success")
+                {
+                    tcs.TrySetResult(path);
+                }
+                else
+                {
+                    tcs.TrySetException(new Exception($"Save texture error: {result}"));
+                }
+            });
+
+            SaveImageToIndexedDB(fileName, base64, base64.Length, callbackObject.name, nameof(ImageSaveCallback.OnImageSaved));
+            return await tcs.Task;
+#else
+            await File.WriteAllBytesAsync(path, textureBytes);
             Debug.Log($"Texture saved to: {path}");
             return path;
+#endif
         }
         catch (Exception ex)
         {
-            Debug.LogError($"Failed to save texture: {ex.Message}");
+            Debug.LogError($"Failed to save texture {fileName}: {ex.Message}");
             return null;
+        }
+        finally
+        {
+            var obj = GameObject.Find("ImageSaveCallback");
+            if (obj != null) Destroy(obj);
         }
     }
 
     public static async UniTask<Texture2D> LoadImage(string fileName)
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
+        Debug.Log($"Loading image: {fileName}");
+
         try
         {
+#if UNITY_WEBGL && !UNITY_EDITOR
             var tcs = new UniTaskCompletionSource<string>();
             var callbackObject = new GameObject("ImageLoadCallback");
             var callbackComponent = callbackObject.AddComponent<ImageLoadCallback>();
-            callbackComponent.SetCallback((data) =>
+            callbackComponent.SetCallback((result) =>
             {
-                if (data != null && data != "Error: File not found")
+                if (string.IsNullOrEmpty(result) || result.StartsWith("Error:") || result.StartsWith("IndexedDB"))
                 {
-                    tcs.TrySetResult(data);
+                    tcs.TrySetException(new Exception($"Load error: {result ?? "Null data"}"));
                 }
                 else
                 {
-                    tcs.TrySetException(new Exception("Failed to load image from IndexedDB: File not found"));
+                    tcs.TrySetResult(result);
                 }
             });
 
@@ -139,53 +226,39 @@ public class FileManager : MonoBehaviour
                 Destroy(texture);
                 return null;
             }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"Failed to load image from IndexedDB: {ex.Message}");
-            return null;
-        }
-        finally
-        {
-            // ”ничтожаем callbackObject, если он еще существует
-            var obj = GameObject.Find("ImageLoadCallback");
-            if (obj != null)
-            {
-                Destroy(obj);
-            }
-        }
 #else
-        try
-        {
             string path = GetFilePath(fileName);
-            if (File.Exists(path))
-            {
-                byte[] imageBytes = File.ReadAllBytes(path);
-                Texture2D texture = new Texture2D(2, 2);
-                if (texture.LoadImage(imageBytes))
-                {
-                    Debug.Log($"Image loaded successfully: {path}");
-                    return texture;
-                }
-                else
-                {
-                    Debug.LogError($"Failed to load image data: {path}");
-                    Destroy(texture);
-                    return null;
-                }
-            }
-            else
+            if (!File.Exists(path))
             {
                 Debug.LogError($"File not found: {path}");
                 return null;
             }
+
+            byte[] imageBytes = await File.ReadAllBytesAsync(path);
+            Texture2D texture = new Texture2D(2, 2);
+            if (texture.LoadImage(imageBytes))
+            {
+                Debug.Log($"Image loaded successfully: {path}");
+                return texture;
+            }
+            else
+            {
+                Debug.LogError($"Failed to load image data: {path}");
+                Destroy(texture);
+                return null;
+            }
+#endif
         }
         catch (Exception ex)
         {
-            Debug.LogError($"Failed to load image: {ex.Message}");
+            Debug.LogError($"Failed to load image {fileName}: {ex.Message}");
             return null;
         }
-#endif
+        finally
+        {
+            var obj = GameObject.Find("ImageLoadCallback");
+            if (obj != null) Destroy(obj);
+        }
     }
 
     private class ImageLoadCallback : MonoBehaviour
@@ -199,8 +272,26 @@ public class FileManager : MonoBehaviour
 
         public void OnImageLoaded(string base64Data)
         {
-            Debug.Log($"Received base64 data from IndexedDB (length: {base64Data?.Length}): {(base64Data != null && base64Data.Length > 50 ? base64Data.Substring(0, 50) + "..." : base64Data ?? "null")}");
+            Debug.Log($"Received base64 data from IndexedDB (length: {base64Data?.Length ?? 0}): {(base64Data != null && base64Data.Length > 50 ? base64Data.Substring(0, 50) + "..." : base64Data ?? "null")}");
             callback?.Invoke(base64Data);
+            Destroy(gameObject);
+        }
+    }
+
+    private class ImageSaveCallback : MonoBehaviour
+    {
+        private Action<string> callback;
+
+        public void SetCallback(Action<string> cb)
+        {
+            callback = cb;
+        }
+
+        public void OnImageSaved(string result)
+        {
+            Debug.Log($"Save result: {result}");
+            callback?.Invoke(result);
+            Destroy(gameObject);
         }
     }
 }

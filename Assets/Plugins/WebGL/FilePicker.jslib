@@ -79,11 +79,13 @@ mergeInto(LibraryManager.library, {
         fileuploader.click();
     },
 
-    SaveImageToIndexedDB: function(fileName, base64Data, dataLength) {
+    SaveImageToIndexedDB: function(fileName, base64Data, dataLength, callbackObjectName, callbackMethodName) {
         var dbName = "UnityImageDB";
         var storeName = "Images";
         var fileNameStr = UTF8ToString(fileName);
         var base64Str = UTF8ToString(base64Data);
+        var objectName = UTF8ToString(callbackObjectName);
+        var methodName = UTF8ToString(callbackMethodName);
 
         var request = indexedDB.open(dbName, 1);
 
@@ -102,14 +104,17 @@ mergeInto(LibraryManager.library, {
 
             putRequest.onsuccess = function() {
                 console.log("Image saved to IndexedDB: " + fileNameStr);
+                SendMessage(objectName, methodName, "success");
             };
             putRequest.onerror = function(event) {
                 console.error("IndexedDB put error: " + event.target.error);
+                SendMessage(objectName, methodName, "error: " + event.target.error);
             };
         };
 
         request.onerror = function(event) {
             console.error("IndexedDB open error: " + event.target.error);
+            SendMessage(objectName, methodName, "error: " + event.target.error);
         };
     },
 

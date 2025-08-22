@@ -29,7 +29,6 @@ EventTicketPro is your go-to tool for managing small to medium-sized events, fro
 ## Technical Details
 
 - **Architecture**: Uses **MVVM (Model-View-ViewModel)** for clean, maintainable, and testable code.
-- **Game Engine**: Built with **Unity3D (2022.3 LTS)**, leveraging its rendering power for a smooth and interactive UI.
 - **Offline Capability**: Works fully offline, storing events, tickets, and seating maps locally on the device.
 - **Cross-Platform**: Optimized for **iOS** and **Android** using Unity’s cross-platform framework.
 - **WebGL Demo**: Try the interactive seat map editor in your browser! [Demo](https://dimaxf.github.io/EventTickePro/Build/) (TBD, hosted on GitHub Pages).

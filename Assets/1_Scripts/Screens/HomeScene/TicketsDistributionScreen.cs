@@ -153,14 +153,14 @@ public class TicketsDistributionScreen : AppScreen
 
     }
 
-    private void HadnleTextureQR(Texture2D tex)
+    private async void HadnleTextureQR(Texture2D tex)
     {   
         if (tex != null)
         {
             int width = tex.width;
             int height = tex.height;
             float aspect = width * 1.0f / height;
-            currentQRPath = FileManager.SaveTexture(tex, "qr_ticket");
+            currentQRPath = await FileManager.SaveTexture(tex, "qr_ticket");
             Logger.Log($"QR TEXTURE {tex} null({tex == null}) width({width}), height({height})");
 
         }

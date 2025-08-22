@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public class MapPreviewGenerator
         _cam = cam;
     }
 
-    public string GeneratePreview(IReadOnlyList<EditorView> editorViews, MapEditorUIManager uiManager, string name = "")
+    public async UniTask<string> GeneratePreview(IReadOnlyList<EditorView> editorViews, MapEditorUIManager uiManager, string name = "")
     {
         var panelStates = uiManager.SavePanelStates();
         uiManager.HideAllPanels();
@@ -41,7 +42,7 @@ public class MapPreviewGenerator
         texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
         texture.Apply();
 
-        string path = FileManager.SaveTexture(texture, $"preview_map_{name}");
+        string path = await FileManager.SaveTexture(texture, $"preview_map_{name}");
 
         uiManager.RestorePanelStates(panelStates);
         tempCamera.targetTexture = null;
