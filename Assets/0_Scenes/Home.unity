@@ -21497,6 +21497,14 @@ PrefabInstance:
       propertyPath: m_Padding.m_Top
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 9205459657192739511, guid: 958ac74888bafa74b91d667acf2ddcd6, type: 3}
+      propertyPath: m_Padding.m_Left
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9205459657192739511, guid: 958ac74888bafa74b91d667acf2ddcd6, type: 3}
+      propertyPath: m_Padding.m_Right
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5999937871080431656, guid: 958ac74888bafa74b91d667acf2ddcd6, type: 3}
     m_RemovedGameObjects: []
@@ -24414,7 +24422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6734114508681818205, guid: 3289a8d0357ff094a84bb3c19565a33e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1290.25
+      value: 1284.25
       objectReference: {fileID: 0}
     - target: {fileID: 6734114508681818205, guid: 3289a8d0357ff094a84bb3c19565a33e, type: 3}
       propertyPath: m_SizeDelta.y

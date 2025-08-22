@@ -1,58 +1,38 @@
-using Cysharp.Threading.Tasks;
 using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
 
-public class CrossplatformUtilsManager 
+public static class CrossplatformUtilsManager
 {
+#if UNITY_WEBGL && !UNITY_EDITOR
     [DllImport("__Internal")]
     private static extern void RequestFile(string callbackObjectName, string callbackMethodName, string extensions);
+#endif
 
-    public static void PickFile(Action<string> callback, string extensions = "")
+    public static void PickFile(Action<string> callback, string extensions = "image/*")
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-       string callbackMethod = "OnFilePicked";
-        fileCallback = callback;
-        RequestFile("CrossplatformUtilsManager", callbackMethod, extensions);
+        var callbackObject = new GameObject("FilePickerCallback");
+        var callbackComponent = callbackObject.AddComponent<FilePickerCallback>();
+        callbackComponent.SetCallback(callback);
+        RequestFile(callbackObject.name, nameof(FilePickerCallback.OnFilePicked), extensions);
 #else
-        Debug.LogWarning("File picker is only supported in WebGL builds");
 #endif
     }
 
-    private static Action<string> fileCallback;
-
-    public static void OnFilePicked(string fileUrl)
+    private class FilePickerCallback : MonoBehaviour
     {
-        Debug.Log("Selected file: " + fileUrl);
-        if (fileCallback != null)
+        private Action<string> callback;
+
+        public void SetCallback(Action<string> cb)
         {
-            fileCallback(fileUrl);
+            callback = cb;
         }
-    }
 
-    public async UniTask LoadTextureFromFileAsync(string fileUrl, Image targetImage)
-    {
-        await LoadTextureAsync(fileUrl, targetImage);
-    }
-
-    private async UniTask LoadTextureAsync(string fileUrl, Image targetImage)
-    {
-        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(fileUrl))
+        public void OnFilePicked(string base64Data)
         {
-            await request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
-                Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                targetImage.sprite = sprite;
-            }
-            else
-            {
-                Debug.LogError("Error loading texture: " + request.error);
-            }
+            Debug.Log($"Received base64 data: {(base64Data.Length > 50 ? base64Data.Substring(0, 50) + "..." : base64Data)}");
+            callback?.Invoke(base64Data);
+            Destroy(gameObject); 
         }
     }
 }
