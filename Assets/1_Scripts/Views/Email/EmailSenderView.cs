@@ -55,7 +55,9 @@ public class EmailSenderView : View
                 Logger.Log($"{emailListView.GetModel().email} {emailListView.GetModel().name}", "EmailSenderView");
                 emails.Add(emailListView.GetModel());
             }
-        }    
+        }
+        Logger.Log($"end fecth {emails.Count}", "EmailSenderView");
+
     }
 
     private void OnButtonSend()

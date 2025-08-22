@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public static class UIContainer
 {
     private static readonly List<View> _currentViews = new List<View>();
+    public static List<View> Views => _currentViews;
     private static readonly List<View> _persistentViews = new List<View>();
     private static readonly Dictionary<View, List<Action<object>>> _currentViewSubscriptions = new Dictionary<View, List<Action<object>>>();
     private static readonly Dictionary<View, List<Action<object>>> _persistentViewSubscriptions = new Dictionary<View, List<Action<object>>>();

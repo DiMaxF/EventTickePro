@@ -22,13 +22,12 @@ public class ScaleAnimation : MonoBehaviour, IViewAnimation
         originalScale = target.localScale;
     }
 
-    public Tween AnimateShow(Action onComplete)
+    public Tween AnimateShow()
     {
         target.localScale = startScale;
         return target.DOScale(originalScale, config.Duration)
             .SetEase(config.Ease)
-            .SetDelay(config.Delay)
-            .OnComplete(() => onComplete?.Invoke());
+            .SetDelay(config.Delay);
     }
 
     public Tween AnimateHide()

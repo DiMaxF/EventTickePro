@@ -32,13 +32,12 @@ public class LayoutElementAnimation : MonoBehaviour, IViewAnimation
                         config.Duration).SetEase(config.Ease);
     }
 
-    public Tween AnimateShow(Action onComplete)
+    public Tween AnimateShow()
     {
         layoutElement.flexibleWidth = hide;
         return DOTween.To(() => layoutElement.flexibleWidth,
                         x => layoutElement.flexibleWidth = x,
                         show,
-                        config.Duration).SetEase(config.Ease)
-                                        .OnComplete(() => onComplete?.Invoke());
+                        config.Duration).SetEase(config.Ease);
     }
 }

@@ -6,15 +6,13 @@ using UnityEngine.UI;
 
 public class NavigationButton : View
 {
-    [SerializeField] private Image icon;
-    [SerializeField] private ButtonView button;
-
+    [SerializeField] Image icon;
+    [SerializeField] ButtonView button;
 
     private AppContainer.NavigationButtonData screenData;
     private bool val;
     private bool firstIteration = true;
     
-
     public override void Init<T>(T data)
     {
         if (data is AppContainer.NavigationButtonData screen)
@@ -45,8 +43,6 @@ public class NavigationButton : View
         }
     }
 
-
-
     private async void AnimateSelected(bool selected) 
     {
         button.interactable = false;
@@ -54,13 +50,19 @@ public class NavigationButton : View
         {
             if (firstIteration) 
             {
-                firstIteration = false;
                 await AnimationPlayer.PlayAnimationsAsync(gameObject, selected);
             }
             button.interactable = true;
             return;
         }
+
         await AnimationPlayer.PlayAnimationsAsync(gameObject, selected);
         button.interactable = true;
+    }
+
+    public override void Show()
+    {
+        if(!firstIteration) base.Show();
+        firstIteration = false;
     }
 }

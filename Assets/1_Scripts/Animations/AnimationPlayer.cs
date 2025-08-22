@@ -12,7 +12,7 @@ public static class AnimationPlayer
     /// <param name="target">The GameObject with IViewAnimation components.</param>
     /// <param name="show">True for show animations, false for hide animations.</param>
     /// <returns>UniTask for async completion.</returns>
-    public static async UniTask PlayAnimationsAsync(GameObject target, bool show = true, Action onComplete = null)
+    public static async UniTask PlayAnimationsAsync(GameObject target, bool show = true)
     {
         if (target == null)
         {
@@ -22,12 +22,12 @@ public static class AnimationPlayer
 
         var animations = target.GetComponents<IViewAnimation>()
             .OrderBy(a => a.Order)
-            .GroupBy(a => a.Order) 
+            .GroupBy(a => a.Order)
             .ToList();
 
         if (animations.Count == 0)
         {
-            return; 
+            return;
         }
 
         var controller = new DOTweenAnimationController();
@@ -44,7 +44,7 @@ public static class AnimationPlayer
                     if (isFirstInGroup || !anim.IsParallel)
                     {
                         if (show)
-                            sequence.Append(anim.AnimateShow(onComplete));
+                            sequence.Append(anim.AnimateShow());
                         else
                             sequence.Append(anim.AnimateHide());
                         isFirstInGroup = false;
@@ -52,11 +52,11 @@ public static class AnimationPlayer
                     else
                     {
                         sequence.Join(show
-                            ? anim.AnimateShow(null)
+                            ? anim.AnimateShow()
                             : anim.AnimateHide());
                     }
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
                     Logger.LogError($"AnimationPlayer: Error in {anim.GetType().Name} on {target.name}: {ex.Message}", "AnimationPlayer");
                 }
@@ -67,5 +67,69 @@ public static class AnimationPlayer
         controller.StopAnimation();
     }
 
+    /// <summary>
+    /// Plays looped animations with YoYo loop type, cycling from Show to Hide.
+    /// </summary>
+    /// <param name="target">The GameObject with IViewAnimation components.</param>
+    /// <param name="loops">Number of loops (-1 for infinite).</param>
+    /// <returns>UniTask for async completion (will not complete if infinite).</returns>
+    public static async UniTask PlayLoopAnimationsAsync(GameObject target, int loops = -1)
+    {
+        if (target == null)
+        {
+            Logger.LogWarning("AnimationPlayer: Target GameObject is null.", "AnimationPlayer");
+            return;
+        }
+
+        var animations = target.GetComponents<IViewAnimation>()
+            .OrderBy(a => a.Order)
+            .GroupBy(a => a.Order)
+            .ToList();
+
+        if (animations.Count == 0)
+        {
+            return;
+        }
+
+        var controller = new DOTweenAnimationController();
+        var controllerHide = new DOTweenAnimationController();
+        controller.StartAnimation();
+        controllerHide.StartAnimation();
+        var sequence = controller.GetSequence();
+        var sequenceHide = controllerHide.GetSequence();
+
+
+
+        foreach (var group in animations)
+        {
+            bool isFirstInGroup = true;
+            foreach (var anim in group)
+            {
+                try
+                {
+                    if (isFirstInGroup || !anim.IsParallel)
+                    {
+                        sequence.Append(anim.AnimateShow());
+                        isFirstInGroup = false;
+                    }
+                    else
+                    {
+                        sequence.Join(anim.AnimateShow());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError($"AnimationPlayer: Error in {anim.GetType().Name} on {target.name}: {ex.Message}", "AnimationPlayer");
+                }
+            }
+        }
+
+
+
+        sequence.SetLoops(loops, LoopType.Yoyo);
+
+        await sequence.AsyncWaitForCompletion();
+        controller.StopAnimation();
+    }
 
 }

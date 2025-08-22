@@ -8,7 +8,7 @@ public interface IViewAnimation
     /// Adds the show animation to the sequence.
     /// </summary>
     /// <param name="target">The target GameObject or Transform for the animation.</param>
-    Tween AnimateShow(Action onComplete);
+    Tween AnimateShow();
 
     /// <summary>
     /// Adds the hide animation to the sequence.

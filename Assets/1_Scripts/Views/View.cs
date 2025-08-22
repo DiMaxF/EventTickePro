@@ -61,7 +61,7 @@ public abstract class View : MonoBehaviour
     }
 
 
-    private void OnDisable()
+    public void OnExit()
     {
         _subscribed = false;
     }

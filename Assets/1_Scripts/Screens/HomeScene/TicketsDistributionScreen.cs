@@ -26,8 +26,6 @@ public class TicketsDistributionScreen : AppScreen
             }
         );
         UIContainer.RegisterView(emailSender);
-
-
     }
 
     protected override void Subscriptions()
@@ -50,7 +48,6 @@ public class TicketsDistributionScreen : AppScreen
     {
         UIContainer.RegisterView(emailSender);
         UIContainer .InitView(emailSender, "");
-        Logger.Log("Tickerts", "TicketsDistributionScreen");
         emailSender.Show();
     }
 
@@ -68,7 +65,7 @@ public class TicketsDistributionScreen : AppScreen
         var permission = await NativeFilePicker.RequestPermissionAsync(true);
         if (permission != NativeFilePicker.Permission.Granted)
         {
-            Debug.LogWarning("Разрешение на доступ к файлам не предоставлено");
+            Logger.LogWarning("Permission", "TicketsDistributionScreen");
             return;
         }
 

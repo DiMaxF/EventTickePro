@@ -68,6 +68,7 @@ public abstract class AppScreen : MonoBehaviour
     /// </summary>
     public async UniTask Hide()
     {
+        foreach (var view in UIContainer.Views) view.OnExit();
         await AnimationPlayer.PlayAnimationsAsync(gameObject, false);
         gameObject.SetActive(false);
     }

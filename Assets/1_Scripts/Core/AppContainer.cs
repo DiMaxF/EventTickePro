@@ -27,13 +27,14 @@ public class AppContainer : MonoBehaviour
 
         if (firstScreen != null) Show(firstScreen);
         else if (screens.Count > 0) Show(screens[0]);
-        else UpdateData();
+        
 
-        if (navigationBar != null) UIContainer.SubscribeToView(navigationBar, (NavigationButtonData data) => 
-        {
-            Show(data.screen);
-            Logger.Log("SHOW", "AppContainer");
-        }, true);
+        if (navigationBar != null) 
+            UIContainer.SubscribeToView(navigationBar, (NavigationButtonData data) => 
+            {
+                Show(data.screen);
+                Logger.Log("SHOW", "AppContainer");
+            }, true);
     }
 
     public void Show(AppScreen target)
@@ -69,6 +70,7 @@ public class AppContainer : MonoBehaviour
         {
             if (hideNavigationBar.Contains(targetScreen)) navigationBar.Hide();
             else navigationBar.Show();
+
             UpdateData();
         }
     }

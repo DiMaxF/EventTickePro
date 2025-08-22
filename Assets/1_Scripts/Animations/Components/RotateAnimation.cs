@@ -19,13 +19,12 @@ public class RotateAnimation : MonoBehaviour, IViewAnimation
         if (target == null) target = GetComponent<Transform>();
     }
 
-    public Tween AnimateShow(Action onComplete)
+    public Tween AnimateShow()
     {
         target.localRotation = Quaternion.Euler(startRotation);
         return target.DORotate(endRotation, config.Duration, RotateMode.Fast)
             .SetEase(config.Ease)
-            .SetDelay(config.Delay)
-            .OnComplete(() => onComplete?.Invoke());
+            .SetDelay(config.Delay);
     }
 
     public Tween AnimateHide()

@@ -22,7 +22,7 @@ public class SizeAnimation : MonoBehaviour, IViewAnimation
         rectTransform = GetComponent<RectTransform>();
     }
 
-    public Tween AnimateShow(Action onComplete)
+    public Tween AnimateShow()
     {
         rectTransform.sizeDelta = start;
         return DOTween.To(() => rectTransform.sizeDelta,
@@ -30,8 +30,7 @@ public class SizeAnimation : MonoBehaviour, IViewAnimation
                           end,
                           config.Duration)
                      .SetEase(config.Ease)
-                     .SetDelay(config.Delay)
-                     .OnComplete(() => onComplete?.Invoke());
+                     .SetDelay(config.Delay);
     }
 
     public Tween AnimateHide()

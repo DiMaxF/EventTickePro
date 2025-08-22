@@ -24,11 +24,10 @@ public class FadeAnimation : MonoBehaviour, IViewAnimation
         return canvasGroup.DOFade(0, config.Duration).SetEase(config.Ease);
     }
 
-    public Tween AnimateShow(Action onComplete)
+    public Tween AnimateShow()
     {
         canvasGroup.alpha = 0;
         return canvasGroup.DOFade(1, config.Duration)
-            .SetEase(config.Ease).SetDelay(config.Delay)
-            .OnComplete(() => onComplete?.Invoke());
+            .SetEase(config.Ease).SetDelay(config.Delay);
     }
 }

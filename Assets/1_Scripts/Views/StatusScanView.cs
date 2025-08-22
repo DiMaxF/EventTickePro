@@ -10,13 +10,9 @@ public class StatusScanView : View
     [SerializeField] GameObject scanning;
     [SerializeField] GameObject success;
     [SerializeField] GameObject failed;
+
     private StatusScanning status;
-    private Vector2 pos;
-    private void Awake()
-    {
-        pos = Vector3.zero;
-        scanning.transform.localPosition = pos - new Vector2(0, 180);
-    }       
+    
     public override void Init<T>(T data)
     {
         if (data is StatusScanning status) this.status = status;
@@ -35,6 +31,7 @@ public class StatusScanView : View
                 success.SetActive(false);
                 failed.SetActive(false);
                 MoveScannerLine();
+                scanning.transform.localPosition = new Vector2(0, 180);
                 camFocus.color = Color.white;
                 break;
             case StatusScanning.Success:
@@ -52,12 +49,9 @@ public class StatusScanView : View
         }
     }
 
-    void MoveScannerLine()
+    async void MoveScannerLine()
     {
-        /*StartAnimation()
-            .Append(scanning.transform.DOLocalMoveY(pos.y + 180, 2f).SetEase(Ease.InOutSine)) 
-            .Append(scanning.transform.DOLocalMoveY(pos.y - 180, 2f).SetEase(Ease.InOutSine)) 
-            .SetLoops(-1, LoopType.Yoyo); */
+        await AnimationPlayer.PlayLoopAnimationsAsync(gameObject);
     }
 
 }

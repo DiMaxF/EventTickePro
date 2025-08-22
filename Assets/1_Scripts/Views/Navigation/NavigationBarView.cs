@@ -24,6 +24,7 @@ public class NavigationBarView : View
             {
                 UIContainer.RegisterView(buttons, true);
                 UIContainer.InitView(buttons, _data);
+                buttons.UpdateViewsData(_data);
             }
             else
             {
@@ -31,15 +32,6 @@ public class NavigationBarView : View
             }
         }
         base.Init(data);
-    }
-
-    public override void UpdateUI()
-    {
-        if (_data != null) 
-        {
-            Logger.Log($"screens: {_data.Count}", "NavigationBarView");
-        }
-
     }
 
     public override void Subscriptions()

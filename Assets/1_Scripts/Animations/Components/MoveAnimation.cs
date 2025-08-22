@@ -13,18 +13,18 @@ public class MoveAnimation : MonoBehaviour, IViewAnimation
 
     public bool IsParallel => parallel;
 
-    [SerializeField]  private Vector3 originalPos;
+    [SerializeField] private Vector3 originalPos;
 
     private void Awake()
     {
         if (target == null) target = GetComponent<RectTransform>();  
     }
 
-    public Tween AnimateShow(Action onComplete)
+    public Tween AnimateShow()
     {
         target.anchoredPosition = originalPos + offset;
         return target.DOAnchorPos(originalPos, config.Duration)
-            .SetEase(config.Ease).SetDelay(config.Delay).OnComplete(() => onComplete?.Invoke());
+            .SetEase(config.Ease).SetDelay(config.Delay);
     }
 
     public Tween AnimateHide()

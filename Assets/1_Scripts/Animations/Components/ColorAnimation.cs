@@ -19,7 +19,7 @@ public class ColorAnimation : MonoBehaviour, IViewAnimation
         return _image.DOColor(hide, config.Duration).SetEase(config.Ease);
     }
 
-    public Tween AnimateShow(Action onComplete)
+    public Tween AnimateShow()
     {
         _image.color = hide;
         return _image.DOColor(show, config.Duration).SetEase(config.Ease);
