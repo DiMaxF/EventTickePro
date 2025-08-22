@@ -50,7 +50,21 @@ mergeInto(LibraryManager.library, {
             var file = files[0];
             var reader = new FileReader();
             reader.onload = function(e) {
-                var base64 = e.target.result.split(',')[1]; // Удаляем префикс data:image/*;base64,
+                var result = e.target.result;
+                if (typeof result !== 'string' || !result.includes('base64,')) {
+                    console.error("Invalid FileReader result: " + result);
+                    SendMessage(objectName, methodName, "");
+                    fileuploader.remove();
+                    return;
+                }
+                var base64 = result.split(',')[1];
+                if (!base64) {
+                    console.error("Empty base64 data after splitting");
+                    SendMessage(objectName, methodName, "");
+                    fileuploader.remove();
+                    return;
+                }
+                console.log("Base64 data length: " + base64.length);
                 SendMessage(objectName, methodName, base64);
                 fileuploader.remove();
             };
@@ -99,10 +113,12 @@ mergeInto(LibraryManager.library, {
         };
     },
 
-    LoadImageFromIndexedDB: function(fileName, callback) {
+    LoadImageFromIndexedDB: function(fileName, callbackObjectName, callbackMethodName) {
         var dbName = "UnityImageDB";
         var storeName = "Images";
         var fileNameStr = UTF8ToString(fileName);
+        var objectName = UTF8ToString(callbackObjectName);
+        var methodName = UTF8ToString(callbackMethodName);
 
         var request = indexedDB.open(dbName, 1);
 
@@ -122,34 +138,19 @@ mergeInto(LibraryManager.library, {
             getRequest.onsuccess = function(event) {
                 var data = event.target.result;
                 if (data) {
-                    var buffer = _malloc(lengthBytesUTF8(data) + 1);
-                    stringToUTF8(data, buffer, lengthBytesUTF8(data) + 1);
-                    dynCall_vi(callback, buffer);
-                    _free(buffer);
+                    SendMessage(objectName, methodName, data);
                 } else {
-                    var errorMsg = "Error: File not found in IndexedDB for " + fileNameStr;
-                    var buffer = _malloc(lengthBytesUTF8(errorMsg) + 1);
-                    stringToUTF8(errorMsg, buffer, lengthBytesUTF8(errorMsg) + 1);
-                    dynCall_vi(callback, buffer);
-                    _free(buffer);
+                    SendMessage(objectName, methodName, "Error: File not found in IndexedDB for " + fileNameStr);
                 }
             };
 
             getRequest.onerror = function(event) {
-                var errorMsg = "IndexedDB get error for " + fileNameStr + ": " + event.target.error;
-                var buffer = _malloc(lengthBytesUTF8(errorMsg) + 1);
-                stringToUTF8(errorMsg, buffer, lengthBytesUTF8(errorMsg) + 1);
-                dynCall_vi(callback, buffer);
-                _free(buffer);
+                SendMessage(objectName, methodName, "IndexedDB get error for " + fileNameStr + ": " + event.target.error);
             };
         };
 
         request.onerror = function(event) {
-            var errorMsg = "IndexedDB open error for " + fileNameStr + ": " + event.target.error;
-            var buffer = _malloc(lengthBytesUTF8(errorMsg) + 1);
-            stringToUTF8(errorMsg, buffer, lengthBytesUTF8(errorMsg) + 1);
-            dynCall_vi(callback, buffer);
-            _free(buffer);
+            SendMessage(objectName, methodName, "IndexedDB open error for " + fileNameStr + ": " + event.target.error);
         };
     }
 });

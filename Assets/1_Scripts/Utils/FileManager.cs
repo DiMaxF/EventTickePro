@@ -4,14 +4,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public static class FileManager
+public class FileManager : MonoBehaviour 
 {
 #if UNITY_WEBGL && !UNITY_EDITOR
     [DllImport("__Internal")]
     private static extern void SaveImageToIndexedDB(string fileName, string base64Data, int dataLength);
 
     [DllImport("__Internal")]
-    private static extern void LoadImageFromIndexedDB(string fileName, Action<string> callback);
+    private static extern void LoadImageFromIndexedDB(string fileName, string callbackObjectName, string callbackMethodName);
 #endif
 
     public static string ReadFile(string fileName)
@@ -52,12 +52,20 @@ public static class FileManager
         {
             string fileName = $"catch_{DateTime.Now.Ticks}.jpg";
             string newPath = GetFilePath(fileName);
+            Debug.Log($"Saving image to: {newPath}");
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             string base64 = isBase64 ? data : Convert.ToBase64String(File.ReadAllBytes(data));
+            Debug.Log($"Saving base64 data (length: {base64.Length}) to IndexedDB");
+            if (string.IsNullOrEmpty(base64))
+            {
+                Debug.LogError("Base64 data is empty");
+                return null;
+            }
             SaveImageToIndexedDB(fileName, base64, base64.Length);
 #else
             byte[] imageBytes = isBase64 ? Convert.FromBase64String(data) : File.ReadAllBytes(data);
+            Debug.Log($"Writing {imageBytes.Length} bytes to: {newPath}");
             File.WriteAllBytes(newPath, imageBytes);
 #endif
 
@@ -101,8 +109,9 @@ public static class FileManager
         try
         {
             var tcs = new UniTaskCompletionSource<string>();
-
-            LoadImageFromIndexedDB(fileName, (data) =>
+            var callbackObject = new GameObject("ImageLoadCallback");
+            var callbackComponent = callbackObject.AddComponent<ImageLoadCallback>();
+            callbackComponent.SetCallback((data) =>
             {
                 if (data != null && data != "Error: File not found")
                 {
@@ -114,17 +123,36 @@ public static class FileManager
                 }
             });
 
+            LoadImageFromIndexedDB(fileName, callbackObject.name, nameof(ImageLoadCallback.OnImageLoaded));
             string base64Data = await tcs.Task;
 
             byte[] imageBytes = Convert.FromBase64String(base64Data);
             Texture2D texture = new Texture2D(2, 2);
-            texture.LoadImage(imageBytes);
-            return texture;
+            if (texture.LoadImage(imageBytes))
+            {
+                Debug.Log($"Image loaded successfully: {fileName}");
+                return texture;
+            }
+            else
+            {
+                Debug.LogError($"Failed to load image data: {fileName}");
+                Destroy(texture);
+                return null;
+            }
         }
         catch (Exception ex)
         {
             Debug.LogError($"Failed to load image from IndexedDB: {ex.Message}");
             return null;
+        }
+        finally
+        {
+            // ”ничтожаем callbackObject, если он еще существует
+            var obj = GameObject.Find("ImageLoadCallback");
+            if (obj != null)
+            {
+                Destroy(obj);
+            }
         }
 #else
         try
@@ -134,8 +162,17 @@ public static class FileManager
             {
                 byte[] imageBytes = File.ReadAllBytes(path);
                 Texture2D texture = new Texture2D(2, 2);
-                texture.LoadImage(imageBytes);
-                return texture;
+                if (texture.LoadImage(imageBytes))
+                {
+                    Debug.Log($"Image loaded successfully: {path}");
+                    return texture;
+                }
+                else
+                {
+                    Debug.LogError($"Failed to load image data: {path}");
+                    Destroy(texture);
+                    return null;
+                }
             }
             else
             {
@@ -149,5 +186,21 @@ public static class FileManager
             return null;
         }
 #endif
+    }
+
+    private class ImageLoadCallback : MonoBehaviour
+    {
+        private Action<string> callback;
+
+        public void SetCallback(Action<string> cb)
+        {
+            callback = cb;
+        }
+
+        public void OnImageLoaded(string base64Data)
+        {
+            Debug.Log($"Received base64 data from IndexedDB (length: {base64Data?.Length}): {(base64Data != null && base64Data.Length > 50 ? base64Data.Substring(0, 50) + "..." : base64Data ?? "null")}");
+            callback?.Invoke(base64Data);
+        }
     }
 }
