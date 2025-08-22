@@ -12,7 +12,12 @@ public class StatusScanView : View
     [SerializeField] GameObject failed;
 
     private StatusScanning status;
-    
+
+    private void Awake()
+    {
+        scanning.transform.localScale = Vector3.zero;
+    }
+
     public override void Init<T>(T data)
     {
         if (data is StatusScanning status) this.status = status;
