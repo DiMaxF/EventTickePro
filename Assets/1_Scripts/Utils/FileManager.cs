@@ -4,12 +4,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-using Cysharp.Threading.Tasks;
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using UnityEngine;
-
 public class FileManager : MonoBehaviour
 {
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -79,8 +73,12 @@ public class FileManager : MonoBehaviour
     public static async UniTask<string> SaveImage(string data, bool isBase64 = false)
     {
         string fileName = $"catch_{DateTime.Now.Ticks}.jpg";
-        string newPath = GetFilePath(fileName);
-        Debug.Log($"Saving image to: {newPath}");
+#if UNITY_WEBGL && !UNITY_EDITOR
+        string savePath = fileName; // Для IndexedDB используем только имя файла
+#else
+        string savePath = GetFilePath(fileName); // Для non-WebGL полный путь
+#endif
+        Debug.Log($"Saving image to: {savePath}");
 
         try
         {
@@ -100,7 +98,7 @@ public class FileManager : MonoBehaviour
             {
                 if (result == "success")
                 {
-                    tcs.TrySetResult(newPath);
+                    tcs.TrySetResult(savePath);
                 }
                 else
                 {
@@ -112,9 +110,9 @@ public class FileManager : MonoBehaviour
             return await tcs.Task;
 #else
             byte[] imageBytes = isBase64 ? Convert.FromBase64String(data) : File.ReadAllBytes(data);
-            Debug.Log($"Writing {imageBytes.Length} bytes to: {newPath}");
-            await File.WriteAllBytesAsync(newPath, imageBytes);
-            return newPath;
+            Debug.Log($"Writing {imageBytes.Length} bytes to: {savePath}");
+            await File.WriteAllBytesAsync(savePath, imageBytes);
+            return savePath;
 #endif
         }
         catch (Exception ex)
@@ -132,8 +130,12 @@ public class FileManager : MonoBehaviour
     public static async UniTask<string> SaveTexture(Texture2D texture, string fileNamePrefix = "qr")
     {
         string fileName = $"{fileNamePrefix}_{DateTime.Now.Second}_{DateTime.Now.Ticks}.png";
-        string path = GetFilePath(fileName);
-        Debug.Log($"Saving texture to: {path}");
+#if UNITY_WEBGL && !UNITY_EDITOR
+        string savePath = fileName; // Для IndexedDB только имя файла
+#else
+        string savePath = GetFilePath(fileName); // Для non-WebGL полный путь
+#endif
+        Debug.Log($"Saving texture to: {savePath}");
 
         try
         {
@@ -160,7 +162,7 @@ public class FileManager : MonoBehaviour
             {
                 if (result == "success")
                 {
-                    tcs.TrySetResult(path);
+                    tcs.TrySetResult(savePath);
                 }
                 else
                 {
@@ -171,9 +173,9 @@ public class FileManager : MonoBehaviour
             SaveImageToIndexedDB(fileName, base64, base64.Length, callbackObject.name, nameof(ImageSaveCallback.OnImageSaved));
             return await tcs.Task;
 #else
-            await File.WriteAllBytesAsync(path, textureBytes);
-            Debug.Log($"Texture saved to: {path}");
-            return path;
+            await File.WriteAllBytesAsync(savePath, textureBytes);
+            Debug.Log($"Texture saved to: {savePath}");
+            return savePath;
 #endif
         }
         catch (Exception ex)
@@ -195,6 +197,8 @@ public class FileManager : MonoBehaviour
         try
         {
 #if UNITY_WEBGL && !UNITY_EDITOR
+            // Для WebGL используем только имя файла (без пути)
+            string loadFileName = Path.GetFileName(fileName);
             var tcs = new UniTaskCompletionSource<string>();
             var callbackObject = new GameObject("ImageLoadCallback");
             var callbackComponent = callbackObject.AddComponent<ImageLoadCallback>();
@@ -210,7 +214,7 @@ public class FileManager : MonoBehaviour
                 }
             });
 
-            LoadImageFromIndexedDB(fileName, callbackObject.name, nameof(ImageLoadCallback.OnImageLoaded));
+            LoadImageFromIndexedDB(loadFileName, callbackObject.name, nameof(ImageLoadCallback.OnImageLoaded));
             string base64Data = await tcs.Task;
 
             byte[] imageBytes = Convert.FromBase64String(base64Data);
@@ -227,7 +231,7 @@ public class FileManager : MonoBehaviour
                 return null;
             }
 #else
-            string path = GetFilePath(fileName);
+            string path = fileName.StartsWith(Application.persistentDataPath) ? fileName : GetFilePath(fileName);
             if (!File.Exists(path))
             {
                 Debug.LogError($"File not found: {path}");
