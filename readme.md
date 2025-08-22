@@ -32,7 +32,7 @@ EventTicketPro is your go-to tool for managing small to medium-sized events, fro
 - **Game Engine**: Built with **Unity3D (2022.3 LTS)**, leveraging its rendering power for a smooth and interactive UI.
 - **Offline Capability**: Works fully offline, storing events, tickets, and seating maps locally on the device.
 - **Cross-Platform**: Optimized for **iOS** and **Android** using Unity’s cross-platform framework.
-- **WebGL Demo**: Try the interactive seat map editor in your browser! [Demo](#) (TBD, hosted on GitHub Pages).
+- **WebGL Demo**: Try the interactive seat map editor in your browser! [Demo](https://dimaxf.github.io/EventTickePro/Build/) (TBD, hosted on GitHub Pages).
 - **APK Availability**: Download the latest Android APK from our [Releases](#) (TBD).
 - **Data Storage**: Local storage for all data, with CSV import/export for flexibility.
 - **QR Code Generation**: Unique QR codes generated locally for secure ticket validation.
@@ -43,7 +43,7 @@ EventTicketPro was born out of our frustration with clunky event management tool
 
 ## Try It Out
 
-- **WebGL Demo**: Check out the seat map editor in action on [GitHub Pages](#) (TBD).
+- **WebGL Demo**: Check out the seat map editor in action on [GitHub Pages](https://dimaxf.github.io/EventTickePro/Build/) (TBD).
 - **Android APK**: Grab the latest build from our [Releases](#) (TBD) and install it on your device.
 
 ## Installation
