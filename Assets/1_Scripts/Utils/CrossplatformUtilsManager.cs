@@ -1,12 +1,14 @@
 using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public static class CrossplatformUtilsManager
 {
 #if UNITY_WEBGL && !UNITY_EDITOR
+
+#endif
     [DllImport("__Internal")]
     private static extern void RequestFile(string callbackObjectName, string callbackMethodName, string extensions);
-#endif
 
     public static void PickFile(Action<string> callback, string extensions = "image/*")
     {
