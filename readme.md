@@ -37,10 +37,6 @@ EventTicketPro is your go-to tool for managing small to medium-sized events, fro
 - **Data Storage**: Local storage for all data, with CSV import/export for flexibility.
 - **QR Code Generation**: Unique QR codes generated locally for secure ticket validation.
 
-## Purpose
-
-EventTicketPro was born out of our frustration with clunky event management tools. We wanted a lightweight, offline app that lets organizers focus on their events, not tech headaches. Whether it’s a local gig or a corporate seminar, this app handles ticketing, seating, and analytics with zero need for constant internet.
-
 ## Try It Out
 
 - **WebGL Demo**: Check out the seat map editor in action on [GitHub Pages](https://dimaxf.github.io/EventTickePro/Build/) (TBD).
