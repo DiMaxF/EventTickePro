@@ -126,6 +126,13 @@ public class AddEventScreen : AppScreen
 
     private void OnButtonGallery() 
     {
+
+#if UNITY_WEBGL
+        CrossplatformUtilsManager.PickFile((path) =>
+        {
+
+        }, "");
+#else
         NativeGallery.GetImageFromGallery((path) =>
         {
             if (!string.IsNullOrEmpty(path))
@@ -135,6 +142,9 @@ public class AddEventScreen : AppScreen
                 model.imgPath = selectedImagePath;
             }
         }, "Select Image", "image/*");
+#endif
+
+
     }
 
     private void ValidateModel() 

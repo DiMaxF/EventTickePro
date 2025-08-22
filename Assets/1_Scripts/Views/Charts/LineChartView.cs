@@ -125,6 +125,10 @@ public class LineChartView : View
         }
         base.Init(data);
     }
-
+    public override void Show()
+    {
+        base.Show();
+        UpdateUI();
+    }
 
 }

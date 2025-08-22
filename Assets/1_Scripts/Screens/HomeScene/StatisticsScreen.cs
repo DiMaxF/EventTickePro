@@ -11,7 +11,6 @@ using UnityEngine.UI;
 public class StatisticsScreen : AppScreen
 {
     [SerializeField] ExpandedView kpis;
-    [SerializeField] ImgsFillDynamic occupancy;
     [SerializeField] LineChartView visitsChart;
     [SerializeField] ExpandedView sales;
     [SerializeField] RowChartView salesChart;
@@ -90,7 +89,6 @@ public class StatisticsScreen : AppScreen
         UIContainer.InitView(salesChart, Data.Analytics.GetTicketSalesByPeriod(_currentPeriod));
         UIContainer.InitView(conversationSentvsUsed, GetSentVsUsedData(_currentPeriod));
         UIContainer.InitView(conversationRate, Data.Analytics.GetConversionRates(_currentPeriod));
-        occupancy.SetValue(Data.Analytics.GetPersentOccupancy(_currentPeriod));
     }
 
     protected override void Subscriptions()
@@ -142,6 +140,8 @@ public class StatisticsScreen : AppScreen
         FileManager.WriteToFile(fileName, csvContent);
 
         string filePath = FileManager.GetFilePath(fileName);
+
+        
         new NativeShare().AddFile(filePath)
         .SetSubject("Subject goes here").SetText($"Statistics for {_currentPeriod}")
         .Share();
