@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
 using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -47,18 +46,18 @@ public static class FileManager
         return Application.persistentDataPath + "/" + fileName;
     }
 
-    public static string SaveImage(string path)
+    public static string SaveImage(string data, bool isBase64 = false)
     {
         try
         {
             string fileName = $"catch_{DateTime.Now.Ticks}.jpg";
             string newPath = GetFilePath(fileName);
-            byte[] imageBytes = File.ReadAllBytes(path);
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-            string base64 = Convert.ToBase64String(imageBytes);
+            string base64 = isBase64 ? data : Convert.ToBase64String(File.ReadAllBytes(data));
             SaveImageToIndexedDB(fileName, base64, base64.Length);
 #else
+            byte[] imageBytes = isBase64 ? Convert.FromBase64String(data) : File.ReadAllBytes(data);
             File.WriteAllBytes(newPath, imageBytes);
 #endif
 

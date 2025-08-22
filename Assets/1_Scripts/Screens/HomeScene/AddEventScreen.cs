@@ -126,30 +126,50 @@ public class AddEventScreen : AppScreen
 
     private void OnButtonGallery() 
     {
-
-#if UNITY_WEBGL
-        CrossplatformUtilsManager.PickFile((path) =>
+#if UNITY_WEBGL && !UNITY_EDITOR
+    CrossplatformUtilsManager.PickFile((base64Data) =>
+    {
+        if (!string.IsNullOrEmpty(base64Data))
         {
-            if (!string.IsNullOrEmpty(path))
+            Debug.Log($"Received base64 data: {base64Data.Substring(0, Math.Min(base64Data.Length, 50))}...");
+            var selectedImagePath = FileManager.SaveImage(base64Data, isBase64: true);
+            if (!string.IsNullOrEmpty(selectedImagePath))
             {
-                var selectedImagePath = FileManager.SaveImage(path);
                 UIContainer.InitView(image, selectedImagePath);
                 model.imgPath = selectedImagePath;
             }
-        }, "");
+            else
+            {
+                Debug.LogError("Failed to save image, selectedImagePath is null");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No file selected or empty base64 data");
+        }
+    }, "image/*");
 #else
         NativeGallery.GetImageFromGallery((path) =>
         {
             if (!string.IsNullOrEmpty(path))
             {
                 var selectedImagePath = FileManager.SaveImage(path);
-                UIContainer.InitView(image, selectedImagePath);
-                model.imgPath = selectedImagePath;
+                if (!string.IsNullOrEmpty(selectedImagePath))
+                {
+                    UIContainer.InitView(image, selectedImagePath);
+                    model.imgPath = selectedImagePath;
+                }
+                else
+                {
+                    Debug.LogError("Failed to save image, selectedImagePath is null");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No file selected");
             }
         }, "Select Image", "image/*");
 #endif
-
-
     }
 
     private void ValidateModel() 
